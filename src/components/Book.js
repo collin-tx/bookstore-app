@@ -3,11 +3,14 @@ import React, { Component } from 'react'
 export class Book extends Component {
     render() {
         return (
-            <div>
-                <li>
-                {this.props.title}
+                <li className="book list-group-item">
+                    <h2>{this.props.title}</h2>
+                    <img src={this.props.img} alt="book cover" />
+                    <p>{this.props.author}</p>
+                    <button className="btn btn-primary">Preview</button>
+                    <button className="btn btn-info">More Info</button>
+                    <button className="btn btn-success">Add to Cart</button>
                 </li>
-            </div>
         )
     }
 }

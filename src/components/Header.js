@@ -7,7 +7,7 @@ export class Header extends Component {
             <div>
                 <header>
                     <Nav />
-                    <h1>Bookstore</h1>
+                    <h1 className="text-center">Bookstore</h1>
                 </header>
             </div>
         )
