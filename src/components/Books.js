@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Book from './Book';
 import key from './key';
+import firebase from 'firebase';
 
 export class Books extends Component {
     
@@ -8,11 +9,32 @@ export class Books extends Component {
         term: '',
         books: [],
         loading: false,
-        error: ''
+        error: '',
+        cart: []
     }
     
     componentDidMount(){
-        this.getBook('Kurt Vonnegut')
+        this.getBook('Kurt Vonnegut');
+
+        // firebase stuff
+        var firebaseConfig = {
+            apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
+            authDomain: "books-app-249318.firebaseapp.com",
+            databaseURL: "https://books-app-249318.firebaseio.com",
+            projectId: "books-app-249318",
+            storageBucket: "",
+            messagingSenderId: "776537219409",
+            appId: "1:776537219409:web:4dd05baa355d57c2"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+
+          let database = firebase.database();
+
+          //this.setState({ database });
+
+          let cart = database.ref('cart');
+          this.setState({ cart });
 
     }
 
@@ -24,6 +46,14 @@ export class Books extends Component {
         e.preventDefault();
         this.getBook(this.state.term);
         this.setState({ term: '' })
+    }
+
+    addToCart = (e, index) => {
+        const bookToAdd = this.state.books[0].items[index];
+        //const bookTitle = bookToAdd.volumeInfo.title;
+        this.state.cart.push({
+            book : bookToAdd
+        })
     }
 
     getBook = (info) => {
@@ -38,7 +68,7 @@ export class Books extends Component {
     }
 
     render() {
-        let bookList = this.state.books.length > 0 && this.state.books[0].items.map(book => {
+        let bookList = this.state.books.length > 0 && this.state.books[0].items.map((book, index) => {
             return (
             <Book title={book.volumeInfo.title} 
             author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
@@ -48,10 +78,11 @@ export class Books extends Component {
             img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
             infoLink={book.volumeInfo.infoLink} 
             preview={book.volumeInfo.previewLink} 
-            id={book.id} 
+            id={book.id} index={index}
             key={book.etag} 
             pageCount={book.volumeInfo.pageCount} 
-            subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle} />
+            subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
+            addToCart={this.addToCart} />
             )
         });
 

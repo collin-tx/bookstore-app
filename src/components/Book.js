@@ -9,7 +9,7 @@ export class Book extends Component {
                     <p>{this.props.author}</p>
                     <button className="btn btn-primary">Preview</button>
                     <button className="btn btn-info">More Info</button>
-                    <button className="btn btn-success">Add to Cart</button>
+                    <button className="btn btn-success" onClick={(e) => this.props.addToCart(e, this.props.index)}>Add to Cart</button>
                 </li>
         )
     }
