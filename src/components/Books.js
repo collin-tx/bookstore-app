@@ -27,10 +27,10 @@ export class Books extends Component {
           };
 
 
+          // added conditional, otherwise it results in error -- Firebase App named '[DEFAULT]' already exists (app/duplicate-app)
           if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
-        console.log(firebase.apps)
 
           let database = firebase.database();
           let cart = database.ref('cart');

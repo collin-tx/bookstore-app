@@ -26,33 +26,42 @@ export class Cart extends Component {
 
           let database = firebase.database();
 
+          this.setState({ database })
+
           let cart = database.ref('cart');
           this.setState({ cart });
 
           cart.on('value', response => {
               const cartData = response.val();
-              //console.log(cartData);
 
               const cartItems = [];
-
+          
+              // eslint-disable-next-line
               for (let index in cartData){
-                  cartItems.push(cartData[index]);
+                  cartItems.push({
+                    key: index,    
+                    book: cartData[index]
+                        });
               }
 
               this.setState({ cartItems });
           })
+    }
+
+    handleRemove = (e, key) => {
+        this.state.database.ref('cart/' + key).remove();
     }
     
     render() {
 
         let booksInCart = this.state.cartItems.map(book => {
             return (
-                <CartBook title={book.book.volumeInfo.title} 
-                author={book.book.volumeInfo.authors && book.book.volumeInfo.authors[0]}
-                img={book.book.volumeInfo.imageLinks && book.book.volumeInfo.imageLinks.thumbnail}
-                subtitle={book.book.volumeInfo.subtitle && book.book.volumeInfo.subtitle}
-                description={book.book.volumeInfo.description && book.book.volumeInfo.description}
-                key={book.book.id} id={book.book.etag}
+                <CartBook title={book.book.book.volumeInfo.title} book={book}
+                author={book.book.book.volumeInfo.authors && book.book.book.volumeInfo.authors[0]}
+                img={book.book.book.volumeInfo.imageLinks && book.book.book.volumeInfo.imageLinks.thumbnail}
+                subtitle={book.book.book.volumeInfo.subtitle && book.book.book.volumeInfo.subtitle}
+                description={book.book.book.volumeInfo.description && book.book.book.volumeInfo.description}
+                key={book.book.book.id} id={book.book.book.etag} remove={this.handleRemove}
                  />
             )
         })
@@ -60,6 +69,7 @@ export class Cart extends Component {
         return (
             <div>
                 this is the cart
+                {this.state.cartItems.length < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}
                 <ul className="list-group">
                     {booksInCart}
                 </ul>
