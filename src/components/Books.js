@@ -10,11 +10,12 @@ export class Books extends Component {
         books: [],
         loading: false,
         error: '',
-        cart: []
+        cart: [],
+        adding: false
     }
     
     componentDidMount(){
-        this.getBook('Kurt Vonnegut');
+        this.getBook('javascript');
 
         var firebaseConfig = {
             apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
@@ -49,20 +50,30 @@ export class Books extends Component {
     }
 
     addToCart = (e, index) => {
+        this.setState({ adding: true })
         const bookToAdd = this.state.books[0].items[index];
         this.state.cart.push({
-            book : bookToAdd
-        })
+            book : bookToAdd,
+        });
+        setTimeout( ()=> {
+            this.setState({ adding: false });
+        }, 1000);
     }
 
     getBook = (info) => {
+        this.setState( () => {
+            return { loading: true }
+        });
         const apiKey = key;
         let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${apiKey}`;
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
             this.setState({ books: [data] })
-        })
+        });
+        setTimeout( () => {
+            this.setState({ loading: false });
+        }, 500);
     }
 
     render() {
@@ -91,6 +102,19 @@ export class Books extends Component {
                     placeholder="Search for a book..." className="form-control" />
                     <input type='submit' className="btn btn-primary" id="submit" />
                 </form>
+
+                { this.state.adding && 
+                    <div id="adding-div" className="text-center">
+                        <p>Adding book to cart...</p>
+                    </div>
+                }
+                
+                { this.state.loading &&
+                    <div id="loading-div" className="text-center">
+                        <p>Loading...</p>
+                    </div>
+                }
+
                 <ul className="list-group" id="bookList">
                     {bookList}
                 </ul>

@@ -62,6 +62,7 @@ export class Cart extends Component {
                 subtitle={book.book.book.volumeInfo.subtitle && book.book.book.volumeInfo.subtitle}
                 description={book.book.book.volumeInfo.description && book.book.book.volumeInfo.description}
                 key={book.book.book.id} id={book.book.book.etag} remove={this.handleRemove}
+                link={book.book.book.volumeInfo.infoLink}
                  />
             )
         })
@@ -73,6 +74,7 @@ export class Cart extends Component {
                 <ul className="list-group">
                     {booksInCart}
                 </ul>
+                {this.state.cartItems.length > 0 ? <p>subtotal: ${this.state.cartItems.length * 5}.00</p> : ''}
             </div>
         )
     }

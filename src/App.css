@@ -13,6 +13,8 @@
   margin-bottom: 4px;
 }
 
+/* Home */
+
 #bookList{
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -23,4 +25,13 @@
 .book {
   width: 30vw;
   border: none;
+}
+
+/* Cart */
+
+.cartBook {
+  display: grid;
+  grid-template-columns: 1fr 2fr 0.5fr;
+  align-items: center;
+  justify-items: center;
 }
