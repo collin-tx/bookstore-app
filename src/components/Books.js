@@ -16,7 +16,6 @@ export class Books extends Component {
     componentDidMount(){
         this.getBook('Kurt Vonnegut');
 
-        // firebase stuff
         var firebaseConfig = {
             apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
             authDomain: "books-app-249318.firebaseapp.com",
@@ -26,13 +25,14 @@ export class Books extends Component {
             messagingSenderId: "776537219409",
             appId: "1:776537219409:web:4dd05baa355d57c2"
           };
-          // Initialize Firebase
-          firebase.initializeApp(firebaseConfig);
+
+
+          if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        console.log(firebase.apps)
 
           let database = firebase.database();
-
-          //this.setState({ database });
-
           let cart = database.ref('cart');
           this.setState({ cart });
 
@@ -50,7 +50,6 @@ export class Books extends Component {
 
     addToCart = (e, index) => {
         const bookToAdd = this.state.books[0].items[index];
-        //const bookTitle = bookToAdd.volumeInfo.title;
         this.state.cart.push({
             book : bookToAdd
         })
@@ -62,7 +61,6 @@ export class Books extends Component {
         fetch(url).then(response => {
             return response.json();
         }).then(data => {
-            console.log(data);
             this.setState({ books: [data] })
         })
     }
