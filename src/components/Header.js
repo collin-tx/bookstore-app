@@ -6,8 +6,9 @@ export class Header extends Component {
         return (
             <div>
                 <header>
-                    <Nav />
-                    <h1 className="text-center">Bookstore</h1>
+                    <div className="app-title">
+                        <h1 className="text-center">bookshop</h1>
+                    </div>
                 </header>
             </div>
         )

@@ -1,8 +1,29 @@
+
+header {
+  background: url('./img/bookstore1.jpg') center/cover;
+  height: 30vh;
+  width: 100%;
+}
+
+.app-title {
+  color: #fff;
+  transform: translateY(40%);
+}
+
+#nav {
+  height: 5vh;
+  width: 100%;
+}
+
+.navLink {
+  color: #fff;
+}
+
+/* Home */
 #form {
   text-align: center;
-  margin: 30px;
+  margin: 30px auto;
   position: relative;
-  left: -50px;
 }
 .form-control {
   display: inline;
@@ -12,8 +33,6 @@
 #submit {
   margin-bottom: 4px;
 }
-
-/* Home */
 
 #bookList{
   display: grid;
