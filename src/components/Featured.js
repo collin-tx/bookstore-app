@@ -6,7 +6,7 @@ export class Featured extends Component {
     
     state = {
         featuredBook: {},
-        value: ''
+        value: '',
     }
     
     componentDidMount(){
@@ -28,7 +28,7 @@ export class Featured extends Component {
 
           let database = firebase.database();
           let featured = database.ref('featured');
-          this.setState({ featured });
+          this.setState({ featured, database });
 
           featured.on('value', response => {
               const featuredData = response.val();
@@ -36,23 +36,44 @@ export class Featured extends Component {
           })
     }
 
+    addComment = () => {
+        let featuredIndex = Object.keys(this.state.featuredBook);
+        this.state.database.ref('featured/' + featuredIndex +'/book/comments').push(this.state.value);
+        this.setState({ value: '' })
+
+    }
+
+    handleChange = (e) => {
+        this.setState({ value: e.target.value});
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.addComment();
+    }
+
+    editComment = (e, key, newComment) => {
+        let featuredIndex = Object.keys(this.state.featuredBook);
+        this.database.ref('featured/' + featuredIndex + '/book/comments/' + key).update(
+            { key: newComment})
+    }
+
+
 
     
     render() {
         let featuredIndex = Object.keys(this.state.featuredBook);
         let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
 
-       // console.log(book && typeof book.comments)
-
-        const allComments = [];
-
+        let allComments = [];
         // eslint-disable-next-line
-        for (let comment in book && book.comments){
-            allComments.push(book.comments[comment]);
+        for(let keyOfComment in book && book.comments){
+            allComments.push(book.comments[keyOfComment]);
         }
-        const renderComments = allComments.map((comment, index) => {
+
+        allComments = allComments.map( (comment, index) => {
             return (
-                <Comment key={index} comment={comment} />
+                <Comment key={index} comment={comment} edit={this.editComment} />
             )
         })
         
@@ -72,10 +93,18 @@ export class Featured extends Component {
                         
                             <div id="comments">
                                 <h3>Comments</h3>
-                                <ul>
-                                 {renderComments}
+
+                                <ul className="list-group">
+                                    {allComments}
                                 </ul>
+
+                                <form onSubmit={this.handleSubmit}>
+                                    <input type="text" value={this.state.value} onChange={this.handleChange} />
+                                    <input type="submit" />
+                                </form>
+
                             </div>
+
                         </div>
                     }
             </div>

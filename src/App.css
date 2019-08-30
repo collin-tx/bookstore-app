@@ -55,3 +55,29 @@ header {
   justify-items: center;
   padding: 5%;
 }
+
+/* Featured Page */
+
+.comment {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  align-items: center;
+  justify-items: left;
+}
+
+.user {
+  align-self: center;
+  justify-self: left;
+  position: relative;
+}
+
+.user i {
+    position: relative;
+    left: 35% !important;
+}
+
+.comment-content {
+  height: 140%;
+  border-left: 1px solid grey;
+  padding-left: 12px;
+}
