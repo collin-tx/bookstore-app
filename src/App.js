@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Cart from './components/Cart';
 import Nav from './components/Nav';
 import 'bootstrap/dist/css/bootstrap.css';
+//import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 
 function App() {

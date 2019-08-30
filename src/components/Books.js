@@ -3,6 +3,7 @@ import Book from './Book';
 import key from './key';
 import firebase from 'firebase';
 
+
 export class Books extends Component {
     
     state = {
@@ -100,7 +101,7 @@ export class Books extends Component {
                 <form onSubmit={this.handleSubmit} id="form">
                     <input type='text' value={this.state.term} onChange={this.handleChange} 
                     placeholder="Search for a book..." className="form-control" />
-                    <input type='submit' className="btn btn-primary" id="submit" />
+                    <button type='submit' className="btn btn-primary" id="submit"><i className="fas fa-search"></i> Search</button>
                 </form>
 
                 { this.state.adding && 

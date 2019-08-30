@@ -15,10 +15,8 @@ export class CartBook extends Component {
 
                     <div className="col">
                         <p>{this.props.description.length > 500 ? this.props.description.slice(0, 500) + "..." : this.props.description}</p>
-                        <a className="btn btn-info" href={this.props.link} rel="noopener noreferrer" target="_blank">more info</a>
-                    </div>
-
-                    <div className="col">
+                        <a className="btn btn-info" href={this.props.link} rel="noopener noreferrer" target="_blank"><i className="fas fa-info"></i> more info</a>
+                        <a className="btn btn-info" href={this.props.preview} target="_blank" rel="noopener noreferrer"><i className="fas fa-book-reader"></i> Preview</a>
                         <button className="btn btn-danger" onClick={(e) => this.props.remove(e, this.props.book.key)}>X</button>
                     </div>
                 </li>

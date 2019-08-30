@@ -50,7 +50,8 @@ header {
 
 .cartBook {
   display: grid;
-  grid-template-columns: 1fr 2fr 0.5fr;
+  grid-template-columns: 1fr 2fr;
   align-items: center;
   justify-items: center;
+  padding: 5%;
 }

@@ -62,7 +62,7 @@ export class Cart extends Component {
                 subtitle={book.book.book.volumeInfo.subtitle && book.book.book.volumeInfo.subtitle}
                 description={book.book.book.volumeInfo.description && book.book.book.volumeInfo.description}
                 key={book.book.book.id} id={book.book.book.etag} remove={this.handleRemove}
-                link={book.book.book.volumeInfo.infoLink}
+                link={book.book.book.volumeInfo.infoLink} preview={book.book.book.volumeInfo.previewLink}
                  />
             )
         })
