@@ -4,8 +4,8 @@ import Header from './components/Header';
 import Home from './components/Home';
 import Cart from './components/Cart';
 import Nav from './components/Nav';
+import Featured from './components/Featured'
 import 'bootstrap/dist/css/bootstrap.css';
-//import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
     <Switch>
       <Route path="/" component={Home} exact />
       <Route path="/cart" component={Cart} />
+      <Route path="/featured" component={Featured} />
       <Route component={Error} />
     </Switch>
 </BrowserRouter>

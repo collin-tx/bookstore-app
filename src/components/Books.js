@@ -35,7 +35,7 @@ export class Books extends Component {
         }
 
           let database = firebase.database();
-          let cart = database.ref('cart');
+          let cart = database.ref('featured');
           this.setState({ cart });
 
     }
