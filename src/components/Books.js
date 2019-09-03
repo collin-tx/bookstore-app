@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Book from './Book';
 import key from './key';
+import { handleErrors } from '../utils/helper';
 import firebase from 'firebase';
 
 
@@ -35,7 +36,7 @@ export class Books extends Component {
         }
 
           let database = firebase.database();
-          let cart = database.ref('featured');
+          let cart = database.ref('cart');
           this.setState({ cart });
 
     }
@@ -67,18 +68,24 @@ export class Books extends Component {
         });
         const apiKey = key;
         let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${apiKey}`;
-        fetch(url).then(response => {
+        fetch(url).then(handleErrors)
+        .then(response => {
             return response.json();
         }).then(data => {
-            this.setState({ books: [data] })
-        });
+            this.setState({ books: [data], error: false })
+        })
+        .catch(error => {
+            this.setState({ error, loading: false })
+        })
+
+
         setTimeout( () => {
             this.setState({ loading: false });
         }, 500);
     }
 
     render() {
-        let bookList = this.state.books.length > 0 && this.state.books[0].items.map((book, index) => {
+        let bookList = this.state.books[0] && this.state.books[0].items.map((book, index) => {
             return (
             <Book title={book.volumeInfo.title} 
             author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
@@ -113,6 +120,12 @@ export class Books extends Component {
                 { this.state.loading &&
                     <div id="loading-div" className="text-center">
                         <p>Loading...</p>
+                    </div>
+                }
+
+                { this.state.error && 
+                    <div id="error-div" className="text-center">
+                        <p>No Books found</p>
                     </div>
                 }
 

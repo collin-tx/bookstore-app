@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 export class Book extends Component {
+    
     render() {
         return (
                 <li className="book list-group-item">
