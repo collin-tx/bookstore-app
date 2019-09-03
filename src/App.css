@@ -63,6 +63,8 @@ header {
   grid-template-columns: 1fr 8fr 1fr;
   align-items: center;
   justify-items: left;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .user {
@@ -80,4 +82,21 @@ header {
   height: 140%;
   border-left: 1px solid grey;
   padding-left: 12px;
+}
+
+#featured-main{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#featured-cover {
+  width: 20%;
+  height: 20%;
+  margin: 0 auto;
+}
+
+#featured-description {
+  width: 80%;
+  margin: 0 auto;
 }

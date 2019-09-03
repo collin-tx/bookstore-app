@@ -85,13 +85,14 @@ export class Books extends Component {
     }
 
     render() {
+        
         let bookList = this.state.books[0] && this.state.books[0].items.map((book, index) => {
             return (
             <Book title={book.volumeInfo.title} 
             author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
             category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
             description={book.volumeInfo.description}
-            date={book.volumeInfo.publishedDate} 
+            price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
             img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
             infoLink={book.volumeInfo.infoLink} 
             preview={book.volumeInfo.previewLink} 

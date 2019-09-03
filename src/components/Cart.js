@@ -63,18 +63,24 @@ export class Cart extends Component {
                 description={book.book.book.volumeInfo.description && book.book.book.volumeInfo.description}
                 key={book.book.book.id} id={book.book.book.etag} remove={this.handleRemove}
                 link={book.book.book.volumeInfo.infoLink} preview={book.book.book.volumeInfo.previewLink}
+                price={book.book.book.saleInfo.listPrice.amount}
                  />
             )
-        })
+        });
+
+        let priceArray = this.state.cartItems[0] && this.state.cartItems.map(book => book.book.book.saleInfo.listPrice.amount);
+        let subtotal = priceArray && priceArray.reduce((a,b) => a + b);
+
+        console.log(priceArray && subtotal);
 
         return (
             <div>
-                this is the cart
+                <h2 id="cart-title" className="text-center">Cart</h2>
+                {this.state.cartItems.length > 0 ? <p id="subtotal" className="text-right mr-5">subtotal: $ {subtotal}</p> : ''}
                 {this.state.cartItems.length < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}
                 <ul className="list-group">
                     {booksInCart}
                 </ul>
-                {this.state.cartItems.length > 0 ? <p>subtotal: ${this.state.cartItems.length * 5}.00</p> : ''}
             </div>
         )
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import Comment from './Comment';
+import { generateKey } from '../utils/helper';
 
 export class Featured extends Component {
     
@@ -73,7 +74,7 @@ export class Featured extends Component {
 
         allComments = allComments.map( (comment, index) => {
             return (
-                <Comment key={index} comment={comment} edit={this.editComment} />
+                <Comment key={generateKey} comment={comment} edit={this.editComment} />
             )
         })
         
@@ -81,18 +82,18 @@ export class Featured extends Component {
             <div>
                     {this.state.featuredBook[featuredIndex] && 
                         <div id="featuredBook">
-                            <div>
-                                <h2>{book.volumeInfo.title}</h2>
-                                <img src={book.volumeInfo.imageLinks.thumbnail} alt="featured book cover" />
-                                <p>{book.volumeInfo.authors[0]}</p>
+                            <div id="featured-main">
+                                <h2 className="mt-5 mb-3">{book.volumeInfo.title}</h2>
+                                <img id="featured-cover" src={book.volumeInfo.imageLinks.thumbnail} alt="featured book cover" />
+                                <p className="mt-3">{book.volumeInfo.authors[0]}</p>
                                 <p>${book.saleInfo.listPrice.amount}</p>
                             </div>
-                            <div>
+                            <div id="featured-description">
                                 <p>{book.volumeInfo.description}</p>
                             </div>
                         
                             <div id="comments">
-                                <h3>Comments</h3>
+                                <h3 className="text-center m-5">Comments</h3>
 
                                 <ul className="list-group">
                                     {allComments}
