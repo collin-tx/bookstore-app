@@ -11,5 +11,5 @@ export const stripWhiteSpace = (string) => {
 }
 
 export const generateKey = (index) => {
-    return `${index}_${new Date().getTime()}`;
+    return `${index}_${new Date().getTime() * (Math.floor(Math.random() * 67))}`;
 }

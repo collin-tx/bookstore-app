@@ -7,7 +7,7 @@ export class Home extends Component {
         let quotesLength = Object.keys(quotes).length;
         return (
             <div>
-                <p>{quotes[Math.ceil(Math.random() * quotesLength)]}</p>
+                <p id="quote">{quotes[Math.ceil(Math.random() * quotesLength)]}</p>
                 <Books />
             </div>
         )

@@ -39,7 +39,7 @@ export class Featured extends Component {
 
     addComment = () => {
         let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex +'/book/comments').push(this.state.value);
+        this.state.database.ref('featured/' + featuredIndex +'/book/comments').push({key: this.state.value});
         this.setState({ value: '' })
 
     }
@@ -55,8 +55,8 @@ export class Featured extends Component {
 
     editComment = (e, key, newComment) => {
         let featuredIndex = Object.keys(this.state.featuredBook);
-        this.database.ref('featured/' + featuredIndex + '/book/comments/' + key).update(
-            { key: newComment})
+        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key).update({key:newComment});
+        this.setState({ value: '', editing: false });
     }
 
 
@@ -65,7 +65,7 @@ export class Featured extends Component {
     render() {
         let featuredIndex = Object.keys(this.state.featuredBook);
         let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
-
+        
         let allComments = [];
         // eslint-disable-next-line
         for(let keyOfComment in book && book.comments){
@@ -74,7 +74,7 @@ export class Featured extends Component {
 
         allComments = allComments.map( (comment, index) => {
             return (
-                <Comment key={generateKey} comment={comment} edit={this.editComment} />
+                <Comment key={generateKey(index)} comment={comment.key} edit={this.editComment} commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
             )
         })
         

@@ -20,6 +20,13 @@ header {
 }
 
 /* Home */
+
+#quote {
+  text-align: center;
+  margin: 30px 20% 0 20%;
+
+}
+
 #form {
   text-align: center;
   margin: 30px auto;
@@ -77,6 +84,7 @@ header {
   align-self: center;
   justify-self: left;
   position: relative;
+  padding-right: 10px;
 }
 
 .user i {
@@ -85,9 +93,9 @@ header {
 }
 
 .comment-content {
-  height: 140%;
+  /* height: 140%; */
   border-left: 1px solid grey;
-  padding-left: 12px;
+  padding: 12px;
 }
 
 #featured-main{
@@ -113,4 +121,8 @@ header {
 
 #comment-field {
  width: 300px;
+}
+
+.edit-comment-form {
+  display: flex;
 }
