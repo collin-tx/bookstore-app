@@ -4,7 +4,8 @@ import Header from './components/Header';
 import Home from './components/Home';
 import Cart from './components/Cart';
 import Nav from './components/Nav';
-import Featured from './components/Featured'
+import Featured from './components/Featured';
+import Footer from './components/Footer'
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/featured" component={Featured} />
       <Route component={Error} />
     </Switch>
+    <Footer />
 </BrowserRouter>
   );
 }
