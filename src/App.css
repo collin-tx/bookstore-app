@@ -44,6 +44,12 @@ header {
 .book {
   width: 30vw;
   border: none;
+  /* text-align: center; */
+}
+
+.book-cover{
+ /* display: block;
+ margin: 0 auto; */
 }
 
 /* Cart */
