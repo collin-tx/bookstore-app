@@ -75,7 +75,7 @@ export class Cart extends Component {
 
         return (
             <div>
-                <h2 id="cart-title" className="text-center">Cart</h2>
+                <h2 id="cart-title" className="text-center m-5">Cart</h2>
                 {this.state.cartItems.length > 0 ? <p id="subtotal" className="text-right mr-5">subtotal: $ {subtotal}</p> : ''}
                 {this.state.cartItems.length < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}
                 <ul className="list-group">

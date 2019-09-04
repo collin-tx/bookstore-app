@@ -86,7 +86,10 @@ export class Books extends Component {
 
     render() {
         
-        let bookList = this.state.books[0] && this.state.books[0].items.map((book, index) => {
+        let bookTest = this.state.books[0] && this.state.books[0].items ? '' : "No Books Found";
+
+        let bookList = this.state.books[0] && this.state.books[0].items 
+            && this.state.books[0].items.map((book, index) => {
             return (
             <Book title={book.volumeInfo.title} 
             author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
@@ -129,6 +132,8 @@ export class Books extends Component {
                         <p>No Books found</p>
                     </div>
                 }
+
+                <p id="bookTest" className="text-center">{bookTest}</p>
 
                 <ul className="list-group" id="bookList">
                     {bookList}

@@ -100,3 +100,11 @@ header {
   width: 80%;
   margin: 0 auto;
 }
+
+#comment-form {
+  text-align: center;
+}
+
+#comment-field {
+ width: 300px;
+}
