@@ -34,20 +34,19 @@ header {
 #quote {
   text-align: center;
   margin: 30px 20% 0 20%;
-
 }
 
-#form {
+#search-form {
   text-align: center;
   margin: 30px auto;
   position: relative;
 }
-.form-control {
+#search-input {
   display: inline;
   width: 300px;
 }
 
-#submit {
+#search-submit {
   margin-bottom: 4px;
 }
 
@@ -72,12 +71,20 @@ header {
 
 /* Cart */
 
+#subtotal {
+  /* hmmmm */
+}
+
 .cartBook {
   display: grid;
   grid-template-columns: 1fr 2fr;
   align-items: center;
   justify-items: center;
   padding: 5%;
+}
+
+.cart-btn {
+  margin: 5px;
 }
 
 /* Featured Page */
@@ -127,15 +134,24 @@ header {
 }
 
 #comment-form {
-  text-align: center;
+display: flex;
+justify-content: center;
 }
 
 #comment-field {
- width: 300px;
+ width: 400px;
 }
 
 .edit-comment-form {
   display: flex;
+  flex-direction: column;
+}
+
+.edit-comment-field {
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+  font-size: 1.1rem;
+  width: 400px;
 }
 
 

@@ -109,10 +109,10 @@ export class Books extends Component {
 
         return (
             <div>
-                <form onSubmit={this.handleSubmit} id="form">
+                <form onSubmit={this.handleSubmit} id="search-form">
                     <input type='text' value={this.state.term} onChange={this.handleChange} 
-                    placeholder="Search for a book..." className="form-control" />
-                    <button type='submit' className="btn btn-primary" id="submit"><i className="fas fa-search"></i> Search</button>
+                    placeholder="Search for a book..." className="form-control" id="search-input" />
+                    <button type='submit' className="btn btn-primary" id="search-submit"><i className="fas fa-search"></i> Search</button>
                 </form>
 
                 { this.state.adding && 

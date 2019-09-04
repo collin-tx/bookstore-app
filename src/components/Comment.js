@@ -38,15 +38,17 @@ export class Comment extends Component {
                 </div>
 
                 <div className="comment-buttons">
-                    <button className="btn btn-info" onClick={this.clickHandler}>
-                        {this.state.editing ? "cancel" : 'edit'}
-                        </button>
-                    {this.state.editing && 
+                    
+                {this.state.editing && 
                     <form onSubmit={this.submitHandler} className="edit-comment-form">
                         <input type="text" value={this.state.value} className="edit-comment-field" onChange={this.changeHandler} placeholder="comment..." />
-                        <input type="submit" className="btn btn-sm btn-secondary" />
-                    </form>
-                    }
+                        <button type="submit" className="btn btn-sm btn-secondary">change</button>
+                    </form>}
+                    
+                    <button className="btn btn-info btn-sm float-right" onClick={this.clickHandler}>
+                        {this.state.editing ? "cancel" : 'edit'}
+                        </button>
+                    
                 </div>
             </li>
         )

@@ -99,9 +99,11 @@ export class Featured extends Component {
                                     {allComments}
                                 </ul>
 
-                                <form id="comment-form" onSubmit={this.handleSubmit}>
-                                    <input type="text" value={this.state.value} onChange={this.handleChange} id="comment-field" />
-                                    <input type="submit" />
+                                <h3 id="comment-invite" className="text-center m-5">Write a Comment</h3>
+
+                                <form id="comment-form" className="m-5" onSubmit={this.handleSubmit}>
+                                    <input type="text" value={this.state.value} onChange={this.handleChange} id="comment-field" className="form-control" />
+                                    <button type="submit" className="btn btn-primary"><i class="fa fa-paper-plane"></i> submit</button>
                                 </form>
 
                             </div>
