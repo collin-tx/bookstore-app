@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Book from './Book';
 import key from './key';
 import { handleErrors } from '../utils/helper';
+import quotes from '../quotes.json';
 import firebase from 'firebase';
 
 
@@ -13,11 +14,12 @@ export class Books extends Component {
         loading: false,
         error: '',
         cart: [],
-        adding: false
+        adding: false,
+        searched: false
     }
     
     componentDidMount(){
-        this.getBook('javascript');
+       // this.getBook('javascript');
 
         var firebaseConfig = {
             apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
@@ -64,7 +66,7 @@ export class Books extends Component {
 
     getBook = (info) => {
         this.setState( () => {
-            return { loading: true }
+            return { loading: true,  searched: true }
         });
         const apiKey = key;
         let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${apiKey}`;
@@ -86,8 +88,8 @@ export class Books extends Component {
 
     render() {
         
-        let bookTest = this.state.books[0] && this.state.books[0].items ? '' : "No Books Found";
-
+        let bookTest = this.state.books[0] && this.state.books[0].items ? '' : this.state.loading && this.state.searched ? "loading..." : "No Books Found";
+        let quotesLength = Object.keys(quotes).length;
         let bookList = this.state.books[0] && this.state.books[0].items 
             && this.state.books[0].items.map((book, index) => {
             return (
@@ -108,12 +110,20 @@ export class Books extends Component {
         });
 
         return (
-            <div>
+            <div className="container-fluid" >
                 <form onSubmit={this.handleSubmit} id="search-form">
                     <input type='text' value={this.state.term} onChange={this.handleChange} 
                     placeholder="Search for a book..." className="form-control" id="search-input" />
                     <button type='submit' className="btn btn-primary" id="search-submit"><i className="fas fa-search"></i> Search</button>
                 </form>
+
+                {!this.state.searched &&
+                    <div>
+                        <h3 className="text-center m-5">Welcome</h3>
+                        <h5 className="text-center m-3">Your search results will display here once you search for a book. <br /> Happy Reading!</h5>
+                        <p id="quote">{quotes[Math.ceil(Math.random() * quotesLength)]}</p>
+                    </div>
+                }
 
                 { this.state.adding && 
                     <div id="adding-div" className="text-center">
@@ -127,13 +137,13 @@ export class Books extends Component {
                     </div>
                 }
 
-                { this.state.error && 
+                { this.state.searched && this.state.books[0] && this.state.books[0].totalItems < 1 &&
                     <div id="error-div" className="text-center">
                         <p>No Books found</p>
                     </div>
                 }
 
-                <p id="bookTest" className="text-center">{bookTest}</p>
+                {/* <p id="bookTest" className="text-center">{bookTest}</p> */}
 
                 <ul className="list-group" id="bookList">
                     {bookList}

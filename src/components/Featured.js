@@ -103,7 +103,7 @@ export class Featured extends Component {
 
                                 <form id="comment-form" className="m-5" onSubmit={this.handleSubmit}>
                                     <input type="text" value={this.state.value} onChange={this.handleChange} id="comment-field" className="form-control" />
-                                    <button type="submit" className="btn btn-primary"><i class="fa fa-paper-plane"></i> submit</button>
+                                    <button type="submit" className="btn btn-primary" id="comment-submit"><i className="fa fa-paper-plane"></i> submit</button>
                                 </form>
 
                             </div>

@@ -17,7 +17,7 @@ function App() {
     <Switch>
       <Route path="/" component={Home} exact />
       <Route path="/cart" component={Cart} />
-      <Route path="/featured" component={Featured} />
+      <Route path="/featured" render={ ()=> <Featured firebase='nothing' />} />
       <Route component={Error} />
     </Switch>
     <Footer />
