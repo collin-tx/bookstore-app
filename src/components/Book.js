@@ -8,7 +8,7 @@ export class Book extends Component {
                     <h2>{this.props.title}</h2>
                     <img src={this.props.img} alt={this.props.title + "book cover"} className="book-cover" />
                     <p>{this.props.author}</p>
-                    {this.props.price ? <p>{"$ " + this.props.price}</p> : <p>Not for sale</p>}
+                    {this.props.price ? <p>{"$ " + this.props.price.toFixed(2)}</p> : <p>Not for sale</p>}
                     <a className="btn btn-info mr-1" href={this.props.preview} target="_blank" rel="noopener noreferrer">
                         <i className="fas fa-book-reader"></i> Preview
                     </a>

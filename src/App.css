@@ -1,5 +1,4 @@
-
-header {
+#header {
   background: url('./img/bookstore1.jpg') center/cover;
   height: 30vh;
   width: 100%;
@@ -71,11 +70,6 @@ header {
   border: none;
 }
 
-.book-cover{
- /* display: block;
- margin: 0 auto; */
-}
-
 @media(max-width: 780px){
   #bookList{
     grid-template-columns: 1fr 1fr !important;
@@ -87,10 +81,6 @@ header {
 }
 
 /* Cart */
-
-#subtotal {
-  /* hmmmm */
-}
 
 .cartBook {
   display: grid;
@@ -104,8 +94,20 @@ header {
   margin: 5px;
 }
 
-/* Featured Page */
 
+/* Checkout Modal */
+
+#checkout-div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 2%;
+  margin-top: -100px;
+  margin-bottom: 40px;
+}
+
+
+/* Featured Page */
 .comment {
   display: grid;
   grid-template-columns: 1fr 8fr 1fr;
@@ -128,7 +130,7 @@ header {
 }
 
 .comment-content {
-  /* height: 140%; */
+  height: 140%; 
   border-left: 1px solid grey;
   padding: 12px;
 }
@@ -188,13 +190,11 @@ justify-content: center;
 }
 }
 
-
 /* Footer */
-footer {
+#footer {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   padding-right: 3%;
   margin-top: 10vh;
-  /* border-top: 1px lightgrey solid; */
 }

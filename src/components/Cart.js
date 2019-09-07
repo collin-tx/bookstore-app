@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import CartBook from './CartBook';
+import { Checkout } from './Checkout';
+import { Subtotal } from './Subtotal';
 
-export class Cart extends Component {
-    
+export class Cart extends Component {  
     state = {
         cartItems: [],
         cart: {}
@@ -36,9 +37,8 @@ export class Cart extends Component {
     handleRemove = (e, key) => {
         this.state.database.ref('cart/' + key).remove();
     }
-    
-    render() {
 
+    render() {
         let booksInCart = this.state.cartItems.map(book => {
             return (
                 <CartBook title={book.book.book.volumeInfo.title} book={book}
@@ -54,14 +54,20 @@ export class Cart extends Component {
         });
 
         let priceArray = this.state.cartItems[0] && this.state.cartItems.map(book => book.book.book.saleInfo.listPrice.amount);
-        let subtotal = priceArray && priceArray.reduce((a,b) => a + b);
-
-        // console.log(priceArray && subtotal);
+        const subtotal = priceArray && priceArray.reduce((a,b) => a + b);        
 
         return (
             <div>
                 <h2 id="cart-title" className="text-center m-5">Cart</h2>
-                {this.state.cartItems.length > 0 ? <p id="subtotal" className="text-right mr-5">subtotal: $ {subtotal}<br/><button className="btn btn-success">checkout</button></p> : ''}
+                
+                {this.state.cartItems.length > 0 ? 
+                    <div id="checkout-div">
+                        <p id="subtotal" className="">
+                            <Subtotal subtotal={subtotal} />
+                        </p>
+                        <Checkout subtotal={subtotal} />
+                    </div> : ''}
+
                 {this.state.cartItems.length < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}
                 <ul className="list-group">
                     {booksInCart}

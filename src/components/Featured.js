@@ -69,7 +69,7 @@ export class Featured extends Component {
                                 <h2 className="m-5">{book.volumeInfo.title}</h2>
                                 <img id="featured-cover" src={book.volumeInfo.imageLinks.thumbnail} alt="featured book cover" />
                                 <p className="mt-3">{book.volumeInfo.authors[0]}</p>
-                                <p>${book.saleInfo.listPrice.amount}</p>
+                                <p>${book.saleInfo.listPrice.amount.toFixed(2)}</p>
                             </div>
                             <div id="featured-description">
                                 <p>{book.volumeInfo.description}</p>
