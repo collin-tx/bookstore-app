@@ -53,6 +53,14 @@ export class Cart extends Component {
             )
         });
 
+        let checkoutBooks = this.state.cartItems.map(book => {
+            return (
+            <li className="list-group-item">
+                <p>{book.book.book.volumeInfo.title} <b className="float-right">${book.book.book.saleInfo.listPrice.amount.toFixed(2)}</b></p>
+            </li>
+            )
+        })
+
         let priceArray = this.state.cartItems[0] && this.state.cartItems.map(book => book.book.book.saleInfo.listPrice.amount);
         const subtotal = priceArray && priceArray.reduce((a,b) => a + b);        
 
@@ -65,7 +73,7 @@ export class Cart extends Component {
                         <p id="subtotal" className="">
                             <Subtotal subtotal={subtotal} />
                         </p>
-                        <Checkout subtotal={subtotal} />
+                        <Checkout subtotal={subtotal} books={checkoutBooks} />
                     </div> : ''}
 
                 {this.state.cartItems.length < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}

@@ -106,6 +106,15 @@
   margin-bottom: 40px;
 }
 
+.checkout-list li {
+  border: none;
+}
+
+#checkout-subtotal {
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightgrey;
+}
+
 
 /* Featured Page */
 .comment {

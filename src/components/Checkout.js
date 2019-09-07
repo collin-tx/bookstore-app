@@ -16,7 +16,10 @@ const CheckoutModal = (props) => {
         </Modal.Header>
         <Modal.Body>
           <h4>Thanks for shopping with us!</h4>
-            <p>Your total is ${props.subtotal.toFixed(2)} plus tax.</p>
+            <p id="checkout-subtotal">Your total is ${props.subtotal.toFixed(2)} plus tax.</p>
+            <ul className="list-group checkout-list">
+              {props.books}
+            </ul>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide}>Close</Button>
@@ -39,6 +42,7 @@ const CheckoutModal = (props) => {
           show={modalShow}
           onHide={() => setModalShow(false)}
           subtotal = {props.subtotal}
+          books = {props.books}
         />
       </ButtonToolbar>
     );
