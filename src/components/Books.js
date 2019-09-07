@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import Book from './Book';
 import key from './key';
 import { handleErrors } from '../utils/helper';
-import firebase from 'firebase';
-
 
 export class Books extends Component {
     
@@ -18,28 +16,9 @@ export class Books extends Component {
     }
     
     componentDidMount(){
-       // this.getBook('javascript');
-
-        var firebaseConfig = {
-            apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
-            authDomain: "books-app-249318.firebaseapp.com",
-            databaseURL: "https://books-app-249318.firebaseio.com",
-            projectId: "books-app-249318",
-            storageBucket: "",
-            messagingSenderId: "776537219409",
-            appId: "1:776537219409:web:4dd05baa355d57c2"
-          };
-
-
-          // added conditional, otherwise it results in error -- Firebase App named '[DEFAULT]' already exists (app/duplicate-app)
-          if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-
-          let database = firebase.database();
+          let database = this.props.firebase;
           let cart = database.ref('cart');
           this.setState({ cart });
-
     }
 
     handleChange = (e) => {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import CartBook from './CartBook';
 
 export class Cart extends Component {
@@ -10,21 +9,7 @@ export class Cart extends Component {
     }
 
     componentDidMount(){
-        var firebaseConfig = {
-            apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
-            authDomain: "books-app-249318.firebaseapp.com",
-            databaseURL: "https://books-app-249318.firebaseio.com",
-            projectId: "books-app-249318",
-            storageBucket: "",
-            messagingSenderId: "776537219409",
-            appId: "1:776537219409:web:4dd05baa355d57c2"
-          };
-          
-          if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-
-          let database = firebase.database();
+          let database = this.props.firebase;
 
           this.setState({ database })
 

@@ -7,7 +7,7 @@ export class Home extends Component {
         let quotesLength = Object.keys(quotes).length;
         return (
             <div>
-                <Books />
+                <Books firebase={this.props.firebase} />
                 <p id="quote">{quotes[Math.ceil(Math.random() * quotesLength)]}</p>
             </div>
         )

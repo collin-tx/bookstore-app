@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import Comment from './Comment';
 import { generateKey } from '../utils/helper';
 
@@ -11,23 +10,7 @@ export class Featured extends Component {
     }
     
     componentDidMount(){
-        var firebaseConfig = {
-            apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
-            authDomain: "books-app-249318.firebaseapp.com",
-            databaseURL: "https://books-app-249318.firebaseio.com",
-            projectId: "books-app-249318",
-            storageBucket: "",
-            messagingSenderId: "776537219409",
-            appId: "1:776537219409:web:4dd05baa355d57c2"
-          };
-
-
-          // added conditional, otherwise it results in error -- Firebase App named '[DEFAULT]' already exists (app/duplicate-app)
-          if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-
-          let database = firebase.database();
+          let database = this.props.firebase;
           let featured = database.ref('featured');
           this.setState({ featured, database });
 
