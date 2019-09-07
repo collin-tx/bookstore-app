@@ -71,7 +71,7 @@ export class Cart extends Component {
         let priceArray = this.state.cartItems[0] && this.state.cartItems.map(book => book.book.book.saleInfo.listPrice.amount);
         let subtotal = priceArray && priceArray.reduce((a,b) => a + b);
 
-        console.log(priceArray && subtotal);
+        // console.log(priceArray && subtotal);
 
         return (
             <div>

@@ -64,7 +64,6 @@ header {
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   justify-items: center;
-  min-height: 40vh;
 }
 
 .book {

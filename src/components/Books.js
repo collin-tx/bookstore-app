@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Book from './Book';
 import key from './key';
 import { handleErrors } from '../utils/helper';
-import quotes from '../quotes.json';
 import firebase from 'firebase';
 
 
@@ -87,9 +86,7 @@ export class Books extends Component {
     }
 
     render() {
-        
-        let bookTest = this.state.books[0] && this.state.books[0].items ? '' : this.state.loading && this.state.searched ? "loading..." : "No Books Found";
-        let quotesLength = Object.keys(quotes).length;
+        //let bookTest = this.state.books[0] && this.state.books[0].items ? '' : this.state.loading && this.state.searched ? "loading..." : "No Books Found";
         let bookList = this.state.books[0] && this.state.books[0].items 
             && this.state.books[0].items.map((book, index) => {
             return (
@@ -121,7 +118,6 @@ export class Books extends Component {
                     <div>
                         <h3 className="text-center m-5">Welcome</h3>
                         <h5 className="text-center m-3">Your search results will display here once you search for a book. <br /> Happy Reading!</h5>
-                        <p id="quote">{quotes[Math.ceil(Math.random() * quotesLength)]}</p>
                     </div>
                 }
 
