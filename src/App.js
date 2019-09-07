@@ -15,9 +15,9 @@ function App() {
     <Nav />
     <Header /> 
     <Switch>
-      <Route path="/" component={Home} exact />
-      <Route path="/cart" component={Cart} />
-      <Route path="/featured" render={ ()=> <Featured firebase='nothing' />} />
+      <Route path="/" render={ () => <Home firebase="nothing yet" />} exact />
+      <Route path="/cart" render={ () => <Cart firebase="nothing yet" />} />
+      <Route path="/featured" render={ ()=> <Featured firebase='nothing yet' />} />
       <Route component={Error} />
     </Switch>
     <Footer />
