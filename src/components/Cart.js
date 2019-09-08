@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CartBook from './CartBook';
 import { Checkout } from './Checkout';
 import { Subtotal } from './Subtotal';
+import { generateKey } from '../utils/helper';
 
 export class Cart extends Component {  
     state = {
@@ -55,7 +56,7 @@ export class Cart extends Component {
 
         let checkoutBooks = this.state.cartItems.map(book => {
             return (
-            <li className="list-group-item">
+            <li className="list-group-item" key={generateKey()}>
                 <p>{book.book.book.volumeInfo.title} <b className="float-right">${book.book.book.saleInfo.listPrice.amount.toFixed(2)}</b></p>
             </li>
             )

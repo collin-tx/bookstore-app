@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import Book from './Book';
 import key from './key';
+import quotes from '../quotes.json';
 import { handleErrors } from '../utils/helper';
+
+let quotesLength = Object.keys(quotes).length;
+const quote = quotes[Math.ceil(Math.random() * quotesLength)];
 
 export class Books extends Component {
     
@@ -65,7 +69,6 @@ export class Books extends Component {
     }
 
     render() {
-        //let bookTest = this.state.books[0] && this.state.books[0].items ? '' : this.state.loading && this.state.searched ? "loading..." : "No Books Found";
         let bookList = this.state.books[0] && this.state.books[0].items 
             && this.state.books[0].items.map((book, index) => {
             return (
@@ -96,7 +99,7 @@ export class Books extends Component {
                 {!this.state.searched &&
                     <div>
                         <h3 className="text-center m-5">Welcome</h3>
-                        <h5 className="text-center m-3">Your search results will display here once you search for a book. <br /> Happy Reading!</h5>
+                        <h5 className="text-center m-3">Your search results will display here. <br /> Happy Reading!</h5>
                     </div>
                 }
 
@@ -118,11 +121,13 @@ export class Books extends Component {
                     </div>
                 }
 
-                {/* <p id="bookTest" className="text-center">{bookTest}</p> */}
-
                 <ul className="list-group" id="bookList">
                     {bookList}
                 </ul>
+
+                <p id="quote">{quote}</p>
+
+                {!this.state.bookList ? <div id="spacer-div" /> : ''}
 
             </div>
         )
