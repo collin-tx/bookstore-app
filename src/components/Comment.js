@@ -29,8 +29,13 @@ export class Comment extends Component {
             <li className="list-group-item comment">
 
                 <div className="user">
-                    <i className="fas fa-user"></i>
-                    <p>anonymous</p>
+                    <div className="user-icon">                    
+                        <i className="fas fa-user"></i>
+                    </div>
+                    <div className="username">
+                        <p>{this.props.user || 'anonymous'}</p>
+                    </div>
+                    
                 </div>
 
                 <div className="comment-content">
