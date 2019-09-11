@@ -14,13 +14,13 @@ import './App.css';
 
 // Adding Firebase to App
 var firebaseConfig = {
-  apiKey: "AIzaSyBo9Ly_nArNncTpVgPpBFZsP5Wg6VkT0rI",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "books-app-249318.firebaseapp.com",
   databaseURL: "https://books-app-249318.firebaseio.com",
   projectId: "books-app-249318",
   storageBucket: "",
   messagingSenderId: "776537219409",
-  appId: "1:776537219409:web:4dd05baa355d57c2"
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 // added conditional, otherwise it results in error -- Firebase App named '[DEFAULT]' already exists (app/duplicate-app)
 if (!firebase.apps.length) {

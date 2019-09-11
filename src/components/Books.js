@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Book from './Book';
-import key from './key';
 import quotes from '../quotes.json';
 import { handleErrors } from '../utils/helper';
 
@@ -50,8 +49,7 @@ export class Books extends Component {
         this.setState( () => {
             return { loading: true,  searched: true }
         });
-        const apiKey = key;
-        let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${apiKey}`;
+        let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`;
         fetch(url).then(handleErrors)
         .then(response => {
             return response.json();
