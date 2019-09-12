@@ -109,9 +109,9 @@ export class Featured extends Component {
 
         allComments = allComments.map( (comment, index) => {
             return (
-                <Comment key={generateKey(index)} comment={comment.key} user={comment.user} edit={this.editComment} 
-                commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]}
-                username={this.state.username} />
+                <Comment key={generateKey(index)} comment={comment.key} user={comment.user} 
+                edit={this.editComment} username={this.state.username}
+                commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
             )
         })
         
@@ -122,7 +122,8 @@ export class Featured extends Component {
                             <div id="featured-main">
                                 <h2 className="pt-5">Featured This Month</h2>
                                 <h4 className="m-5">{book.volumeInfo.title}</h4>
-                                <img id="featured-cover" src={book.volumeInfo.imageLinks.thumbnail} alt="featured book cover" />
+                                <img id="featured-cover" src={book.volumeInfo.imageLinks.thumbnail}
+                                     alt="featured book cover" />
                                 <p className="mt-3">{book.volumeInfo.authors[0]}</p>
                                 <p>${book.saleInfo.listPrice.amount.toFixed(2)}</p>
                             </div>
@@ -140,13 +141,21 @@ export class Featured extends Component {
                                 <h3 id="comment-invite" className="text-center m-5">Write a Comment</h3>
                                 
                                 <div id="sign-in-div">
-                                   {!this.state.signedIn && <p>{this.state.showSignIn ? "No thanks, " : "You may write an anonymous comment or "}<button id="sign-in-btn" onClick={this.toggleSignIn}>{this.state.showSignIn ? "hide sign in" : "sign in"}</button></p>}
+                                   {!this.state.signedIn && 
+                                    <p>{this.state.showSignIn ? "No thanks, " : "You may write an anonymous comment or "}
+                                        <button id="sign-in-btn" onClick={this.toggleSignIn}>
+                                            {this.state.showSignIn ? "hide sign in" : "sign in"}
+                                        </button>
+                                    </p>}
+
                                     {this.state.signInError && <p id="sign-in-error">Sorry! Invalid Email. Please try again.</p>}
                                     
                                     {this.state.signedIn && 
                                         <div>
                                             <p className={'text-center'}>Signed in as {this.state.username}</p>
-                                            <button onClick={this.signUserOut} className="btn btn-sm btn-danger">sign out</button>
+                                            <button onClick={this.signUserOut} className="btn btn-sm btn-danger">
+                                                sign out
+                                            </button>
                                         </div>
                                     }
                                     
@@ -156,9 +165,13 @@ export class Featured extends Component {
                                                 email: <input type="text" onChange={this.handleEmail} value={this.state.email} />
                                             </div>
                                             <div className="pl-3">
-                                                username: <input type="text" onChange={this.handleUsername} value={this.state.username} maxLength={12} />
+                                                username: 
+                                                <input type="text" onChange={this.handleUsername} value={this.state.username}
+                                                     maxLength={12} />
                                             </div>
-                                            <button className="btn btn-secondary btn-sm">Sign In</button>
+                                            <button className="btn btn-secondary btn-sm">
+                                                Sign In
+                                            </button>
                                         </form>
                                     }
                                 </div>

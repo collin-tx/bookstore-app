@@ -57,7 +57,9 @@ export class Cart extends Component {
         let checkoutBooks = this.state.cartItems.map(book => {
             return (
             <li className="list-group-item" key={generateKey()}>
-                <p>{book.book.book.volumeInfo.title} <b className="float-right">${book.book.book.saleInfo.listPrice.amount.toFixed(2)}</b></p>
+                <p>{book.book.book.volumeInfo.title} 
+                    <b className="float-right">${book.book.book.saleInfo.listPrice.amount.toFixed(2)}</b>
+                </p>
             </li>
             )
         })

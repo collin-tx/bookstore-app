@@ -14,10 +14,21 @@ export class CartBook extends Component {
                     </div>
 
                     <div className="col">
-                        <p>{!this.props.description ? 'No description available' : this.props.description.length > 500 ? this.props.description.slice(0, 500) + "..." : this.props.description}</p>
-                        <a className="btn btn-info cart-btn" href={this.props.link} rel="noopener noreferrer" target="_blank"><i className="fas fa-info"></i> more info</a>
-                        <a className="btn btn-info cart-btn" href={this.props.preview} target="_blank" rel="noopener noreferrer"><i className="fas fa-book-reader"></i> preview</a>
-                        <button className="btn btn-danger cart-btn" onClick={(e) => this.props.remove(e, this.props.book.key)}><i className="fas fa-minus-circle"></i> remove</button>
+                        <p>
+                            {!this.props.description ? 'No description available' : this.props.description.length > 500 ? this.props.description.slice(0, 500) + "..." : this.props.description}
+                        </p>
+                        <a className="btn btn-info cart-btn" href={this.props.link} rel="noopener noreferrer" target="_blank">
+                            <i className="fas fa-info"></i> 
+                            more info
+                        </a>
+                        <a className="btn btn-info cart-btn" href={this.props.preview} target="_blank" rel="noopener noreferrer">
+                            <i className="fas fa-book-reader"></i> 
+                            preview
+                        </a>
+                        <button className="btn btn-danger cart-btn" onClick={(e) => this.props.remove(e, this.props.book.key)}>
+                            <i className="fas fa-minus-circle"></i> 
+                            remove
+                        </button>
                     </div>
                 </li>
             </div>
