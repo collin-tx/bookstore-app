@@ -6,11 +6,11 @@ export class Footer extends Component {
             <div id="footer">
                 <footer>
                     <a href="#nav">back to top</a>
-                    <p>&copy; 2019 bookshop app</p>
+                    <p>&copy; 2020 bookshop app</p>
                 </footer>
             </div>
         )
     }
 }
 
-export default Footer
+export default Footer;
