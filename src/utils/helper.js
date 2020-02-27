@@ -13,3 +13,9 @@ export const stripWhiteSpace = (string) => {
 export const generateKey = (index) => {
     return `${index}_${new Date().getTime() * (Math.floor(Math.random() * 67))}`;
 }
+
+export const getQuote = quotesList => {
+    let quotesLength = Object.keys(quotesList).length;
+    const quote = quotesList[Math.ceil(Math.random() * quotesLength)];
+    return quote;
+}
