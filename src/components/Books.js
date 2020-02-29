@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import Book from './Book';
+import BookContainer from '../containers/Book';
 import quotes from '../quotes.json';
 import { handleErrors } from '../utils/helper';
+import { addBookToCart } from '../actions';
+import { connect } from 'react-redux';
 
 let quotesLength = Object.keys(quotes).length;
 const quote = quotes[Math.ceil(Math.random() * quotesLength)];
@@ -54,11 +56,12 @@ export class Books extends Component {
         .then(response => {
             return response.json();
         }).then(data => {
-            this.setState({ books: [data], error: false })
+            this.setState({ books: [data], error: false });
+            addBookToCart(data);
         })
         .catch(error => {
             this.setState({ error, loading: false })
-        })
+        });
 
 
         setTimeout( () => {
@@ -70,7 +73,7 @@ export class Books extends Component {
         let bookList = this.state.books[0] && this.state.books[0].items 
             && this.state.books[0].items.map((book, index) => {
             return (
-            <Book title={book.volumeInfo.title} 
+            <BookContainer title={book.volumeInfo.title} 
             author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
             category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
             description={book.volumeInfo.description}
@@ -132,4 +135,6 @@ export class Books extends Component {
     }
 }
 
-export default Books
+const mapState = state => state;
+
+export default connect(mapState, { addBookToCart })(Books);
