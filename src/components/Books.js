@@ -129,4 +129,4 @@ export class Books extends Component {
     }
 }
 
-export default Books
+export default Books;
