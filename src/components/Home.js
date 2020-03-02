@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Books from './Books';
 
-export class Home extends Component {
-    render() {
-        return (
-            <div>
-                <Books firebase={this.props.firebase} />
-            </div>
-        )
-    }
-}
+const Home = ({ firebase }) => (
+    <div>
+        <Books firebase={firebase} />
+    </div>
+);
 
 export default Home

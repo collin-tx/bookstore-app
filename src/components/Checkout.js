@@ -1,7 +1,12 @@
 import React from 'react';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
-const CheckoutModal = (props) => {
+const CheckoutModal = props => {
+  const { 
+    books = [],
+    subtotal,
+    onHide = () => {},
+  } = props;
     return (
       <Modal
         {...props}
@@ -16,19 +21,19 @@ const CheckoutModal = (props) => {
         </Modal.Header>
         <Modal.Body>
           <h4>Thanks for shopping with us!</h4>
-            <p id="checkout-subtotal">Your total is ${props.subtotal.toFixed(2)} plus tax.</p>
+            <p id="checkout-subtotal">Your total is ${subtotal.toFixed(2)} plus tax.</p>
             <ul className="list-group checkout-list">
-              {props.books}
+              {books}
             </ul>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
+          <Button onClick={onHide}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
   }
   
-  export const Checkout = (props) => {
+  export const Checkout = ({ books, subtotal }) => {
     const [modalShow, setModalShow] = React.useState(false);
   
     return (
@@ -41,8 +46,8 @@ const CheckoutModal = (props) => {
         <CheckoutModal 
           show={modalShow}
           onHide={() => setModalShow(false)}
-          subtotal = {props.subtotal}
-          books = {props.books}
+          subtotal = {subtotal}
+          books = {books}
         />
       </ButtonToolbar>
     );

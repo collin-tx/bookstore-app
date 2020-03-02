@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import Book from './Book';
 import quotes from '../quotes.json';
-import { handleErrors } from '../utils/helper';
-
-let quotesLength = Object.keys(quotes).length;
-const quote = quotes[Math.ceil(Math.random() * quotesLength)];
+import { handleErrors, getQuote } from '../utils/helper';
 
 export class Books extends Component {
     
@@ -123,7 +120,7 @@ export class Books extends Component {
                     {bookList}
                 </ul>
 
-                <p id="quote">{quote}</p>
+                <p id="quote">{getQuote(quotes)}</p>
 
                 {!this.state.bookList ? <div id="spacer-div" /> : ''}
 
@@ -132,4 +129,4 @@ export class Books extends Component {
     }
 }
 
-export default Books
+export default Books;
