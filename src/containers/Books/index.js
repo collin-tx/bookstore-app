@@ -108,8 +108,8 @@ export class BooksContainer extends Component {
     }
 }
 
-const mapState = state => state;
+const mapState = state => ({ books: state.books });
 
-export default connect(mapState(BooksContainer.state), { addBookToCart })(BooksContainer);
+export default connect(mapState, { addBookToCart })(BooksContainer);
 
 // export default BooksContainer;
