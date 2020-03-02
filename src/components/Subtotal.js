@@ -1,3 +1,1 @@
-export const Subtotal = (props) => {
-    return "subtotal: $" + props.subtotal.toFixed(2);
-}
+export const Subtotal = ({ subtotal }) => "subtotal: $" + subtotal.toFixed(2);

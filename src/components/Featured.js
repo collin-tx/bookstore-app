@@ -90,12 +90,6 @@ export class Featured extends Component {
             showSignIn: false
         })
     }
-
-
-
-
-
-
     
     render() {
         let featuredIndex = Object.keys(this.state.featuredBook);
