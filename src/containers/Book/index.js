@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {
-  addBookToCart,
-  displayBook
-} from '../../actions';
-import { connect } from 'react-redux';
 import Book from '../../components/Book';
+  // import {
+  //   addBookToCart,
+  //   displayBook
+  // } from '../../actions';
+  // import { connect } from 'react-redux';
 
 class BookContainer extends Component {
 
@@ -27,6 +27,7 @@ class BookContainer extends Component {
 
 }
 
-const mapState = state => state.book;
+// // const mapState = state => state.book;
 
-export default connect(mapState, { displayBook, addBookToCart })(BookContainer);
+// export default connect(mapState, { displayBook, addBookToCart })(BookContainer);
+export default BookContainer;

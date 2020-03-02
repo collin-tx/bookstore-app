@@ -29,19 +29,19 @@ if (!firebase.apps.length) {
 const database = firebase.database();
 
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
-    <Nav />
-    <Header /> 
-    <Switch>
-      <Route path="/" render={ () => <Home firebase={database} />} exact />
-      <Route path="/cart" render={ () => <Cart firebase={database} />} />
-      <Route path="/featured" render={ ()=> <Featured firebase={database} />} />
-      <Route component={Error} />
-    </Switch>
-    <Footer />
-</BrowserRouter>
+      <Nav />
+      <Header /> 
+      <Switch>
+        <Route path="/" render={ () => <Home firebase={database} />} exact />
+        <Route path="/cart" render={ () => <Cart firebase={database} />} />
+        <Route path="/featured" render={ ()=> <Featured firebase={database} />} />
+        <Route component={Error} />
+      </Switch>
+      <Footer />
+    </BrowserRouter>
   );
 }
 

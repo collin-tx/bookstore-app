@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 const Books = (props) => {
     return (
@@ -47,6 +47,7 @@ const Books = (props) => {
     )
 }
 
-const mapState = state => state;
+// const mapState = state => state;
 
-export default connect(mapState)(Books);
+// export default connect(mapState)(Books);
+export default Books;
