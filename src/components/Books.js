@@ -49,7 +49,7 @@ export class Books extends Component {
         this.setState( () => {
             return { loading: true,  searched: true }
         });
-        let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`;
+        let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`;
         fetch(url).then(handleErrors)
         .then(response => {
             return response.json();
