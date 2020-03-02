@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import BookContainer from '../containers/Book';
+import BookContainer from '../Book';
 import Books from '../../components/Books';
-import quotes from '../quotes.json';
-import { handleErrors } from '../utils/helper';
-import { addBookToCart } from '../actions';
+import quotes from '../../quotes.json';
+import { handleErrors } from '../../utils/helper';
+import { addBookToCart } from '../../actions';
 import { connect } from 'react-redux';
 
 let quotesLength = Object.keys(quotes).length;
@@ -33,6 +33,7 @@ export class BooksContainer extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        debugger;
         this.getBook(this.state.term);
         this.setState({ term: '' })
     }
@@ -109,4 +110,6 @@ export class BooksContainer extends Component {
 
 const mapState = state => state;
 
-export default connect(mapState, { addBookToCart })(Books);
+export default connect(mapState(BooksContainer.state), { addBookToCart })(BooksContainer);
+
+// export default BooksContainer;

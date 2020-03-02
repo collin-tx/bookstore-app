@@ -1,5 +1,4 @@
 import React from 'react';
-// import BookContainer from '../containers/Book';
 import { connect } from 'react-redux';
 
 const Books = (props) => {

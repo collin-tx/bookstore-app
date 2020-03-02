@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Books from './Books';
+import BooksContainer from '../containers/Books';
 
 export class Home extends Component {
     render() {
         return (
             <div>
-                <Books firebase={this.props.firebase} />
+                <BooksContainer firebase={this.props.firebase} />
             </div>
         )
     }

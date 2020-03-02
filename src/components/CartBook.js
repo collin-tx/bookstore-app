@@ -19,15 +19,15 @@ export class CartBook extends Component {
                         </p>
                         <a className="btn btn-info cart-btn" href={this.props.link} rel="noopener noreferrer" target="_blank">
                             <i className="fas fa-info"></i> 
-                            more info
+                            {" more info"}
                         </a>
                         <a className="btn btn-info cart-btn" href={this.props.preview} target="_blank" rel="noopener noreferrer">
                             <i className="fas fa-book-reader"></i> 
-                            preview
+                            {" preview"}
                         </a>
                         <button className="btn btn-danger cart-btn" onClick={(e) => this.props.remove(e, this.props.book.key)}>
                             <i className="fas fa-minus-circle"></i> 
-                            remove
+                            {" remove"}
                         </button>
                     </div>
                 </li>
