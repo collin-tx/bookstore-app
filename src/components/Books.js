@@ -1,140 +1,53 @@
-import React, { Component } from 'react'
-import BookContainer from '../containers/Book';
-import quotes from '../quotes.json';
-import { handleErrors } from '../utils/helper';
-import { addBookToCart } from '../actions';
+import React from 'react';
+// import BookContainer from '../containers/Book';
 import { connect } from 'react-redux';
 
-let quotesLength = Object.keys(quotes).length;
-const quote = quotes[Math.ceil(Math.random() * quotesLength)];
+const Books = (props) => {
+    return (
+        <div className="container-fluid" >
+            <form onSubmit={props.onSubmit} id="search-form">
+                <input type='text' value={props.term} onChange={props.onChange} 
+                placeholder="Search for a book..." className="form-control" id="search-input" />
+                <button type='submit' className="btn btn-primary" id="search-submit"><i className="fas fa-search"></i> Search</button>
+            </form>
 
-export class Books extends Component {
-    
-    state = {
-        term: '',
-        books: [],
-        loading: false,
-        error: '',
-        cart: [],
-        adding: false,
-        searched: false
-    }
-    
-    componentDidMount(){
-          let database = this.props.firebase;
-          let cart = database.ref('cart');
-          this.setState({ cart });
-    }
+            {!props.searched &&
+                <div>
+                    <h3 className="text-center m-5">Welcome</h3>
+                    <h5 className="text-center m-3">Your search results will display here. <br /> Happy Reading!</h5>
+                </div>
+            }
 
-    handleChange = (e) => {
-        this.setState({ term: e.target.value });
-    }
+            { props.adding && 
+                <div id="adding-div" className="text-center">
+                    <p>Adding book to cart...</p>
+                </div>
+            }
+            
+            { props.loading &&
+                <div id="loading-div" className="text-center">
+                    <p>Loading...</p>
+                </div>
+            }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.getBook(this.state.term);
-        this.setState({ term: '' })
-    }
+            { props.searched && props.books[0] && props.books[0].totalItems < 1 &&
+                <div id="error-div" className="text-center">
+                    <p>No Books found</p>
+                </div>
+            }
 
-    addToCart = (e, index) => {
-        this.setState({ adding: true })
-        const bookToAdd = this.state.books[0].items[index];
-        this.state.cart.push({
-            book : bookToAdd,
-        });
-        setTimeout( ()=> {
-            this.setState({ adding: false });
-        }, 1000);
-    }
+            <ul className="list-group" id="bookList">
+                {props.bookList}
+            </ul>
 
-    getBook = (info) => {
-        this.setState( () => {
-            return { loading: true,  searched: true }
-        });
-        let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`;
-        fetch(url).then(handleErrors)
-        .then(response => {
-            return response.json();
-        }).then(data => {
-            this.setState({ books: [data], error: false });
-            addBookToCart(data);
-        })
-        .catch(error => {
-            this.setState({ error, loading: false })
-        });
+            <p id="quote">{props.quote}</p>
 
+            {!props.bookList ? <div id="spacer-div" /> : ''}
 
-        setTimeout( () => {
-            this.setState({ loading: false });
-        }, 500);
-    }
-
-    render() {
-        let bookList = this.state.books[0] && this.state.books[0].items 
-            && this.state.books[0].items.map((book, index) => {
-            return (
-            <BookContainer title={book.volumeInfo.title} 
-            author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
-            category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
-            description={book.volumeInfo.description}
-            price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
-            img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
-            infoLink={book.volumeInfo.infoLink} 
-            preview={book.volumeInfo.previewLink} 
-            id={book.id} index={index}
-            key={book.etag} 
-            pageCount={book.volumeInfo.pageCount} 
-            subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
-            addToCart={this.addToCart} />
-            )
-        });
-
-        return (
-            <div className="container-fluid" >
-                <form onSubmit={this.handleSubmit} id="search-form">
-                    <input type='text' value={this.state.term} onChange={this.handleChange} 
-                    placeholder="Search for a book..." className="form-control" id="search-input" />
-                    <button type='submit' className="btn btn-primary" id="search-submit"><i className="fas fa-search"></i> Search</button>
-                </form>
-
-                {!this.state.searched &&
-                    <div>
-                        <h3 className="text-center m-5">Welcome</h3>
-                        <h5 className="text-center m-3">Your search results will display here. <br /> Happy Reading!</h5>
-                    </div>
-                }
-
-                { this.state.adding && 
-                    <div id="adding-div" className="text-center">
-                        <p>Adding book to cart...</p>
-                    </div>
-                }
-                
-                { this.state.loading &&
-                    <div id="loading-div" className="text-center">
-                        <p>Loading...</p>
-                    </div>
-                }
-
-                { this.state.searched && this.state.books[0] && this.state.books[0].totalItems < 1 &&
-                    <div id="error-div" className="text-center">
-                        <p>No Books found</p>
-                    </div>
-                }
-
-                <ul className="list-group" id="bookList">
-                    {bookList}
-                </ul>
-
-                <p id="quote">{quote}</p>
-
-                {!this.state.bookList ? <div id="spacer-div" /> : ''}
-
-            </div>
-        )
-    }
+        </div>
+    )
 }
 
 const mapState = state => state;
 
-export default connect(mapState, { addBookToCart })(Books);
+export default connect(mapState)(Books);

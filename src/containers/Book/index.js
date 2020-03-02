@@ -21,7 +21,7 @@ class BookContainer extends Component {
 
   render() {
     return (
-      <Book addToCart={this.addToCart} />
+      <Book addToCart={this.addToCart} {...this.props} />
     );
   }
 
