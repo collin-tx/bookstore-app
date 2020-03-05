@@ -14,7 +14,7 @@ class BookContainer extends Component {
     this.state.cart.push({
         book : bookToAdd,
     });
-    setTimeout( ()=> {
+    setTimeout( () => {
         this.setState({ adding: false });
     }, 1000);
   }
