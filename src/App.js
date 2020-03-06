@@ -5,7 +5,8 @@ import Home from './components/Home';
 import Cart from './components/Cart';
 import Nav from './components/Nav';
 import Featured from './components/Featured';
-import Footer from './components/Footer'
+import Footer from './components/Footer';
+import SignInContainer from './containers/sign-in';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
 import './App.css';
@@ -29,11 +30,18 @@ if (!firebase.apps.length) {
 const database = firebase.database();
 
 
-const App = () => {
+const App = ({store}) => {
+
+// store.dispatch({ type:'SIGN_IN', payload: { data: [1,2,3,4,5], more: 'motherfu', user: 'Farty' } });
+const storeState = store.getState();
+console.log('store from app', store);
+console.log('state from app', storeState);
+
   return (
     <BrowserRouter>
       <Nav />
-      <Header /> 
+      <Header />
+      <SignInContainer store={store} firebase={database} />
       <Switch>
         <Route path="/" render={ () => <Home firebase={database} />} exact />
         <Route path="/cart" render={ () => <Cart firebase={database} />} />

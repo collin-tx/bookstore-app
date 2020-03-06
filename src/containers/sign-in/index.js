@@ -11,7 +11,7 @@ class SignInContainer extends Component {
 
   state = {
     signedIn: false,
-    user: null,
+    user: '',
     fieldValue: '',
     email: '',
     password: ''
@@ -33,13 +33,22 @@ class SignInContainer extends Component {
   }
 
   handleSubmit = e => {
+    // debugger;
     e.preventDefault();
-    this.loginUser(this.state.email);
-    this.setState({ email: '', password: '' });
+    this.setState({ user: this.state.email, email: '', password: '' });
+    setTimeout(() => {
+      this.loginUser(this.state.user);
+    }, 10); // janky but bc of this, it now passes along the right action.payload shit
   }
 
-  loginUser = () => {
-    signIn(this.state.user);
+  loginUser = user => {
+    //TODO - USER AUTH STUFF
+    // console.log(this.props.firebase.auth());
+    this.setState({ signedIn: true, });
+    console.log('signin action', signIn(this.state.user)); // action.payload = null! wtf
+    signIn(user);
+    console.log('store from signin', this.props.store, 'state', this.props.store.getState());
+    console.log('signin props', this.props)// map state is putting props on the component BUT they are undefined hmm?
   }
 
   logoutUser = () => {
@@ -49,7 +58,7 @@ class SignInContainer extends Component {
 
   render() {
     const { email, fieldValue, password, signedIn, user } = this.state;
-    console.log('signedin', this.state.signedIn)
+    console.log('signedin', this.state.signedIn);
     return (
         this.state.signedIn && this.state.user.length ?
           <SignedIn
@@ -71,4 +80,11 @@ class SignInContainer extends Component {
   }
 }
 
-export default connect(null, { signIn, signOut })(SignInContainer);
+const mapState = state => (
+  {
+    user: state.user,
+    signedIn: state.signedIn
+  }
+);
+
+export default connect(mapState, { signIn, signOut })(SignInContainer);
