@@ -33,7 +33,6 @@ export class BooksContainer extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        debugger;
         this.getBook(this.state.term);
         this.setState({ term: '' })
     }

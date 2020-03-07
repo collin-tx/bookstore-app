@@ -29,7 +29,7 @@ import { ADD_BOOK, SIGN_IN, SIGN_OUT } from '../actions';
         return {
           ...state,
           signedIn: true,
-          user: action.payload.user
+          user: action.payload
         }
         case SIGN_OUT:
           return {

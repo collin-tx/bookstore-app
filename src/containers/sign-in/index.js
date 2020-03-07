@@ -20,7 +20,9 @@ class SignInContainer extends Component {
   componentDidMount(){
     // const currentState = this.props.store.getState();
     // console.log(currentState);
+
     // const { signedIn, user  } = currentState;
+    // this.props.store.dispatch(signIn(this.state.user))
     // this.setState({ signedIn, user });
   }
 
@@ -38,17 +40,18 @@ class SignInContainer extends Component {
     this.setState({ user: this.state.email, email: '', password: '' });
     setTimeout(() => {
       this.loginUser(this.state.user);
-    }, 10); // janky but bc of this, it now passes along the right action.payload shit
+    }, 100); // janky but bc of this, it now passes along the right action.payload shit
   }
 
   loginUser = user => {
     //TODO - USER AUTH STUFF
     // console.log(this.props.firebase.auth());
     this.setState({ signedIn: true, });
-    console.log('signin action', signIn(this.state.user)); // action.payload = null! wtf
-    signIn(user);
+    // console.log('signin action', signIn(this.state.user)); 
+    this.props.store.dispatch(signIn(user));
+    // signIn(user);
     console.log('store from signin', this.props.store, 'state', this.props.store.getState());
-    console.log('signin props', this.props)// map state is putting props on the component BUT they are undefined hmm?
+    console.log('signin props', this.props);
   }
 
   logoutUser = () => {
@@ -82,9 +85,17 @@ class SignInContainer extends Component {
 
 const mapState = state => (
   {
+    // so all these are returning undefined when logged
     user: state.user,
-    signedIn: state.signedIn
+    signedIn: state.signedIn,
+    state
   }
 );
 
-export default connect(mapState, { signIn, signOut })(SignInContainer);
+const mapDispatch = dispatch => (
+  {
+    signIn: () => dispatch(signIn())// adding this did not help lol, probz doing smn wrong
+  }
+);
+
+export default connect(mapState/*, { signIn, signOut }*/, mapDispatch)(SignInContainer);
