@@ -7,14 +7,14 @@ import { connect } from 'react-redux';
 import { signIn, signOut } from '../../actions';
 
 class SignInContainer extends Component {
-  // need onChange, submit handlers etc.
 
   state = {
     signedIn: false,
     user: '',
     fieldValue: '',
     email: '',
-    password: ''
+    password: '',
+    error: ''
   }
 
   componentDidMount(){
@@ -37,16 +37,22 @@ class SignInContainer extends Component {
   handleSubmit = e => {
     // debugger;
     e.preventDefault();
-    this.setState({ user: this.state.email, email: '', password: '' });
-    setTimeout(() => {
-      this.loginUser(this.state.user);
-    }, 100); // janky but bc of this, it now passes along the right action.payload shit
+    if (this.state.email.length > 5 && this.state.password.length >= 5) {
+      this.setState({ user: this.state.email, email: '', password: '' });
+      setTimeout(() => {
+        this.loginUser(this.state.user);
+      }, 100); // janky but bc of this, it now passes along the right action.payload shit
+    } else {
+      this.setState({ 
+        error: 'You must provide a proper email address and password must be at least 5 characters'
+      });
+    }
   }
 
   loginUser = user => {
     //TODO - USER AUTH STUFF
     // console.log(this.props.firebase.auth());
-    this.setState({ signedIn: true, });
+    this.setState({ signedIn: true, error: ''});
     // console.log('signin action', signIn(this.state.user)); 
     this.props.store.dispatch(signIn(user));
     // signIn(user);
@@ -60,7 +66,7 @@ class SignInContainer extends Component {
   }
 
   render() {
-    const { email, fieldValue, password, signedIn, user } = this.state;
+    const { email, error, fieldValue, password, signedIn, user } = this.state;
     console.log('signedin', this.state.signedIn);
     return (
         this.state.signedIn && this.state.user.length ?
@@ -73,6 +79,7 @@ class SignInContainer extends Component {
             user={user}
             signedIn={signedIn}
             email={email}
+            error={error}
             fieldValue={fieldValue}
             handleEmail={this.handleEmail}
             handlePassword={this.handlePassword}

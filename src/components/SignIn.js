@@ -2,8 +2,17 @@ import React from 'react';
 
 const SignIn = props => {
 
+  const renderErrors = () => {
+    return props.error.length ? (
+      <div>
+        <p>{props.error}</p>
+      </div>
+    ) : null
+  }
+
   return (
     <form id="sign-in-form" onSubmit={(e) => props.handleSubmit(e)}>
+      {renderErrors()}
       <div>
           email: <input type="text" onChange={props.handleEmail} value={props.email} />
       </div>
