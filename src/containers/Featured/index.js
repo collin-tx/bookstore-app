@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Featured from '../../components/Featured';
 import Comment from '../../components/Comment';
 import { generateKey } from '../../utils/helper';
+import { connect } from 'react-redux';
 
 export class FeaturedContainer extends Component {
     
@@ -17,14 +18,14 @@ export class FeaturedContainer extends Component {
     }
     
     componentDidMount(){
-          let database = this.props.firebase;
-          let featured = database.ref('featured');
-          this.setState({ featured, database });
+        let database = this.props.firebase;
+        let featured = database.ref('featured');
+        this.setState({ featured, database });
 
-          featured.on('value', response => {
-              const featuredData = response.val();
-              this.setState({ featuredBook: featuredData });
-          })
+        featured.on('value', response => {
+            const featuredData = response.val();
+            this.setState({ featuredBook: featuredData });
+        });
     }
 
 
@@ -32,7 +33,7 @@ export class FeaturedContainer extends Component {
     addComment = () => {
         let featuredIndex = Object.keys(this.state.featuredBook);
         this.state.database.ref('featured/' + featuredIndex +'/book/comments').push({
-            user: this.state.username,
+            user: this.props.user,
             key: this.state.value
         });
         this.setState({ value: '' })
@@ -105,7 +106,7 @@ export class FeaturedContainer extends Component {
         allComments = allComments.map( (comment, index) => {
             return (
                 <Comment key={generateKey(index)} comment={comment.key} user={comment.user} 
-                edit={this.editComment} username={this.state.username}
+                edit={this.editComment} username={this.props.user}
                 commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
             )
         });
@@ -120,9 +121,20 @@ export class FeaturedContainer extends Component {
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
                 value={this.state.value}
+                store={this.props.store}
+                user={this.props.user}
+                signedIn={this.props.signedIn}
             />
         );
     }
 }
 
-export default FeaturedContainer;
+const mapState = state => {
+    return {
+        user: state.user,
+        signedIn: state.signedIn,
+        state
+    }
+}
+
+export default connect(mapState)(FeaturedContainer);
