@@ -51,8 +51,15 @@ export class FeaturedContainer extends Component {
 
     editComment = (e, key, newComment) => {
         let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key).update({key:newComment});
+        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
+            .update({key:newComment});
         this.setState({ value: '', editing: false });
+    }
+
+    deleteComment = (e, key) => {
+        let featuredIndex = Object.keys(this.state.featuredBook);
+        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
+            .remove();
     }
 
 
@@ -106,7 +113,7 @@ export class FeaturedContainer extends Component {
         allComments = allComments.map( (comment, index) => {
             return (
                 <Comment key={generateKey(index)} comment={comment.key} user={comment.user} 
-                edit={this.editComment} username={this.props.user}
+                edit={this.editComment} username={this.props.user} delete={this.deleteComment}
                 commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
             )
         });

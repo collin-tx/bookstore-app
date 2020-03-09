@@ -7,24 +7,26 @@ export class Comment extends Component {
         value: ''
     }
 
-    changeHandler = (e) => {
+    changeHandler = e => {
         this.setState({ value: e.target.value });
     }
     
-    submitHandler = (e) => {
+    submitHandler = e => {
         e.preventDefault();
         this.props.edit(e, this.props.commentKey, this.state.value);
         this.setState({ value: '', editing: false });
     }
 
-    clickHandler = (e) => {
+    clickEdit = () => {
         this.setState({ editing: !this.state.editing })
     }
 
-    
+    clickDelete = e => {
+        this.props.delete(e, this.props.commentKey);
+    } 
 
     render() {
-
+        const { comment, user, username } = this.props;
         return (
             <li className="list-group-item comment">
 
@@ -33,13 +35,13 @@ export class Comment extends Component {
                         <i className="fas fa-user"></i>
                     </div>
                     <div className="username">
-                        <p>{this.props.user || 'anonymous'}</p>
+                        <p>{user || 'anonymous'}</p>
                     </div>
                     
                 </div>
 
                 <div className="comment-content">
-                    <p>{this.props.comment}</p>
+                    <p>{comment}</p>
                 </div>
 
                 <div className="comment-buttons">
@@ -53,14 +55,25 @@ export class Comment extends Component {
                         </button>
                     </form>}
                     
-                    <button className="btn btn-info btn-sm float-right" onClick={this.clickHandler}>
-                        {this.state.editing ? "cancel" : 'edit'}
-                    </button>
-                    
+                    {
+                        // not the best way to do this but...
+                        // user is the user who originally made the comment
+                        // while username is the user who is currently signed in
+                        (user == username) &&
+                        <div>
+                            <button className="btn btn-info btn-sm float-right" onClick={this.clickEdit}>
+                                {this.state.editing ? "cancel" : 'edit'}
+                            </button>
+
+                            <button className="btn btn-danger btn-sm float-right" onClick={this.clickDelete}>
+                                delete
+                            </button>
+                        </div>
+                    }
                 </div>
             </li>
         )
     }
 }
 
-export default Comment
+export default Comment;
