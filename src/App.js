@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Home from './components/Home';
 import Cart from './components/Cart';
 import Nav from './components/Nav';
-import Featured from './components/Featured';
+import FeaturedContainer from './containers/Featured';
 import Footer from './components/Footer';
 import SignInContainer from './containers/sign-in';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -45,7 +45,7 @@ console.log('state from app', storeState);
       <Switch>
         <Route path="/" render={ () => <Home firebase={database} />} exact />
         <Route path="/cart" render={ () => <Cart firebase={database} />} />
-        <Route path="/featured" render={ ()=> <Featured firebase={database} />} />
+        <Route path="/featured" render={ ()=> <FeaturedContainer firebase={database} />} />
         <Route component={Error} />
       </Switch>
       <Footer />

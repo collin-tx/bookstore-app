@@ -1,123 +1,39 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Comment from './Comment';
 import { generateKey } from '../utils/helper';
 
-export class Featured extends Component {
+const Featured = ({
+    addComment = () => {},
+    allComments = [],
+    book = {},
+    editComment = () => {},
+    featuredBook = {},
+    featuredIndex,
+    handleChange = () => {},
+    handleSubmit = () => {},
+    value
+}) => {
     
-    state = {
-        featuredBook: {},
-        value: '',
-        showSignIn: false,
-        signedIn: false,
-        email: '',
-        username: '',
-        credentials: [],
-        signInError: false
-    }
-    
-    componentDidMount(){
-          let database = this.props.firebase;
-          let featured = database.ref('featured');
-          this.setState({ featured, database });
-
-          featured.on('value', response => {
-              const featuredData = response.val();
-              this.setState({ featuredBook: featuredData });
-          })
-    }
-
-
-    // comment methods
-    addComment = () => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex +'/book/comments').push({
-            user: this.state.username,
-            key: this.state.value
-        });
-        this.setState({ value: '' })
-
-    }
-
-    handleChange = (e) => {
-        this.setState({ value: e.target.value});
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.addComment();
-    }
-
-    editComment = (e, key, newComment) => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key).update({key:newComment});
-        this.setState({ value: '', editing: false });
-    }
-
-
-    // sign in methods
-    toggleSignIn = () => {
-        this.setState({ 
-            showSignIn: !this.state.showSignIn
-        })
-    } 
-
-    handleEmail = (e) => {
-        this.setState({ email: e.target.value })
-    }
-
-    handleUsername = (e) => {
-        this.setState({ username: e.target.value })
-    }
-
-    handleCredentialsSubmit = (e) => {
-        e.preventDefault();
-        if(this.state.email.length && this.state.email.length && this.state.email.includes('@', '.')){
-        this.setState({ 
-            credentials: [this.state.email, this.state.username],
-            signedIn: true,
-            signInError: false
-        })
-        } else {
-        this.setState({ signInError: true })
-        }
-    }
-
-    signUserOut = () => {
-        this.setState({ 
-            signedIn: false,
-            username: '',
-            email: '',
-            showSignIn: false
-        })
-    }
-
-
-
-
-
-
-    
-    render() {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
+        // let featuredIndex = Object.keys(this.state.featuredBook);
+        // let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
         
-        let allComments = [];
-        // eslint-disable-next-line
-        for(let keyOfComment in book && book.comments){
-            allComments.push(book.comments[keyOfComment]);
-        }
+        // let allComments = [];
+        // // eslint-disable-next-line
+        // for(let keyOfComment in book && book.comments){
+        //     allComments.push(book.comments[keyOfComment]);
+        // }
 
-        allComments = allComments.map( (comment, index) => {
-            return (
-                <Comment key={generateKey(index)} comment={comment.key} user={comment.user} 
-                edit={this.editComment} username={this.state.username}
-                commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
-            )
-        })
+        // allComments = allComments.map( (comment, index) => {
+        //     return (
+        //         <Comment key={generateKey(index)} comment={comment.key} user={comment.user} 
+        //         edit={this.editComment} username={this.state.username}
+        //         commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
+        //     )
+        // })
         
         return (
             <div>
-                    {this.state.featuredBook[featuredIndex] && 
+                    {featuredBook[featuredIndex] && 
                         <div id="featuredBook">
                             <div id="featured-main">
                                 <h2 className="pt-5">Featured This Month</h2>
@@ -140,7 +56,10 @@ export class Featured extends Component {
 
                                 <h3 id="comment-invite" className="text-center m-5">Write a Comment</h3>
                                 
-                                <div id="sign-in-div">
+                                
+                                {/* sign in shit */ }
+                                
+                                {/* <div id="sign-in-div">
                                    {!this.state.signedIn && 
                                     <p>{this.state.showSignIn ? "No thanks, " : "You may write an anonymous comment or "}
                                         <button id="sign-in-btn" onClick={this.toggleSignIn}>
@@ -174,10 +93,10 @@ export class Featured extends Component {
                                             </button>
                                         </form>
                                     }
-                                </div>
+                                </div> */}
 
-                                <form id="comment-form" className="m-5" onSubmit={this.handleSubmit}>
-                                    <input type="text" value={this.state.value} onChange={this.handleChange} 
+                                <form id="comment-form" className="m-5" onSubmit={handleSubmit}>
+                                    <input type="text" value={value} onChange={handleChange} 
                                     id="comment-field" className="form-control" />
                                     <button type="submit" className="btn btn-primary" id="comment-submit">
                                         <i className="fa fa-paper-plane"></i> 
@@ -190,8 +109,7 @@ export class Featured extends Component {
                         </div>
                     }
             </div>
-        )
-    }
+    )
 }
 
 export default Featured
