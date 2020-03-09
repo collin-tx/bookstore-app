@@ -5,6 +5,7 @@ import quotes from '../../quotes.json';
 import { handleErrors } from '../../utils/helper';
 import { fetchBooks } from '../../actions';
 import { connect } from 'react-redux';
+import { store } from '../../store';
 
 let quotesLength = Object.keys(quotes).length;
 const quote = quotes[Math.ceil(Math.random() * quotesLength)];
@@ -27,14 +28,15 @@ export class BooksContainer extends Component {
           this.setState({ cart });
     }
 
-    handleChange = (e) => {
+    handleChange = e => {
         this.setState({ term: e.target.value });
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
         this.getBook(this.state.term);
-        this.setState({ term: '' })
+        this.props.fetchBooks(this.state.term);
+        this.setState({ term: '' });
     }
 
     addToCart = (e, index) => {
@@ -48,7 +50,7 @@ export class BooksContainer extends Component {
         }, 1000);
     }
 
-    getBook = (info) => {
+    getBook = info => {
         this.setState( () => {
             return { loading: true,  searched: true }
         });
@@ -88,6 +90,9 @@ export class BooksContainer extends Component {
       addToCart={this.addToCart} />
       )
   });
+
+  console.log('booksContainerPROPS', this.props);
+  console.log('booksContainerSTATE', store.getState());
         return (
           <Books
           adding={this.state.adding}
@@ -106,8 +111,9 @@ export class BooksContainer extends Component {
     }
 }
 
-// const mapState = state => ({ books: state.books });
+const mapState = state => ({ books: state.books });
+const mapDispatch = dispatch => ({ fetchBooks: () => dispatch(fetchBooks()) });
 
-// export default connect(mapState, { addBookToCart })(BooksContainer);
+export default connect(mapState, mapDispatch)(BooksContainer);
 
-export default connect(null, { fetchBooks })(BooksContainer);
+// export default connect(null, { fetchBooks })(BooksContainer);
