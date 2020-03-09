@@ -59,7 +59,7 @@ export class Comment extends Component {
                         // not the best way to do this but...
                         // user is the user who originally made the comment
                         // while username is the user who is currently signed in
-                        (user == username) &&
+                        (user === username) &&
                         <div>
                             <button className="btn btn-info btn-sm float-right" onClick={this.clickEdit}>
                                 {this.state.editing ? "cancel" : 'edit'}

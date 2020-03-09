@@ -62,44 +62,6 @@ export class FeaturedContainer extends Component {
             .remove();
     }
 
-
-    // // sign in methods
-    // toggleSignIn = () => {
-    //     this.setState({ 
-    //         showSignIn: !this.state.showSignIn
-    //     })
-    // } 
-
-    // handleEmail = (e) => {
-    //     this.setState({ email: e.target.value })
-    // }
-
-    // handleUsername = (e) => {
-    //     this.setState({ username: e.target.value })
-    // }
-
-    // handleCredentialsSubmit = (e) => {
-    //     e.preventDefault();
-    //     if(this.state.email.length && this.state.email.length && this.state.email.includes('@', '.')){
-    //     this.setState({ 
-    //         credentials: [this.state.email, this.state.username],
-    //         signedIn: true,
-    //         signInError: false
-    //     })
-    //     } else {
-    //     this.setState({ signInError: true })
-    //     }
-    // }
-
-    // signUserOut = () => {
-    //     this.setState({ 
-    //         signedIn: false,
-    //         username: '',
-    //         email: '',
-    //         showSignIn: false
-    //     })
-    // }
-
     render() {
         let featuredIndex = Object.keys(this.state.featuredBook);
         let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;

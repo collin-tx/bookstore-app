@@ -34,9 +34,6 @@ const Featured = ({
                     </ul>
 
                     <h3 id="comment-invite" className="text-center m-5">Write a Comment</h3>
-                    
-                    
-                    {/* sign in stuff */ }
 
                     {
                         signedIn &&
@@ -46,40 +43,8 @@ const Featured = ({
 
                     {
                         !signedIn &&
-                        <p>You may write an anonymous comment or <a href="#">sign in</a></p>
+                        <p>You may write an anonymous comment or <a href="#top">sign in</a></p>
                     }
-                    
-                    
-                    {/* <div id="sign-in-div">
-                        {!this.state.signedIn && 
-
-                        {this.state.signInError && <p id="sign-in-error">Sorry! Invalid Email. Please try again.</p>}
-                        
-                        {this.state.signedIn && 
-                            <div>
-                                <p className={'text-center'}>Signed in as {this.state.username}</p>
-                                <button onClick={this.signUserOut} className="btn btn-sm btn-danger">
-                                    sign out
-                                </button>
-                            </div>
-                        }
-                        
-                        {this.state.showSignIn && !this.state.signedIn &&
-                            <form id="sign-in-form" onSubmit={this.handleCredentialsSubmit}>
-                                <div>
-                                    email: <input type="text" onChange={this.handleEmail} value={this.state.email} />
-                                </div>
-                                <div className="pl-3">
-                                    username: 
-                                    <input type="text" onChange={this.handleUsername} value={this.state.username}
-                                            maxLength={12} />
-                                </div>
-                                <button className="btn btn-secondary btn-sm">
-                                    Sign In
-                                </button>
-                            </form>
-                        }
-                    </div> */}
 
                     <form id="comment-form" className="m-5" onSubmit={handleSubmit}>
                         <input type="text" value={value} onChange={handleChange} 
