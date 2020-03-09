@@ -112,18 +112,15 @@ export class FeaturedContainer extends Component {
         });
         return (
             <Featured 
-                addComment={this.addComment}
                 allComments={allComments}
                 book={book}
-                editComment={this.editComment}
                 featuredBook={this.state.featuredBook}
                 featuredIndex={featuredIndex}
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
-                value={this.state.value}
-                store={this.props.store}
-                user={this.props.user}
                 signedIn={this.props.signedIn}
+                user={this.props.user}
+                value={this.state.value}
             />
         );
     }

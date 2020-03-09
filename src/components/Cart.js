@@ -3,6 +3,7 @@ import CartBook from './CartBook';
 import { Checkout } from './Checkout';
 import { Subtotal } from './Subtotal';
 import { generateKey } from '../utils/helper';
+import { connect } from 'react-redux';
 
 export class Cart extends Component {  
     state = {
@@ -11,28 +12,28 @@ export class Cart extends Component {
     }
 
     componentDidMount(){
-          let database = this.props.firebase;
+        let database = this.props.firebase;
 
-          this.setState({ database })
+        this.setState({ database })
 
-          let cart = database.ref('cart');
-          this.setState({ cart });
+        let cart = database.ref('cart');
+        this.setState({ cart });
 
-          cart.on('value', response => {
-              const cartData = response.val();
+        cart.on('value', response => {
+            const cartData = response.val();
 
-              const cartItems = [];
-          
-              // eslint-disable-next-line
-              for (let index in cartData){
-                  cartItems.push({
-                    key: index,    
-                    book: cartData[index]
-                        });
-              }
+            const cartItems = [];
+        
+            // eslint-disable-next-line
+            for (let index in cartData){
+                cartItems.push({
+                key: index,    
+                book: cartData[index]
+                    });
+            }
 
-              this.setState({ cartItems });
-          })
+            this.setState({ cartItems });
+        });
     }
 
     handleRemove = (e, key) => {
@@ -54,9 +55,9 @@ export class Cart extends Component {
             )
         });
 
-        let checkoutBooks = this.state.cartItems.map(book => {
+        let checkoutBooks = this.state.cartItems.map((book, index) => {
             return (
-            <li className="list-group-item" key={generateKey()}>
+            <li className="list-group-item" key={generateKey(index)}>
                 <p>{book.book.book.volumeInfo.title} 
                     <b className="float-right">${book.book.book.saleInfo.listPrice.amount.toFixed(2)}</b>
                 </p>
@@ -70,13 +71,13 @@ export class Cart extends Component {
         return (
             <div>
                 <h2 id="cart-title" className="text-center m-5">Cart</h2>
-                
+                <p><small>{this.props.user || 'Guest'}</small></p>
                 {this.state.cartItems.length > 0 ? 
                     <div id="checkout-div">
                         <p id="subtotal" className="">
                             <Subtotal subtotal={subtotal} />
                         </p>
-                        <Checkout subtotal={subtotal} books={checkoutBooks} />
+                        <Checkout subtotal={subtotal} books={checkoutBooks} user={this.props.user} />
                     </div> : ''}
 
                 {this.state.cartItems.length < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}
@@ -86,6 +87,12 @@ export class Cart extends Component {
             </div>
         )
     }
+};
+
+const mapState = state => {
+    return {
+        user: state.user
+    }
 }
 
-export default Cart
+export default connect(mapState)(Cart);

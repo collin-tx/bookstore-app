@@ -32,11 +32,6 @@ const database = firebase.database();
 
 const App = ({store}) => {
 
-// store.dispatch({ type:'SIGN_IN', payload: { data: [1,2,3,4,5], more: 'motherfu', user: 'Farty' } });
-const storeState = store.getState();
-console.log('store from app', store);
-console.log('state from app', storeState);
-
   return (
     <BrowserRouter>
       <Nav />

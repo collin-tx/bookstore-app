@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
-const CheckoutModal = (props) => {
+const CheckoutModal = props => {
     return (
       <Modal
         {...props}
@@ -22,13 +22,16 @@ const CheckoutModal = (props) => {
             </ul>
         </Modal.Body>
         <Modal.Footer>
+          <div>
+            Checking out as {props.user || 'guest'}
+          </div>
           <Button onClick={props.onHide}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
   }
   
-  export const Checkout = (props) => {
+  export const Checkout = ({ books, subtotal, user }) => {
     const [modalShow, setModalShow] = React.useState(false);
   
     return (
@@ -39,10 +42,11 @@ const CheckoutModal = (props) => {
         </Button>
   
         <CheckoutModal 
-          show={modalShow}
+          books = {books}
           onHide={() => setModalShow(false)}
-          subtotal = {props.subtotal}
-          books = {props.books}
+          show={modalShow}
+          subtotal = {subtotal}
+          user={user}
         />
       </ButtonToolbar>
     );

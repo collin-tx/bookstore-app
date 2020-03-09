@@ -1,18 +1,15 @@
 import React from 'react';
 
 const Featured = ({
-    addComment = () => {},
     allComments = [],
     book = {},
-    editComment = () => {},
     featuredBook = {},
     featuredIndex,
     handleChange = () => {},
     handleSubmit = () => {},
     value = '',
     signedIn = false,
-    store = {},
-    user = ''
+    user = null
 }) => (
     <div>
         {featuredBook[featuredIndex] && 
@@ -93,8 +90,7 @@ const Featured = ({
                         </button>
                     </form>
 
-                    <button className="btn btn-warning" onClick={() => {console.log('storeFEAT', store); console.log('nowprops', user,signedIn);}}>log the state or whatever</button>
-                <p>commenting as {signedIn ? user : 'guest'}</p>
+                    <p>commenting as {signedIn ? user : 'guest'}</p>
                 </div>
 
             </div>
