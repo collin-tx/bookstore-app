@@ -1,24 +1,31 @@
 import React from 'react';
 
-const SignIn = props => {
+const SignIn = ({
+  email,
+  error,
+  handleEmail,
+  handlePassword,
+  handleSubmit,
+  password
+}) => {
 
   const renderErrors = () => {
-    return props.error.length ? (
+    return error.length ? (
       <div>
-        <p>{props.error}</p>
+        <p>{error}</p>
       </div>
     ) : null
   }
 
   return (
-    <form id="sign-in-form" onSubmit={(e) => props.handleSubmit(e)}>
+    <form id="sign-in-form" onSubmit={(e) => handleSubmit(e)}>
       {renderErrors()}
       <div>
-          email: <input type="text" onChange={props.handleEmail} value={props.email} />
+          email: <input type="text" onChange={handleEmail} value={email} />
       </div>
       <div className="pl-3">
           password: 
-          <input type="password" onChange={props.handlePassword} value={props.password}
+          <input type="password" onChange={handlePassword} value={password}
                 maxLength={12}   
           />
       </div>

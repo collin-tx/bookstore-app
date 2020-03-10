@@ -18,7 +18,7 @@ export const signOut = () => {
   }
 }
 
-// thunks
+// thunkstuff
 const fetchRequest = searchTerm => fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
 
 export const fetchBooks = searchTerm => async dispatch => {

@@ -41,6 +41,10 @@ export class Cart extends Component {
     }
 
     render() {
+
+        // TODO: woof this shit
+        // Redux should probably manage the cart and then only push to Firebase 
+        // after Checkout -- then maybe the user gets the option to see past purchases?
         let booksInCart = this.state.cartItems.map(book => {
             return (
                 <CartBook title={book.book.book.volumeInfo.title} book={book}

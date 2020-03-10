@@ -12,8 +12,6 @@ import firebase from 'firebase';
 import './App.css';
 
 
-
-// Adding Firebase to App
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "books-app-249318.firebaseapp.com",
@@ -23,29 +21,28 @@ var firebaseConfig = {
   messagingSenderId: "776537219409",
   appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
-// added conditional, otherwise it results in error -- Firebase App named '[DEFAULT]' already exists (app/duplicate-app)
+
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
+
 const database = firebase.database();
 
 
-const App = ({store}) => {
+const App = ({store}) => (
+  <BrowserRouter>
+    <Nav />
+    <Header />
+    <SignInContainer store={store} firebase={database} />
+    <Switch>
+      <Route path="/" render={ () => <Home firebase={database} />} exact />
+      <Route path="/cart" render={ () => <Cart firebase={database} />} />
+      <Route path="/featured" render={ ()=> <FeaturedContainer firebase={database} />} />
+      <Route component={Error} />
+    </Switch>
+    <Footer />
+  </BrowserRouter>
+);
 
-  return (
-    <BrowserRouter>
-      <Nav />
-      <Header />
-      <SignInContainer store={store} firebase={database} />
-      <Switch>
-        <Route path="/" render={ () => <Home firebase={database} />} exact />
-        <Route path="/cart" render={ () => <Cart firebase={database} />} />
-        <Route path="/featured" render={ ()=> <FeaturedContainer firebase={database} />} />
-        <Route component={Error} />
-      </Switch>
-      <Footer />
-    </BrowserRouter>
-  );
-}
 
 export default App;
