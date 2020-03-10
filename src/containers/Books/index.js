@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import BookContainer from '../Book';
 import Books from '../../components/Books';
-import { handleErrors, quote } from '../../utils/helper';
+import { quote } from '../../utils/helper';
 import { fetchBooks } from '../../actions';
 import { connect } from 'react-redux';
 import { store } from '../../store';
@@ -10,7 +10,6 @@ export class BooksContainer extends Component {
     
     state = {
         term: '',
-        books: [],
         loading: false,
         error: '',
         cart: [],
@@ -30,8 +29,7 @@ export class BooksContainer extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        this.getBook(this.state.term);
-        this.newGetBooks(this.state.term);
+        this.getBooks(this.state.term);
         this.setState({ term: '' });
     }
 
@@ -46,25 +44,14 @@ export class BooksContainer extends Component {
         }, 1000);
     }
 
-    newGetBooks = searchTerm => {
-        this.props.fetchBooks(searchTerm);
-    }
-
-    getBook = info => {
+    getBooks = searchTerm => {
+        this.props.fetchBooks(searchTerm)
+        .catch(error => {
+            this.setState({ error, loading: false });
+        });
         this.setState( () => {
             return { loading: true,  searched: true }
         });
-        let url = `https://www.googleapis.com/books/v1/volumes?q=${info}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}`;
-        fetch(url).then(handleErrors)
-        .then(response => {
-            return response.json();
-        }).then(data => {
-            this.setState({ books: [data], error: false });
-        })
-        .catch(error => {
-            this.setState({ error, loading: false })
-        });
-
 
         setTimeout( () => {
             this.setState({ loading: false });
@@ -72,41 +59,37 @@ export class BooksContainer extends Component {
     }
 
     render() {
-      let bookList = this.state.books[0] && this.state.books[0].items 
-      && this.state.books[0].items.map((book, index) => {
-      return (
-      <BookContainer title={book.volumeInfo.title} 
-      author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
-      category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
-      description={book.volumeInfo.description}
-      price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
-      img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
-      infoLink={book.volumeInfo.infoLink} 
-      preview={book.volumeInfo.previewLink} 
-      id={book.id} index={index}
-      key={book.etag} 
-      pageCount={book.volumeInfo.pageCount} 
-      subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
-      addToCart={this.addToCart} />
-      )
-  });
-
-  console.log('booksContainerPROPS', this.props);
-  console.log('booksContainerSTATE', store.getState());
+        let reduxState = store.getState();
+        let allBooks = reduxState.books && reduxState.books.map((book, index) => {
+            return (
+                <BookContainer title={book.volumeInfo.title} 
+                      author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
+                      category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
+                      description={book.volumeInfo.description}
+                      price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
+                      img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
+                      infoLink={book.volumeInfo.infoLink} 
+                      preview={book.volumeInfo.previewLink} 
+                      id={book.id} index={index}
+                      key={book.etag} 
+                      pageCount={book.volumeInfo.pageCount} 
+                      subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
+                      addToCart={this.addToCart}
+                />
+            );
+        });
         return (
-          <Books
-          adding={this.state.adding}
-          getBook={this.getBook}
-          addToCart={this.addToCart}
-          quote={quote}
-          bookList={bookList}
-          onSubmit={this.handleSubmit} 
-          term={this.state.term}
-          onChange={this.handleChange}
-          searched={this.state.searched}
-          books={this.state.books}
-          loading={this.state.loading}
-          />
+            <Books
+            adding={this.state.adding}
+            quote={quote}
+            bookList={allBooks}
+            onSubmit={this.handleSubmit} 
+            term={this.state.term}
+            onChange={this.handleChange}
+            searched={this.state.searched}
+            books={reduxState.books}
+            loading={this.state.loading}
+            />
         );
     }
 }
