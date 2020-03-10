@@ -17,7 +17,8 @@ import { SIGN_IN, SIGN_OUT, FETCH_BOOKS } from '../actions/constants';
         case FETCH_BOOKS: 
           return {
             ...state,
-            books: action.payload[0].items
+            books: action.payload[0].items,
+            searchTerm: action.searchTerm
           }
         default:
           return state;

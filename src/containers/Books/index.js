@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import BookContainer from '../Book';
 import Books from '../../components/Books';
-import quotes from '../../quotes.json';
-import { handleErrors } from '../../utils/helper';
+import { handleErrors, quote } from '../../utils/helper';
 import { fetchBooks } from '../../actions';
 import { connect } from 'react-redux';
 import { store } from '../../store';
-
-let quotesLength = Object.keys(quotes).length;
-const quote = quotes[Math.ceil(Math.random() * quotesLength)];
 
 export class BooksContainer extends Component {
     
@@ -24,7 +20,7 @@ export class BooksContainer extends Component {
     
     componentDidMount(){
           let database = this.props.firebase;
-          let cart = database.ref('cart');
+          let cart = database.ref('cart'); 
           this.setState({ cart });
     }
 
@@ -35,7 +31,7 @@ export class BooksContainer extends Component {
     handleSubmit = e => {
         e.preventDefault();
         this.getBook(this.state.term);
-        this.props.fetchBooks(this.state.term);
+        this.newGetBooks(this.state.term);
         this.setState({ term: '' });
     }
 
@@ -48,6 +44,10 @@ export class BooksContainer extends Component {
         setTimeout( ()=> {
             this.setState({ adding: false });
         }, 1000);
+    }
+
+    newGetBooks = searchTerm => {
+        this.props.fetchBooks(searchTerm);
     }
 
     getBook = info => {
@@ -111,9 +111,7 @@ export class BooksContainer extends Component {
     }
 }
 
-const mapState = state => ({ books: state.books });
-const mapDispatch = dispatch => ({ fetchBooks: () => dispatch(fetchBooks()) });
+const mapState = state => ({ books: state.books, searchTerm: state.term });
+const mapDispatch = dispatch => ({ fetchBooks: searchTerm => dispatch(fetchBooks(searchTerm)) });
 
 export default connect(mapState, mapDispatch)(BooksContainer);
-
-// export default connect(null, { fetchBooks })(BooksContainer);
