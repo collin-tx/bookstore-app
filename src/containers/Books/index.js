@@ -35,7 +35,7 @@ export class BooksContainer extends Component {
 
     addToCart = (e, index) => {
         this.setState({ adding: true })
-        const bookToAdd = this.state.books[0].items[index];
+        const bookToAdd = this.props.books[index];
         this.state.cart.push({
             book : bookToAdd,
         });

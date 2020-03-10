@@ -4,6 +4,9 @@ import { Checkout } from './Checkout';
 import { Subtotal } from './Subtotal';
 import { generateKey } from '../utils/helper';
 import { connect } from 'react-redux';
+import { addBookToCart, removeBookFromCart } from '../actions';
+
+// TODO: this needs to be moved into Redux rather than FB
 
 export class Cart extends Component {  
     state = {
@@ -95,7 +98,9 @@ export class Cart extends Component {
 
 const mapState = state => {
     return {
-        user: state.user
+        user: state.user,
+        cart: state.cart,
+        cartItems: state.cartItems
     }
 }
 
