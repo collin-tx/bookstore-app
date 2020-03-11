@@ -34,7 +34,7 @@ const CartBook = ({
                     <i className="fas fa-book-reader"></i> 
                     {" preview"}
                 </a>
-                <button className="btn btn-danger cart-btn" onClick={(e) => remove(e, book.key)}>
+                <button className="btn btn-danger cart-btn" onClick={() => remove(book)}>
                     <i className="fas fa-minus-circle"></i> 
                     {" remove"}
                 </button>

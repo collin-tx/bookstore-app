@@ -28,7 +28,7 @@ import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK } from '../action
         case REMOVE_BOOK: 
           return {
             ...state,
-            cart: state.cart.filter(book => book !== action.payload.book)
+            cart: state.cart.filter(book => book !== action.payload)
           }
         default:
           return state;
@@ -37,3 +37,4 @@ import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK } from '../action
 
 export default rootReducer;
 
+ 

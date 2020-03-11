@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
-import Cart from './components/Cart';
+import CartContainer from './containers/Cart';
 import Nav from './components/Nav';
 import FeaturedContainer from './containers/Featured';
 import Footer from './components/Footer';
@@ -36,7 +36,7 @@ const App = ({store}) => (
     <SignInContainer store={store} firebase={database} />
     <Switch>
       <Route path="/" render={ () => <Home firebase={database} />} exact />
-      <Route path="/cart" render={ () => <Cart firebase={database} />} />
+      <Route path="/cart" render={ () => <CartContainer firebase={database} />} />
       <Route path="/featured" render={ ()=> <FeaturedContainer firebase={database} />} />
       <Route component={Error} />
     </Switch>
