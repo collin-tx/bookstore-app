@@ -2,21 +2,27 @@ import React from 'react';
 import { Checkout } from './Checkout';
 import { Subtotal } from './Subtotal';
 
-const Cart = props => (
+const Cart = ({
+    cart,
+    booksInCart,
+    checkoutBooks,
+    subtotal,
+    user
+}) => (
     <div>
         <h2 id="cart-title" className="text-center m-5">Cart</h2>
-        <p><small>{props.user || 'Guest'}</small></p>
-        {props.cart ? 
+        <p><small>{user || 'Guest'}</small></p>
+        {cart ? 
             <div id="checkout-div">
                 <p id="subtotal" className="">
-                    <Subtotal subtotal={props.subtotal} />
+                    <Subtotal subtotal={subtotal} />
                 </p>
-                <Checkout subtotal={props.subtotal} books={props.checkoutBooks} user={props.user} />
+                <Checkout subtotal={subtotal} books={checkoutBooks} user={user} />
             </div> : ''}
 
-        {props.cart < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}
+        {cart < 1 ? <p>Once you add items to the cart, you'll see them here.</p> : ''}
         <ul className="list-group">
-            {props.booksInCart}
+            {booksInCart}
         </ul>
     </div>
 );
