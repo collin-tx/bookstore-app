@@ -42,7 +42,7 @@ class SignInContainer extends Component {
   loginUser = user => {
     //TODO - USER AUTH STUFF
     this.setState({ signedIn: true, error: ''});
-    this.props.store.dispatch(signIn(user));
+    this.props.signIn(user);
   }
 
   logoutUser = () => {
@@ -84,7 +84,7 @@ const mapState = state => (
 
 const mapDispatch = dispatch => (
   {
-    signIn: () => dispatch(signIn())
+    signIn: user => dispatch(signIn(user))
   }
 );
 

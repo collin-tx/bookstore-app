@@ -29,11 +29,11 @@ if (!firebase.apps.length) {
 const database = firebase.database();
 
 
-const App = ({store}) => (
+const App = () => (
   <BrowserRouter>
     <Nav />
     <Header />
-    <SignInContainer store={store} firebase={database} />
+    <SignInContainer firebase={database} />
     <Switch>
       <Route path="/" render={ () => <Home firebase={database} />} exact />
       <Route path="/cart" render={ () => <CartContainer firebase={database} />} />
