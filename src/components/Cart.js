@@ -4,7 +4,8 @@ import { Checkout } from './Checkout';
 import { Subtotal } from './Subtotal';
 import { generateKey } from '../utils/helper';
 import { connect } from 'react-redux';
-import { addBookToCart, removeBookFromCart } from '../actions';
+import { removeBookFromCart } from '../actions';
+import store from '../store';
 
 // TODO: this needs to be moved into Redux rather than FB
 
@@ -15,39 +16,47 @@ export class Cart extends Component {
     }
 
     componentDidMount(){
-        let database = this.props.firebase;
+        // let database = this.props.firebase;
 
-        this.setState({ database })
+        // this.setState({ database })
 
-        let cart = database.ref('cart');
-        this.setState({ cart });
+        // let cart = database.ref('cart');
+        // this.setState({ cart });
 
-        cart.on('value', response => {
-            const cartData = response.val();
+        // cart.on('value', response => {
+        //     const cartData = response.val();
 
-            const cartItems = [];
+        //     const cartItems = [];
         
-            // eslint-disable-next-line
-            for (let index in cartData){
-                cartItems.push({
-                key: index,    
-                book: cartData[index]
-                    });
-            }
+        //     // eslint-disable-next-line
+        //     for (let index in cartData){
+        //         cartItems.push({
+        //         key: index,    
+        //         book: cartData[index]
+        //             });
+        //     }
 
-            this.setState({ cartItems });
-        });
+        //     this.setState({ cartItems });
+        // });
     }
 
-    handleRemove = (e, key) => {
-        this.state.database.ref('cart/' + key).remove();
+    // handleRemove = (e, key) => {
+    //     this.state.database.ref('cart/' + key).remove();
+    // }
+
+    handleRemove = book => {
+        removeBookFromCart(book);
     }
+
 
     render() {
 
         // TODO: woof this shit
         // Redux should probably manage the cart and then only push to Firebase 
         // after Checkout -- then maybe the user gets the option to see past purchases?
+        console.log('cartprops!', this.props);
+        console.log('STATEfromCART', store.getState());
+
         let booksInCart = this.state.cartItems.map(book => {
             return (
                 <CartBook title={book.book.book.volumeInfo.title} book={book}
@@ -99,9 +108,12 @@ export class Cart extends Component {
 const mapState = state => {
     return {
         user: state.user,
-        cart: state.cart,
-        cartItems: state.cartItems
+        cart: state.cart
     }
 }
 
-export default connect(mapState)(Cart);
+const mapDispatch = dispatch => ({ 
+    removeBook: book => dispatch(removeBookFromCart(book))
+});
+
+export default connect(mapState, mapDispatch)(Cart);

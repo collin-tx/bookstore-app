@@ -21,9 +21,7 @@ export const signOut = () => {
 export const addBookToCart = book => {
   return {
     type: ADD_BOOK,
-    payload: {
-      book
-    }
+    payload: book
   }
 }
 

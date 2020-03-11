@@ -1,8 +1,8 @@
 import React from 'react';
 
-
 const Book = ({
     author,
+    book,
     img,
     index,
     preview,
@@ -10,7 +10,6 @@ const Book = ({
     title,
     addToCart = () => {}
 }) => (
-
     <li className="book list-group-item">
         <h2>{title}</h2>
         <img src={img} alt={title + "book cover"} className="book-cover" />

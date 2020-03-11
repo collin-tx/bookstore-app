@@ -23,7 +23,7 @@ import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK } from '../action
         case ADD_BOOK:
           return {
             ...state,
-            cart: [...state.cart, action.payload.book]
+            cart: [ ...(state.cart || []), action.payload ]
           }
         case REMOVE_BOOK: 
           return {
