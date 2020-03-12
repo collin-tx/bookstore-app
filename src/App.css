@@ -26,7 +26,11 @@ html {
 
 .app-title {
   color: #fff;
-  transform: translateY(85%);
+  position: absolute;
+  transform: translateY(250%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .title-heading {

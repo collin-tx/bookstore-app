@@ -8,10 +8,10 @@ const Nav = ({ firebase }) => (
             <NavLink className="navLink m-2" to="/">
                 Home
             </NavLink>
-            <NavLink className="navLink m-2 mr-3" to="/cart">
+            <NavLink className="navLink m-2" to="/cart">
                 Cart
             </NavLink>
-            <NavLink className="navLink m-2 mr-3" to="/featured">
+            <NavLink className="navLink m-2" to="/featured">
                 Featured
             </NavLink>
             <div className="float-right">
@@ -20,6 +20,5 @@ const Nav = ({ firebase }) => (
         </div>
     </div>
 );
-
 
 export default Nav;
