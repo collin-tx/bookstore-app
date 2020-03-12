@@ -4,7 +4,7 @@ import Books from '../../components/Books';
 import { quote } from '../../utils/helper';
 import { fetchBooks, addBookToCart } from '../../actions';
 import { connect } from 'react-redux';
-import { store } from '../../store';
+
 
 export class BooksContainer extends Component {
     
@@ -15,16 +15,6 @@ export class BooksContainer extends Component {
         cart: [],
         adding: false,
         searched: false
-    }
-    
-    componentDidMount(){
-        //   let database = this.props.firebase;
-        //   let cart = database.ref('cart'); 
-        //   this.setState({ cart });
-
-        //reduxing
-        // const state = store.getState();
-        // this.setState({ cart: state.cart });
     }
 
     handleChange = e => {
@@ -40,17 +30,10 @@ export class BooksContainer extends Component {
     addToCart = (e, index) => {
         this.setState({ adding: true })
         const bookToAdd = this.props.books[index];
-        // this.state.cart.push({
-        //     book : bookToAdd,
-        // });
         setTimeout( ()=> {
             this.setState({ adding: false });
         }, 1000);
-
         this.props.addBookToCart(bookToAdd);
-        // store.dispatch(addBookToCart(bookToAdd));
-        console.log('AHHHHH', addBookToCart(bookToAdd));
-
     }
 
     getBooks = searchTerm => {
@@ -64,11 +47,10 @@ export class BooksContainer extends Component {
 
         setTimeout( () => {
             this.setState({ loading: false });
-        }, 500);
+        }, 1000);
     }
 
     render() {
-        console.log('booksPROPS', this.props);
         let allBooks = this.props.books && this.props.books.map((book, index) => {
             return (
                 <BookContainer title={book.volumeInfo.title} book={book}

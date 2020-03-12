@@ -8,16 +8,11 @@ export class FeaturedContainer extends Component {
     
     state = {
         featuredBook: {},
-        value: '',
-        showSignIn: false,
-        signedIn: false,
-        email: '',
-        username: '',
-        credentials: [],
-        signInError: false
+        value: ''
     }
     
     componentDidMount(){
+        // db stuff
         let database = this.props.firebase;
         let featured = database.ref('featured');
         this.setState({ featured, database });
@@ -28,8 +23,6 @@ export class FeaturedContainer extends Component {
         });
     }
 
-
-    // comment methods
     addComment = () => {
         let featuredIndex = Object.keys(this.state.featuredBook);
         this.state.database.ref('featured/' + featuredIndex +'/book/comments').push({
@@ -37,14 +30,13 @@ export class FeaturedContainer extends Component {
             key: this.state.value
         });
         this.setState({ value: '' })
-
     }
 
-    handleChange = (e) => {
+    handleChange = e => {
         this.setState({ value: e.target.value});
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
         this.addComment();
     }
@@ -67,7 +59,7 @@ export class FeaturedContainer extends Component {
         let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
         
         let allComments = [];
-        // eslint-disable-next-line
+
         for(let keyOfComment in book && book.comments){
             allComments.push(book.comments[keyOfComment]);
         }

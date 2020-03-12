@@ -37,7 +37,6 @@ export class Comment extends Component {
                     <div className="username">
                         <p>{user || 'anonymous'}</p>
                     </div>
-                    
                 </div>
 
                 <div className="comment-content">
@@ -56,7 +55,7 @@ export class Comment extends Component {
                     </form>}
                     
                     {
-                        // not the best way to do this but...
+                        // not the best way to do this but... I'll improve it when I start on the 0Auth stuff
                         // user is the user who originally made the comment
                         // while username is the user who is currently signed in
                         (user === username) &&

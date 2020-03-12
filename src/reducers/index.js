@@ -36,5 +36,3 @@ import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK } from '../action
     }
 
 export default rootReducer;
-
- 

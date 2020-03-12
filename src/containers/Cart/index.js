@@ -29,16 +29,16 @@ export class CartContainer extends Component {
 
         let checkoutBooks = !!this.props.cart && this.props.cart.map((book, index) => {
             return (
-            <li className="list-group-item" key={generateKey(index)}>
-                <p>{book.volumeInfo.title} 
-                    <b className="float-right">${book.saleInfo.listPrice.amount.toFixed(2)}</b>
-                </p>
-            </li>
-            )
-        })
+                <li className="list-group-item" key={generateKey(index)}>
+                    <p>{book.volumeInfo.title} 
+                        <b className="float-right">${book.saleInfo.listPrice.amount.toFixed(2)}</b>
+                    </p>
+                </li>
+            );
+        });
 
         let priceArray = this.props.cart && this.props.cart.length && this.props.cart.map(book => book.saleInfo.listPrice.amount);
-        const subtotal = priceArray && priceArray.reduce((a,b) => a + b);        
+        const subtotal = priceArray ? priceArray.reduce((a,b) => a + b) : 0;       
 
         return (
             <Cart 

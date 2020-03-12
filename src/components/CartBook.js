@@ -2,7 +2,7 @@ import React from 'react'
 
 const CartBook = ({
     author,
-    book,
+    book = {},
     description,
     img,
     link,
@@ -21,7 +21,6 @@ const CartBook = ({
                 <p>{author}</p>
                 <p>$ {price}</p>
             </div>
-
             <div className="col">
                 <p>
                     {!description ? 'No description available' : description.length > 500 ? description.slice(0, 500) + "..." : description}
