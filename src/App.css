@@ -4,13 +4,35 @@ html {
 
 #header {
   background: url('./img/bookstore1.jpg') center/cover;
-  height: 30vh;
+  height: 35vh;
   width: 100%;
+  margin-top: -50px;
+}
+
+#header-sign-in {
+  background-color: transparent;
+  padding: 0.3em;
+  outline: transparent;
+  border: #fff 1px solid;
+}
+
+#sign-out-button {
+  background-color: transparent;
+  outline: transparent;
+  border: #fff 1px solid;
+  padding: 0.2em;
+  margin-top: -1em;
 }
 
 .app-title {
   color: #fff;
-  transform: translateY(40%);
+  transform: translateY(85%);
+}
+
+.title-heading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 #nav {
@@ -23,6 +45,7 @@ html {
   font-weight: 700;
   text-shadow: #000 1px 0 10px;
   text-decoration: none;
+  z-index: 1000;
 }
 
 .navLink:hover {
@@ -31,7 +54,7 @@ html {
   color: #f9f9f9;
 }
 
-@media(min-width: 1050px){
+/* @media(min-width: 1050px){
   header {
     height: 35vh;
   }
@@ -39,7 +62,7 @@ html {
   .app-title {
     transform: translateY(50%);
   }
-}
+} */
 
 /* Home */
 
@@ -214,22 +237,14 @@ justify-content: center;
   width: 400px;
 }
 
-#sign-in-btn {
-  border: none;
-  outline: none;
-  text-decoration: underline;
-  padding: 0;
-  margin: 0;
-}
-
-#sign-in-div {
-  text-align: center;
-}
-
 #sign-in-form {
+  width: 30%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  margin: 0 auto;
 }
+
 
 @media(max-width: 600px){
 

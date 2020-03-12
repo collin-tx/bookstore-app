@@ -6,7 +6,6 @@ import CartContainer from './containers/Cart';
 import Nav from './components/Nav';
 import FeaturedContainer from './containers/Featured';
 import Footer from './components/Footer';
-import SignInContainer from './containers/sign-in';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
 import './App.css';
@@ -31,9 +30,8 @@ const database = firebase.database();
 
 const App = () => (
   <BrowserRouter>
-    <Nav />
+    <Nav firebase={database} />
     <Header />
-    <SignInContainer firebase={database} />
     <Switch>
       <Route path="/" render={ () => <Home firebase={database} />} exact />
       <Route path="/cart" render={ () => <CartContainer firebase={database} />} />

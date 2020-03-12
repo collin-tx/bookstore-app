@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import SignIn from '../../components/SignIn';
-import SignedIn from '../../components/SignedIn';
-
 import { connect } from 'react-redux';
-
 import { signIn, signOut } from '../../actions';
 
 class SignInContainer extends Component {
@@ -31,6 +28,7 @@ class SignInContainer extends Component {
       this.setState({ user: this.state.email, email: '', password: '' });
       setTimeout(() => {
         this.loginUser(this.state.user);
+        this.props.closeModal();
       }, 100); // janky but bc of this, it now passes along the right action.payload
     } else {
       this.setState({ 
@@ -47,29 +45,23 @@ class SignInContainer extends Component {
 
   logoutUser = () => {
     this.setState({ signedIn: false, user: null });
-    signOut();
+    this.props.signOut();
   }
 
   render() {
     const { email, error, fieldValue, password, signedIn, user } = this.state;
     return (
-        this.state.signedIn && this.state.user.length ?
-          <SignedIn
-            user={user}
-            isSignedIn={signedIn}
-            logout={this.logoutUser}
-          /> :
-          <SignIn
-            user={user}
-            signedIn={signedIn}
-            email={email}
-            error={error}
-            fieldValue={fieldValue}
-            handleEmail={this.handleEmail}
-            handlePassword={this.handlePassword}
-            handleSubmit={this.handleSubmit}
-            password={password}
-          />
+      <SignIn
+        user={user}
+        signedIn={signedIn}
+        email={email}
+        error={error}
+        fieldValue={fieldValue}
+        handleEmail={this.handleEmail}
+        handlePassword={this.handlePassword}
+        handleSubmit={this.handleSubmit}
+        password={password}
+      />
     );
   }
 }
@@ -84,7 +76,8 @@ const mapState = state => (
 
 const mapDispatch = dispatch => (
   {
-    signIn: user => dispatch(signIn(user))
+    signIn: user => dispatch(signIn(user)),
+    signOut: () => dispatch(signOut())
   }
 );
 

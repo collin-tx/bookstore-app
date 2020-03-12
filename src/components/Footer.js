@@ -4,7 +4,7 @@ const Footer = () => (
     <div id="footer">
         <footer>
             <a href="#top">back to top</a>
-            <p>&copy; 2020 bookshop app</p>
+            <p>&copy; 2020 bookshop</p>
         </footer>
     </div>
 );

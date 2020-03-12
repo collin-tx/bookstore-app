@@ -59,7 +59,7 @@ export class FeaturedContainer extends Component {
         let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
         
         let allComments = [];
-
+            // eslint-disable-next-line
         for(let keyOfComment in book && book.comments){
             allComments.push(book.comments[keyOfComment]);
         }

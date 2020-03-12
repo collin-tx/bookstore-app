@@ -18,18 +18,17 @@ const SignIn = ({
   }
 
   return (
-    <form id="sign-in-form" onSubmit={(e) => handleSubmit(e)}>
+    <form id="sign-in-form" className="form-horizontal" onSubmit={(e) => handleSubmit(e)}>
       {renderErrors()}
-      <div>
-          email: <input type="text" onChange={handleEmail} value={email} />
+      <div className="form-group">
+        <label htmlFor="email" className="">email:</label>
+        <input type="text" onChange={handleEmail} value={email} className="form-control" />
       </div>
-      <div className="pl-3">
-          password: 
-          <input type="password" onChange={handlePassword} value={password}
-                maxLength={12}   
-          />
+      <div className="form-group">
+        <label htmlFor="password" className="">password:</label>
+        <input type="password" onChange={handlePassword} value={password} className="form-control" />
       </div>
-      <button className="btn btn-secondary btn-sm">
+      <button className="btn btn-secondary">
           Sign In
       </button>
     </form>
