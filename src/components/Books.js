@@ -18,11 +18,12 @@ const Books = ({
             <button type='submit' className="btn btn-primary" id="search-submit"><i className="fas fa-search"></i> Search</button>
         </form>
 
-        {!searched &&
-            <div>
-                <h3 className="text-center m-5">Welcome</h3>
-                <h5 className="text-center m-3">Your search results will display here. <br /> Happy Reading!</h5>
-            </div>
+        {
+            !searched && !books.length &&
+                <div>
+                    <h3 className="text-center m-5">Happy Reading!</h3>
+                    <p className="text-center mt-5">Your search results will display here.</p>
+                </div>
         }
 
         { adding && 
