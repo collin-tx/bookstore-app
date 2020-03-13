@@ -131,6 +131,14 @@ html {
 
 /* Cart */
 
+#cart {
+}
+
+#empty-cart-div {
+  display: flex;
+  justify-content: center;
+}
+
 .cartBook {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -155,8 +163,14 @@ html {
   margin-bottom: 40px;
 }
 
-.checkout-list li {
-  border: none;
+#checkout-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.checkout-table td {
+  padding: 5px 5px 0 0;
 }
 
 #checkout-subtotal {

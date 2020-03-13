@@ -9,24 +9,37 @@ const Cart = ({
     subtotal,
     user
 }) => (
-    <div>
+    <div id="cart">
         <h2 id="cart-title" className="text-center m-5">Cart</h2>
-        <p><small>{user || 'Guest'}</small></p>
         {
-            cart && 
+            cart && subtotal > 0 && 
                 <div id="checkout-div">
-                    <p id="subtotal" className="">
+                    <p style={{ padding: '0', margin: '0' }}><small>{user || 'Guest'}</small></p>
+                    <Checkout subtotal={subtotal} books={checkoutBooks} user={user} />
+                    <p id="subtotal" className="text-right">
                         <Subtotal subtotal={subtotal} />
                     </p>
-                    <Checkout subtotal={subtotal} books={checkoutBooks} user={user} />
+
                 </div>
         }
         {
-            (!cart || !cart.length) && <p>Once you add items to the cart, you'll see them here.</p>
+            (!cart || !cart.length) && (
+                <div id="empty-cart-div">
+                    <p>Once you add items to the cart, you'll see them here.</p>
+                </div>)
         }
         <ul className="list-group">
             {booksInCart}
         </ul>
+
+        {
+            cart && subtotal > 0 && 
+                <div id="checkout-bottom">
+                    <Checkout subtotal={subtotal} books={checkoutBooks} user={user} />
+                    <p>Checkout as {user ? user : 'guest'}</p>
+                </div>
+               
+        }
     </div>
 );
 

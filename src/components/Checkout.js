@@ -19,7 +19,8 @@ const CheckoutModal = props => (
       <div>
         Checking out as {props.user || 'guest'}
       </div>
-      <Button onClick={props.onHide}>Close</Button>
+      <Button onClick={() => alert('confirm your purchase?')}>Confirm</Button>
+      <Button className="btn btn-danger" onClick={props.onHide}>Close</Button>
     </Modal.Footer>
   </Modal>
 );
