@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 import CartBook from '../../components/CartBook';
 import Cart from '../../components/Cart';
 import { generateKey } from '../../utils/helper';
-import { removeBookFromCart } from '../../actions';
+import { emptyCart, removeBookFromCart } from '../../actions';
 
 export class CartContainer extends Component {  
 
     handleRemove = book => {
         this.props.removeBookFromCart(book);
+    }
+
+    emptyCart = () => {
+        this.props.emptyCart();
     }
 
     render() {
@@ -57,11 +61,12 @@ export class CartContainer extends Component {
 
         return (
             <Cart 
-                user={this.props.user}
-                cart={this.props.cart}
-                subtotal={subtotal}
-                checkoutBooks={checkoutBooks}
                 booksInCart={booksInCart}
+                cart={this.props.cart}
+                checkoutBooks={checkoutBooks}
+                emptyCart={this.emptyCart}
+                subtotal={subtotal}
+                user={this.props.user}
             />
         )
     }
@@ -75,7 +80,8 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => ({ 
-    removeBookFromCart: book => dispatch(removeBookFromCart(book))
+    removeBookFromCart: book => dispatch(removeBookFromCart(book)),
+    emptyCart: () => dispatch(emptyCart())
 });
 
 export default connect(mapState, mapDispatch)(CartContainer);

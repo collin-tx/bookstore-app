@@ -1,4 +1,4 @@
-import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK } from '../actions/constants';
+import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK, EMPTY_CART } from '../actions/constants';
 
   const rootReducer = (state = [], action) => {
     switch(action.type) {
@@ -29,6 +29,11 @@ import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK } from '../action
           return {
             ...state,
             cart: state.cart.filter(book => book !== action.payload)
+          }
+        case EMPTY_CART:
+          return {
+            ...state,
+            cart: []
           }
         default:
           return state;

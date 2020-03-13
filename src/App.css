@@ -165,8 +165,9 @@ html {
 
 #checkout-bottom {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  /* flex-direction: column;
+  align-items: flex-end; */
+  justify-content: flex-end;
 }
 
 .checkout-table td {

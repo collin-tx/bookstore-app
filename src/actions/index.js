@@ -1,4 +1,4 @@
-import { ADD_BOOK, FETCH_BOOKS, REMOVE_BOOK, SIGN_IN, SIGN_OUT } from './constants';
+import { ADD_BOOK, EMPTY_CART, FETCH_BOOKS, REMOVE_BOOK, SIGN_IN, SIGN_OUT } from './constants';
 
 
 //action creators
@@ -29,6 +29,12 @@ export const removeBookFromCart = book => {
   return {
     type: REMOVE_BOOK,
     payload: book
+  }
+}
+
+export const emptyCart = () => {
+  return {
+    type: EMPTY_CART
   }
 }
 

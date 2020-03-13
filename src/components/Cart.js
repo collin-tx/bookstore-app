@@ -6,6 +6,7 @@ const Cart = ({
     cart = [],
     booksInCart = [],
     checkoutBooks = [],
+    emptyCart = () => {},
     subtotal,
     user
 }) => (
@@ -33,12 +34,14 @@ const Cart = ({
         </ul>
 
         {
-            cart && subtotal > 0 && 
-                <div id="checkout-bottom">
-                    <Checkout subtotal={subtotal} books={checkoutBooks} user={user} />
-                    <p>Checkout as {user ? user : 'guest'}</p>
+            cart && subtotal > 0 &&
+                <div>
+                    <div id="checkout-bottom" className="p-2">
+                        <Checkout subtotal={subtotal} books={checkoutBooks} user={user} />
+                        <button className="btn btn-secondary ml-1 mr-1 text-white" onClick={() => emptyCart()}>empty cart</button>
+                    </div>
+                    <p className="text-right mr-3">Shopping as {user ? user : 'guest'}</p>
                 </div>
-               
         }
     </div>
 );
