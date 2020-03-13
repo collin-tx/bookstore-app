@@ -170,13 +170,21 @@ html {
   justify-content: flex-end;
 }
 
+.checkout-table {
+  width: 100%;
+}
+
 .checkout-table td {
   padding: 5px 5px 0 0;
 }
 
 #checkout-subtotal {
   padding-bottom: 10px;
-  border-bottom: 1px solid lightgrey;
+  /* border-bottom: 1px solid lightgrey; */
+}
+
+#checkout-total-div {
+  padding-right: 5px;
 }
 
 

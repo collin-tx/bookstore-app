@@ -27,37 +27,46 @@ export class CartContainer extends Component {
                 key={book.id} id={book.etag} remove={this.handleRemove}
                 link={book.volumeInfo.infoLink} preview={book.volumeInfo.previewLink}
                 price={book.saleInfo.listPrice.amount}
-                 />
-            )
-        });
+                />
+                )
+            });
+            
+        let priceArray = this.props.cart && this.props.cart.length && this.props.cart.map(book => book.saleInfo.listPrice.amount);
+        const subtotal = priceArray ? priceArray.reduce((a,b) => a + b) : 0;
 
         let checkoutBooks = (
-            <table className="checkout-table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        !!this.props.cart && this.props.cart.map((book, index) => {
-                            return (
-                                <tr>
-                                    <td>{book.volumeInfo.title}</td>
-                                    <td>{book.volumeInfo.authors && book.volumeInfo.authors[0]}</td>
-                                    <td>${book.saleInfo.listPrice.amount.toFixed(2)}</td>
-                                </tr>
-                            );
-                        })
-                    }
-                </tbody>
-            </table>      
+            <div>
+                <table className="checkout-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            !!this.props.cart && this.props.cart.map((book, index) => {
+                                return (
+                                    <tr>
+                                        <td>{book.volumeInfo.title}</td>
+                                        <td>{book.volumeInfo.authors && book.volumeInfo.authors[0]}</td>
+                                        <td>${book.saleInfo.listPrice.amount.toFixed(2)}</td>
+                                    </tr>
+                                );
+                            })
+                        }
+                    </tbody>
+                </table>
+                <br />
+                <div className="flex-column">
+                    <p><b>Subtotal</b></p>
+                    <p>${subtotal.toFixed(2)}</p>
+                </div>
+
+                </div>   
             );
 
-        let priceArray = this.props.cart && this.props.cart.length && this.props.cart.map(book => book.saleInfo.listPrice.amount);
-        const subtotal = priceArray ? priceArray.reduce((a,b) => a + b) : 0;       
 
         return (
             <Cart 
