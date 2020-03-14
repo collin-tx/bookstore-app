@@ -13,7 +13,7 @@ export class FeaturedContainer extends Component {
     
     componentDidMount(){
         // db stuff
-        let database = this.props.firebase;
+        let { database } = this.props;
         let featured = database.ref('featured');
         this.setState({ featured, database });
 

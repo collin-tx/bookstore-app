@@ -33,9 +33,9 @@ const App = () => (
     <Nav firebase={database} />
     <Header />
     <Switch>
-      <Route path="/" render={ () => <Home firebase={database} />} exact />
-      <Route path="/cart" render={ () => <CartContainer firebase={database} />} />
-      <Route path="/featured" render={ ()=> <FeaturedContainer firebase={database} />} />
+      <Route path="/" render={ () => <Home />} exact />
+      <Route path="/cart" render={ () => <CartContainer />} />
+      <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
       <Route component={Error} />
     </Switch>
     <Footer />
