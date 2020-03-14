@@ -1,10 +1,8 @@
 import React from 'react';
-import Books from './Books';
+import BooksContainer from '../containers/Books';
 
-const Home = ({ firebase }) => (
-    <div>
-        <Books firebase={firebase} />
-    </div>
+const Home = () => (
+    <BooksContainer />
 );
 
-export default Home
+export default Home;

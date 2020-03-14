@@ -2,17 +2,15 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
-import Cart from './components/Cart';
+import CartContainer from './containers/Cart';
 import Nav from './components/Nav';
-import Featured from './components/Featured';
-import Footer from './components/Footer'
+import FeaturedContainer from './containers/Featured';
+import Footer from './components/Footer';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
 import './App.css';
 
 
-
-// Adding Firebase to App
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "books-app-249318.firebaseapp.com",
@@ -22,27 +20,27 @@ var firebaseConfig = {
   messagingSenderId: "776537219409",
   appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
-// added conditional, otherwise it results in error -- Firebase App named '[DEFAULT]' already exists (app/duplicate-app)
+
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
+
 const database = firebase.database();
 
 
-function App() {
-  return (
-    <BrowserRouter>
-    <Nav />
-    <Header /> 
+const App = () => (
+  <BrowserRouter>
+    <Nav firebase={database} />
+    <Header />
     <Switch>
-      <Route path="/" render={ () => <Home firebase={database} />} exact />
-      <Route path="/cart" render={ () => <Cart firebase={database} />} />
-      <Route path="/featured" render={ ()=> <Featured firebase={database} />} />
+      <Route path="/" render={ () => <Home />} exact />
+      <Route path="/cart" render={ () => <CartContainer />} />
+      <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
       <Route component={Error} />
     </Switch>
     <Footer />
-</BrowserRouter>
-  );
-}
+  </BrowserRouter>
+);
+
 
 export default App;

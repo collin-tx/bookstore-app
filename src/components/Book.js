@@ -1,16 +1,16 @@
 import React from 'react';
 
 const Book = ({
-    title,
-    img,
     author,
-    price,
-    preview,
+    book,
+    img,
     index,
+    preview,
+    price,
+    title,
     addToCart = () => {}
-}) => {
-    return (
-        <li className="book list-group-item">
+}) => (
+    <li className="book list-group-item">
         <h2>{title}</h2>
         <img src={img} alt={title + "book cover"} className="book-cover" />
         <p>{author}</p>
@@ -25,7 +25,6 @@ const Book = ({
             </button>}
         </div>
     </li>
-    );
-}
+);
 
 export default Book;
