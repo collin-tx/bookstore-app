@@ -32,7 +32,7 @@ class SignInContainer extends Component {
       }, 100); // janky but bc of this, it now passes along the right action.payload
     } else {
       this.setState({ 
-        error: 'You must provide a proper email address and password must be at least 5 characters'
+        error: 'Username and password needs to be at least 5 letters'
       });
     }
   }

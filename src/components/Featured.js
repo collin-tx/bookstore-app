@@ -36,14 +36,8 @@ const Featured = ({
                     <h3 id="comment-invite" className="text-center m-5">Write a Comment</h3>
 
                     {
-                        signedIn &&
-                        <p>Leave a comment as {user}</p>
-                        
-                    }
-
-                    {
                         !signedIn &&
-                        <p>You may write an anonymous comment or <a href="#top">sign in</a></p>
+                        <p className="text-center">You may write an anonymous comment or <a href="#top">sign in</a></p>
                     }
 
                     <form id="comment-form" className="m-5" onSubmit={handleSubmit}>
@@ -55,7 +49,7 @@ const Featured = ({
                         </button>
                     </form>
 
-                    <p>commenting as {signedIn ? user : 'guest'}</p>
+                    <p className="text-center">commenting as {signedIn ? user : 'guest'}</p>
                 </div>
 
             </div>
