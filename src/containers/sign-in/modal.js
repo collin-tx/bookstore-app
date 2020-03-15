@@ -4,24 +4,33 @@ import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import SignInContainer from './index';
 import { signOut } from '../../actions';
 
-const SignInModal = props => (
-  <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
-    <Modal.Header closeButton>
-      <Modal.Title id="contained-modal-title-vcenter">
-        Sign In
-      </Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <SignInContainer closeModal={props.onHide} />
-    </Modal.Body>
-    <Modal.Footer>
-      <Button onClick={props.onHide}>Close</Button>
-    </Modal.Footer>
-  </Modal>
-);
+const SignInModal = props => {
+  const [ isNewUser, setIsNewUser ] = React.useState(true);
+  return (
+    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          { isNewUser ? 'Sign Up' : 'Sign In' }
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <SignInContainer closeModal={props.onHide} firebase={props.firebase} isNewUser={isNewUser} />
+      </Modal.Body>
+      <Modal.Footer className="d-flex justify-content-between">
+        {
+          isNewUser ? (
+            <p>Already have an account? <a className="modal-sign-link" onClick={() => setIsNewUser(false)}>sign in</a></p>) : (
+            <p>Don't have an account? <a className="modal-sign-link" onClick={() => setIsNewUser(true)}>sign up</a></p>
+          )
+        }
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
   
 export const SignInModalContainer = props => {
-const [modalShow, setModalShow] = React.useState(false);
+const [ modalShow, setModalShow ] = React.useState(false);
     return (
         <ButtonToolbar>
         
@@ -41,6 +50,7 @@ const [modalShow, setModalShow] = React.useState(false);
         <SignInModal 
             onHide={() => setModalShow(false)}
             show={modalShow}
+            firebase={props.firebase}
         />
         </ButtonToolbar>
     );
