@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CartBook from '../../components/CartBook';
 import Cart from '../../components/Cart';
-import { generateKey } from '../../utils/helper';
 import { emptyCart, removeBookFromCart } from '../../actions';
 
 export class CartContainer extends Component {  
@@ -48,7 +47,7 @@ export class CartContainer extends Component {
                         {
                             !!this.props.cart && this.props.cart.map((book, index) => {
                                 return (
-                                    <tr>
+                                    <tr key={book.id}>
                                         <td>{book.volumeInfo.title}</td>
                                         <td>{book.volumeInfo.authors && book.volumeInfo.authors[0]}</td>
                                         <td>${book.saleInfo.listPrice.amount.toFixed(2)}</td>
