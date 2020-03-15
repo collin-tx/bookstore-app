@@ -11,7 +11,7 @@ class SignInContainer extends Component {
     error: '',
     password: '',
     signedIn: false,
-    user: '',
+    user: {},
     username: ''
   }
 
@@ -31,8 +31,13 @@ class SignInContainer extends Component {
     e.preventDefault();
     if (this.state.email.length > 5 && this.state.password.length >= 5) {
       setTimeout(() => {
-        this.loginUser(this.state.email, this.state.email, this.state.password);
-        this.setState({ user: this.state.email, email: '', password: '' });
+
+        if (this.props.isNewUser) {
+          this.createNewUser(this.state.username, this.state.email, this.state.password);
+        } else {
+          this.loginUser(this.state.username, this.state.email, this.state.password);
+        }
+        this.setState({ email: '', password: '' });
         this.props.closeModal();
       }, 100); // janky but bc of this, it now passes along the right action.payload
     } else {
@@ -42,50 +47,60 @@ class SignInContainer extends Component {
     }
   }
 
-  loginUser = (user, email, password) => {
-    //TODO - USER AUTH STUFF
-    this.setState({ signedIn: true, error: ''});
-    this.props.signIn(user);
-    this.props.firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+  loginUser = (username, email, password) => {
+    const { firebase } = this.props;
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      const signedInUser = firebase.auth().currentUser;
+      this.props.signIn(signedInUser.displayName || email);
+      this.setState({ signedIn: true, error: '', user: signedInUser });
+    })
+    .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log('while signing in - ' + errorCode + ' - ' + errorMessage);
     });
-    console.log('current FB USER!', this.props.firebase.auth().currentUser);
+    console.log('current FB USER!', this.state.user);
   }
 
   logoutUser = () => {
     this.setState({ signedIn: false, user: null });
-    this.props.signOut();
-    this.props.firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-    }).catch(function(error) {
-      // An error happened.
+    this.props.firebase.auth().signOut().then(() => {
+      // needs to open a prompt or modal for confirmation?
+      this.props.signOut();
+    }).catch((error) => {
+      console.log('sign out error', error);
     });
   }
 
   createNewUser = (username, email, password) => {
-    this.setState({ signedIn: true, error: '' });
-    this.props.signIn(username);
-    this.props.firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    const { firebase } = this.props;
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      const signedInUser = firebase.auth().currentUser;
+      this.props.signIn(username);
+      this.setState({ signedIn: true, error: '', user: signedInUser });
+      const user = firebase.auth().currentUser;
+      user.updateProfile({
+        displayName: username,
+        // photoURL: "https://example.com/jane-q-user/profile.jpg"
+      }).then(function() {
+        console.log('user name is now ' + user.displayName)
+      }).catch(function(error) {
+        console.log('naming error', error)
+      });
+    })
+    .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       // ...
       console.log('while signing up - ' + errorCode + ' - ' + errorMessage);
     });
-    const user = this.props.firebase.auth().currentUser;
-
-    user.updateProfile({
-      displayName: username,
-      // photoURL: "https://example.com/jane-q-user/profile.jpg"
-    }).then(function() {
-      // Update successful.
-    }).catch(function(error) {
-      // An error happened.
-    });
-    console.log('current FB USER!', user);
+    
+    console.log('current FB USER!', this.state.user);
   }
 
   render() {
