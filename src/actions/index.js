@@ -1,20 +1,52 @@
-import { ADD_BOOK, EMPTY_CART, FETCH_BOOKS, REMOVE_BOOK, SIGN_IN, SIGN_OUT } from './constants';
+import { ADD_BOOK, CREATE_USER, EMPTY_CART, FETCH_BOOKS, REMOVE_BOOK, SIGN_IN, SIGN_OUT } from './constants';
 
 
 //action creators
-export const signIn = user => {
-  return {
+export const signIn = (firebase, email, password) => async dispatch => {
+  await firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      console.log('signed in as', firebase.auth().currentUser.displayName, firebase.auth().currentUser);
+    })
+    .catch((error) => {
+      console.log('some signin error', error);
+    });
+  const user = firebase.auth().currentUser;
+  return dispatch({
     type: SIGN_IN,
     payload: user
-  }
+  });
 }
 
-export const signOut = () => {
+export const createUser = (firebase, email, password, username) => async dispatch => {
+  await firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      const user = firebase.auth().currentUser;
+      // set display name
+      user.updateProfile({
+        displayName: username,
+        // photoURL: ""
+      })
+    })
+    .then(function() {
+      console.log('user name is ' + user.displayName)
+    })
+    .catch(error => {
+      console.log('a createUser error, ', error);
+    });
+  const user = firebase.auth().currentUser;
+  console.log('created new user -- ', user.displayName, user);
+  return dispatch({
+    type: CREATE_USER,
+    payload: user
+  });
+}
+
+export const signOut = firebase => {
+  console.log('signing out', firebase.auth().currentUser);
+  firebase.auth().signOut();
+  console.log('signed out - should be null', firebase.auth().currentUser);
   return {
-    type: SIGN_OUT,
-    payload: {
-      user: null
-    }
+    type: SIGN_OUT
   }
 }
 

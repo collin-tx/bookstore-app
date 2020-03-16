@@ -31,13 +31,20 @@ const SignInModal = props => {
   
 export const SignInModalContainer = props => {
 const [ modalShow, setModalShow ] = React.useState(false);
+const onSignOut = () => {
+  props.firebase.auth().signOut()
+  .then(() => {
+    props.signOut(props.firebase);
+  });
+}
+
     return (
         <ButtonToolbar>
         
           { !!props.signedIn ? (
               <div>
-                  <p className="navLink mr-2">{props.user}</p>
-                  <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => props.signOut()}>
+                  <p className="navLink mr-2">{props.user && props.user.displayName ||props.user && props.user.email || ''}</p>
+                  <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => onSignOut()}>
                       <small>sign out</small>
                   </Button>
               </div> ) : (
@@ -65,7 +72,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
     return {
-        signOut: () => dispatch(signOut())
+        signOut: firebase => dispatch(signOut(firebase))
     }
 }
 

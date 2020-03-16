@@ -30,7 +30,7 @@ const database = firebase.database();
 
 const App = () => (
   <BrowserRouter>
-    <Nav firebase={firebase} />
+    <Nav firebase={firebase} database={database} />
     <Header />
     <Switch>
       <Route path="/" render={ () => <Home />} exact />

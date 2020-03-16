@@ -11,14 +11,14 @@ const SignIn = ({
 
   const renderErrors = () => {
     return error.length ? (
-      <div>
+      <div className="error">
         <p>{error}</p>
       </div>
     ) : null
   }
 
   return (
-    <form id="sign-in-form" className="form-horizontal" onSubmit={(e) => handleSubmit(e)}>
+    <form id="sign-in-form" className="form-horizontal" onSubmit={(e) => handleSubmit(e, email, password, password)}>
       {renderErrors()}
       <div className="form-group">
         <label htmlFor="email">email:</label>

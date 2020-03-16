@@ -5,22 +5,24 @@ const SignUp = ({
   error,
   handleEmail,
   handlePassword,
+  handlePasswordVerify,
   handleSubmit,
   handleUsername,
   password,
+  passwordVerify,
   username
 }) => {
 
   const renderErrors = () => {
     return error.length ? (
-      <div>
+      <div className="error">
         <p>{error}</p>
       </div>
     ) : null
   }
 
   return (
-    <form id="sign-up-form" className="form-horizontal" onSubmit={(e) => handleSubmit(e)}>
+    <form id="sign-up-form" className="form-horizontal" onSubmit={(e) => handleSubmit(e, email, password, passwordVerify)}>
       {renderErrors()}
       <div className="form-group">
         <label htmlFor="username">username:</label>
@@ -33,6 +35,10 @@ const SignUp = ({
       <div className="form-group">
         <label htmlFor="password">password:</label>
         <input type="password" onChange={handlePassword} value={password} className="form-control" />
+      </div>
+      <div className="form-group">
+        <label htmlFor="passwordVerify">confirm password:</label>
+        <input type="password" onChange={handlePasswordVerify} value={passwordVerify} className="form-control" />
       </div>
       <button className="btn btn-secondary form-control">
           Sign Up

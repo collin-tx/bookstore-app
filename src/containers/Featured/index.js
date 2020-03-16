@@ -26,7 +26,7 @@ export class FeaturedContainer extends Component {
     addComment = () => {
         let featuredIndex = Object.keys(this.state.featuredBook);
         this.state.database.ref('featured/' + featuredIndex +'/book/comments').push({
-            user: (this.props.user || 'Anonymous') ,
+            user: (this.props.user && this.props.user.displayName || 'Anonymous') ,
             key: this.state.value
         });
         this.setState({ value: '' })
@@ -67,7 +67,7 @@ export class FeaturedContainer extends Component {
         allComments = allComments.map( (comment, index) => {
             return (
                 <Comment key={generateKey(index)} comment={comment.key} user={comment.user} 
-                edit={this.editComment} username={this.props.user} delete={this.deleteComment}
+                edit={this.editComment} username={this.props.user && this.props.user.displayName} delete={this.deleteComment}
                 commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
             )
         });
@@ -80,7 +80,7 @@ export class FeaturedContainer extends Component {
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
                 signedIn={this.props.signedIn}
-                user={this.props.user}
+                user={(this.props.user && this.props.user.displayName) || 'phuk'}
                 value={this.state.value}
             />
         );
