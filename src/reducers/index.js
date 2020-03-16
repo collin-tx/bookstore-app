@@ -1,4 +1,4 @@
-import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK, CREATE_USER, EMPTY_CART } from '../actions/constants';
+import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, RENDER_ERROR, REMOVE_BOOK, ADD_BOOK, CREATE_USER, EMPTY_CART } from '../actions/constants';
 
   const rootReducer = (state = [], action) => {
     switch(action.type) {
@@ -30,6 +30,11 @@ import { SIGN_IN, SIGN_OUT, FETCH_BOOKS, REMOVE_BOOK, ADD_BOOK, CREATE_USER, EMP
         return {
           ...state,
           cart: [ ...(state.cart || []), action.payload ]
+        }
+      case RENDER_ERROR:
+        return {
+          ...state,
+          error: action.payload
         }
       case REMOVE_BOOK: 
         return {

@@ -1,4 +1,4 @@
-import { ADD_BOOK, CREATE_USER, EMPTY_CART, FETCH_BOOKS, REMOVE_BOOK, SIGN_IN, SIGN_OUT } from './constants';
+import { ADD_BOOK, CREATE_USER, EMPTY_CART, FETCH_BOOKS, RENDER_ERROR, REMOVE_BOOK, SIGN_IN, SIGN_OUT } from './constants';
 
 
 //action creators
@@ -12,7 +12,14 @@ export const signIn = (firebase, email, password) => async dispatch => {
       // 
       //TODO -> need to render this to the modal when an error comes back
       //
+      if (!!error){
+        return dispatch({
+          type: RENDER_ERROR,
+          payload: error
+        });
+      }
     });
+
   const user = firebase.auth().currentUser;
   if (!!user){
     return dispatch({

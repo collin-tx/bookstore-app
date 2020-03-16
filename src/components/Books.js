@@ -39,7 +39,7 @@ const Books = ({
         }
 
         { searched && !books.length && !loading &&
-            <div id="error-div" className="text-center">
+            <div id="error-div" className="text-center"> {/* that div is poorly named! TODO! */}
                 <p>No Books found</p>
             </div>
         }
