@@ -74,7 +74,7 @@ export class CartContainer extends Component {
                 checkoutBooks={checkoutBooks}
                 emptyCart={this.emptyCart}
                 subtotal={subtotal}
-                user={(this.props.user && this.props.user.displayName) || 'phuk'}
+                user={(this.props.user && this.props.user.displayName) || 'guest'}
             />
         )
     }

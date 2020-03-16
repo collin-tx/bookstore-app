@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SignIn from '../../components/SignIn';
 import SignUp from '../../components/SignUp';
+import SignedIn from '../../components/SignedIn';
 import { connect } from 'react-redux';
 import { signIn, signOut, createUser } from '../../actions';
 import { validateEmail, validatePassword } from '../../utils/helper';
@@ -15,6 +16,15 @@ class SignInContainer extends Component {
     signedIn: false,
     user: {},
     username: ''
+  }
+
+  componentDidMount(){
+    const user = this.props.firebase.auth().currentUser;
+    if (!!user){
+      this.setState({ signedIn: true, user });
+    } else {
+      this.setState({ signedIn: false, user: {} })
+    }
   }
 
 
@@ -66,9 +76,16 @@ class SignInContainer extends Component {
 
   render() {
     const { email, error, password, passwordVerify, signedIn, user, username } = this.state;
-    const { isNewUser } = this.props;
+    const { isNewUser, firebase } = this.props;
+    const currentUser = firebase.auth().currentUser;
+    const onSignOut = () => {
+      firebase.auth().signOut()
+      .then(() => {
+        this.props.signOut(firebase);
+      });
+    }
 
-    const form = isNewUser ? (
+    let form = isNewUser ? (
       <SignUp 
         email={email}
         error={error}
@@ -91,6 +108,10 @@ class SignInContainer extends Component {
         handleSubmit={this.handleSubmit}
         password={password}
       /> );
+
+    if (!!signedIn && !!currentUser) {
+      form = <SignedIn currentUser={currentUser} logout={onSignOut} />
+    }
 
     return form;
   }

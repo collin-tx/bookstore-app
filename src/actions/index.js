@@ -9,12 +9,17 @@ export const signIn = (firebase, email, password) => async dispatch => {
     })
     .catch((error) => {
       console.log('some signin error', error);
+      // 
+      //TODO -> need to render this to the modal when an error comes back
+      //
     });
   const user = firebase.auth().currentUser;
-  return dispatch({
-    type: SIGN_IN,
-    payload: user
-  });
+  if (!!user){
+    return dispatch({
+      type: SIGN_IN,
+      payload: user
+    });
+  }
 }
 
 export const createUser = (firebase, email, password, username) => async dispatch => {
@@ -42,9 +47,7 @@ export const createUser = (firebase, email, password, username) => async dispatc
 }
 
 export const signOut = firebase => {
-  console.log('signing out', firebase.auth().currentUser);
   firebase.auth().signOut();
-  console.log('signed out - should be null', firebase.auth().currentUser);
   return {
     type: SIGN_OUT
   }

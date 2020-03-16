@@ -80,7 +80,7 @@ export class FeaturedContainer extends Component {
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
                 signedIn={this.props.signedIn}
-                user={(this.props.user && this.props.user.displayName) || 'phuk'}
+                user={(this.props.user && this.props.user.displayName) || 'guest'}
                 value={this.state.value}
             />
         );
