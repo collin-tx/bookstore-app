@@ -1,4 +1,14 @@
-import { ADD_BOOK, CREATE_USER, EMPTY_CART, FETCH_BOOKS, RENDER_ERROR, REMOVE_BOOK, SIGN_IN, SIGN_OUT } from './constants';
+import { ADD_BOOK,
+  CREATE_USER,
+  EMPTY_CART,
+  FETCH_BOOKS,
+  RENDER_ERROR,
+  REMOVE_BOOK,
+  REMOVE_ERROR,
+  SIGN_IN,
+  SIGN_OUT,
+  SIGN_IN_UI
+} from './constants';
 
 
 //action creators
@@ -6,26 +16,30 @@ export const signIn = (firebase, email, password) => async dispatch => {
   await firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
       console.log('signed in as', firebase.auth().currentUser.displayName, firebase.auth().currentUser);
-    })
-    .catch((error) => {
-      console.log('some signin error', error);
-      // 
-      //TODO -> need to render this to the modal when an error comes back
-      //
-      if (!!error){
-        return dispatch({
-          type: RENDER_ERROR,
-          payload: error
+      dispatch(removeError());
+      const user = firebase.auth().currentUser;
+      if (!!user){
+        dispatch({
+          type: SIGN_IN,
+          payload: user
         });
       }
+    })
+    .catch(error => {
+        dispatch({
+          type: RENDER_ERROR,
+          payload: {error}
+        });
     });
 
-  const user = firebase.auth().currentUser;
-  if (!!user){
-    return dispatch({
-      type: SIGN_IN,
-      payload: user
-    });
+}
+
+
+export const signInUI = (email, username) => {
+  const user = { email, displayName: username };
+  return {
+    type: SIGN_IN_UI,
+    payload: user
   }
 }
 
@@ -40,17 +54,23 @@ export const createUser = (firebase, email, password, username) => async dispatc
       })
     })
     .then(function() {
-      console.log('user name is ' + user.displayName)
+      dispatch(removeError());
     })
     .catch(error => {
       console.log('a createUser error, ', error);
+      dispatch({
+        type: RENDER_ERROR,
+        payload: {error}
+      })
     });
   const user = firebase.auth().currentUser;
-  console.log('created new user -- ', user.displayName, user);
-  return dispatch({
-    type: CREATE_USER,
-    payload: user
-  });
+  if (!!user) {
+    console.log('created new user -- ', user.displayName, user);
+    return dispatch({
+      type: CREATE_USER,
+      payload: user
+    });
+  }
 }
 
 export const signOut = firebase => {
@@ -71,6 +91,23 @@ export const removeBookFromCart = book => {
   return {
     type: REMOVE_BOOK,
     payload: book
+  }
+}
+
+export const renderError = error => {
+  console.log({
+    type: RENDER_ERROR,
+    payload: error
+  });
+  return {
+    type: RENDER_ERROR,
+    payload: error
+  }
+}
+
+export const removeError = () => {
+  return {
+    type: REMOVE_ERROR
   }
 }
 
