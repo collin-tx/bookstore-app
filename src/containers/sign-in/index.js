@@ -3,14 +3,13 @@ import SignIn from '../../components/SignIn';
 import SignUp from '../../components/SignUp';
 import SignedIn from '../../components/SignedIn';
 import { connect } from 'react-redux';
-import { signIn, signOut, createUser } from '../../actions';
+import { signIn, signOut, createUser, removeError, renderError } from '../../actions';
 import { validateEmail, validatePassword } from '../../utils/helper';
 
 class SignInContainer extends Component {
 
   state = {
     email: '',
-    error: '',
     password: '',
     passwordVerify: '',
     signedIn: false,
@@ -26,7 +25,6 @@ class SignInContainer extends Component {
       this.setState({ signedIn: false, user: {} })
     }
   }
-
 
   handleEmail = e => {
     this.setState({ email: e.target.value });
@@ -44,27 +42,37 @@ class SignInContainer extends Component {
     this.setState({ username: e.target.value })
   }
 
-  handleSubmit = (e, email, password, passwordVerify) => {
+  handleSubmit = (e, email, password, passwordVerify, newUser = false) => {
     e.preventDefault();
     if (validateEmail(email) && validatePassword(password, passwordVerify)) {
       if (this.props.isNewUser) {
+        if (!!this.state.username.length){
         this.createNewUser(this.state.email, this.state.password, this.state.username);
+        }
       } else {
         this.loginUser(this.state.email, this.state.password);
       }
-      this.setState({ user: this.props.firebase.auth().currentUser, signedIn: true });
-    } else if (!validateEmail(email)) {
-      this.setState({ error: 'Please use a proper email address' });
-    } else if (!validatePassword(password, passwordVerify)) {
-      this.setState({ error: 'passwords must match' });
     }
+    
+    if (!validateEmail(email)) {
+      this.props.renderError({ error: { message: 'Please use a proper email address' } });
+    } else if (!validatePassword(password, passwordVerify)) {
+      this.props.renderError({ error: { message: newUser ? 'Passwords must match and be at least 6 characters' : 'Incorrect Password' } });
+    } else if (!this.state.username.length && newUser){
+      this.props.renderError({ error: { message: 'Please enter a username' } });
+    }
+
+    const user = this.props.firebase.auth().currentUser
+    if (!!user) {
+      this.setState({ user, signedIn: true });
+    } 
   }
 
   loginUser = (email, password) => {
     const { firebase } = this.props;
     this.props.signIn(firebase, email, password);
     const signedInUser = firebase.auth().currentUser;
-    this.setState({ signedIn: true, user: signedInUser })
+    this.setState({ signedIn: true, user: signedInUser });
   }
 
   createNewUser = (email, password, username) => {
@@ -75,8 +83,8 @@ class SignInContainer extends Component {
   }
 
   render() {
-    const { email, error, password, passwordVerify, signedIn, user, username } = this.state;
-    const { isNewUser, firebase } = this.props;
+    const { email, password, passwordVerify, signedIn, user, username } = this.state;
+    const { isNewUser, firebase, error } = this.props;
     const currentUser = firebase.auth().currentUser;
     const onSignOut = () => {
       firebase.auth().signOut()
@@ -110,27 +118,26 @@ class SignInContainer extends Component {
       /> );
 
     if (!!signedIn && !!currentUser) {
-      form = <SignedIn currentUser={currentUser} logout={onSignOut} />
+      form = <SignedIn logout={onSignOut} />
     }
 
     return form;
   }
 }
 
-const mapState = state => (
-  {
+const mapState = state => ({
     user: state.user,
     signedIn: state.signedIn,
+    error: state.error,
     state
-  }
-);
+});
 
-const mapDispatch = dispatch => (
-  {
+const mapDispatch = dispatch => ({
     signIn: (firebase, email, password) => dispatch(signIn(firebase, email, password)),
     signOut: firebase => dispatch(signOut(firebase)),
-    createUser: (firebase, email, password, username) => dispatch(createUser(firebase, email, password, username))
-  }
-);
+    createUser: (firebase, email, password, username) => dispatch(createUser(firebase, email, password, username)),
+    removeError: () => dispatch(removeError()),
+    renderError: error => dispatch(renderError(error))
+});
 
 export default connect(mapState, mapDispatch)(SignInContainer);

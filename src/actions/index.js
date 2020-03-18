@@ -34,12 +34,17 @@ export const signIn = (firebase, email, password) => async dispatch => {
 
 }
 
-
 export const signInUI = (email, username) => {
   const user = { email, displayName: username };
   return {
     type: SIGN_IN_UI,
     payload: user
+  }
+}
+
+export const signOutUI = () => {
+  return {
+    type: SIGN_OUT
   }
 }
 
