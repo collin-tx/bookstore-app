@@ -10,7 +10,7 @@ export class CartContainer extends Component {
         this.props.removeBookFromCart(this.props.firebase, book);
     }
 
-    emptyCart = firebase => {
+    emptyCart = () => {
         this.props.emptyCart(this.props.firebase);
     }
 
