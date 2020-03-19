@@ -1,4 +1,6 @@
-import { ADD_BOOK,
+import { 
+  ADD_BOOK,
+  CHECK_OUT,
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
@@ -31,6 +33,10 @@ export const signIn = (firebase, email, password) => async dispatch => {
           payload: {error}
         });
     });
+
+    // connect with user in db too - i.e. find user in db
+    // check whether user has items in user cart in db, populate the cart with them if so
+    // check for past purchases to display somehow
 
 }
 
@@ -76,6 +82,8 @@ export const createUser = (firebase, email, password, username) => async dispatc
       payload: user
     });
   }
+
+  // create user in Users table in db
 }
 
 export const signOut = firebase => {
@@ -85,14 +93,19 @@ export const signOut = firebase => {
   }
 }
 
-export const addBookToCart = book => {
+export const addBookToCart = (firebase, book) => {
+
+  // add book to users cart in FB here
+  // perhaps we just add it to the db and have the UI read from the db??
   return {
     type: ADD_BOOK,
     payload: book
   }
 }
 
-export const removeBookFromCart = book => {
+export const removeBookFromCart = (firebase, book) => {
+
+  // remove book from users cart in FB here - same as above
   return {
     type: REMOVE_BOOK,
     payload: book
@@ -119,6 +132,16 @@ export const removeError = () => {
 export const emptyCart = () => {
   return {
     type: EMPTY_CART
+  }
+}
+
+export const checkout = (firebase, purchase) => {
+
+  // push purchase to purchase history array in db
+  return {
+    type: CHECK_OUT
+    // payload: purchase -- don't think I need this
+    //  as far as UI is concerned, shouldn't this just empty the cart?
   }
 }
 
