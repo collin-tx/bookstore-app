@@ -30,11 +30,11 @@ const database = firebase.database();
 
 const App = () => (
   <BrowserRouter>
-    <Nav firebase={firebase} database={database} />
+    <Nav firebase={firebase} />
     <Header />
     <Switch>
-      <Route path="/" render={ () => <Home />} exact />
-      <Route path="/cart" render={ () => <CartContainer />} />
+      <Route path="/" render={ () => <Home firebase={firebase} />} exact />
+      <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
       <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
       <Route component={Error} />
     </Switch>

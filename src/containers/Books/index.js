@@ -33,7 +33,7 @@ export class BooksContainer extends Component {
         setTimeout( ()=> {
             this.setState({ adding: false });
         }, 1000);
-        this.props.addBookToCart(bookToAdd);
+        this.props.addBookToCart(this.props.firebase, bookToAdd);
     }
 
     getBooks = searchTerm => {
@@ -93,7 +93,7 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({ 
     fetchBooks: searchTerm => dispatch(fetchBooks(searchTerm)),
-    addBookToCart: book => dispatch(addBookToCart(book))
+    addBookToCart: (fb, book) => dispatch(addBookToCart(fb, book))
 });
 
 export default connect(mapState, mapDispatch)(BooksContainer);

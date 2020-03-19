@@ -7,11 +7,11 @@ import { emptyCart, removeBookFromCart } from '../../actions';
 export class CartContainer extends Component {  
 
     handleRemove = book => {
-        this.props.removeBookFromCart(book);
+        this.props.removeBookFromCart(this.props.firebase, book);
     }
 
-    emptyCart = () => {
-        this.props.emptyCart();
+    emptyCart = firebase => {
+        this.props.emptyCart(this.props.firebase);
     }
 
     render() {
@@ -88,8 +88,8 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => ({ 
-    removeBookFromCart: book => dispatch(removeBookFromCart(book)),
-    emptyCart: () => dispatch(emptyCart())
+    removeBookFromCart: (fb, book) => dispatch(removeBookFromCart(fb, book)),
+    emptyCart: (fb) => dispatch(emptyCart(fb))
 });
 
 export default connect(mapState, mapDispatch)(CartContainer);
