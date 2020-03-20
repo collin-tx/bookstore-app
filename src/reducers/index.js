@@ -1,6 +1,5 @@
 import {
   ADD_BOOK,
-  CHECK_OUT,
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
