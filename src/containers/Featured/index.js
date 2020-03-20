@@ -26,7 +26,7 @@ export class FeaturedContainer extends Component {
     addComment = () => {
         let featuredIndex = Object.keys(this.state.featuredBook);
         this.state.database.ref('featured/' + featuredIndex +'/book/comments').push({
-            user: (this.props.user && this.props.user.displayName || 'Anonymous') ,
+            user: (this.props.user ? this.props.user.displayName : 'Anonymous') ,
             key: this.state.value
         });
         this.setState({ value: '' })

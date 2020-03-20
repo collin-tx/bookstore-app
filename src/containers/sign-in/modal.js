@@ -29,8 +29,8 @@ const SignInModal = props => {
       <Modal.Footer className="d-flex justify-content-between">
         {
           isNewUser ? (
-            <p>Already have an account? <a className="modal-sign-link" onClick={() => setIsNewUser(false)}>sign in</a></p>) : (
-            <p>Don't have an account? <a className="modal-sign-link" onClick={() => setIsNewUser(true)}>sign up</a></p>)
+            <p>Already have an account? <button className="modal-sign-link" onClick={() => setIsNewUser(false)}>sign in</button></p>) : (
+            <p>Don't have an account? <button className="modal-sign-link" onClick={() => setIsNewUser(true)}>sign up</button></p>)
         }
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
@@ -55,7 +55,7 @@ export const SignInModalContainer = props => {
         { !!props.signedIn ? (
           // if a user has logged in -- display username above 'sign out' button
             <div>
-                <p className="navLink mr-2">{props.user && props.user.displayName ||props.user && props.user.email || ''}</p>
+                <p className="navLink mr-2">{props.user && props.user.displayName ? props.user.displayName : ''}</p>
                 <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => onSignOut()}>
                     <small>sign out</small>
                 </Button>

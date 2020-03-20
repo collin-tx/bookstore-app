@@ -58,7 +58,7 @@ export const signIn = (firebase, email, password) => async dispatch => {
         if (!!userCart){
           // need to sync the redux cart with fb cart
           Object.keys(userCart).map(book => {
-            dispatch({
+            return dispatch({
               type: ADD_BOOK,
               payload: userCart[book].book
             });
@@ -178,10 +178,10 @@ export const removeBookFromCart = (firebase, book) => {
   }
 }
 
-export const checkOut = (firebase, order, subtotal) => {
+export const checkOut = (firebase, order, subtotal) => dispatch => {
   // if I decide to track purchases from ppl not signed in, I could do something like this:
   // const user = props.firebase.auth().currentUser || { displayName: 'Guest', uid: Date.now() };
-
+console.log('checkin out', firebase, order, subtotal);
   const user = firebase.auth().currentUser;
 // push purchase details to purchaseHistory field on User  
   if (!!user){
@@ -204,10 +204,20 @@ export const checkOut = (firebase, order, subtotal) => {
         .set([]);
     }, 200);
   }
+  // refresh user history
+  const historyRef = firebase.database().ref('users/' + user.uid + '/purchaseHistory');
+  let userHistory;
+  historyRef.on('value', (snapshot) => {
+    userHistory = snapshot.val();
+ });
+  dispatch({
+    type: GET_HISTORY,
+    payload: userHistory
+  });
   // and empty UI cart
-  return {
+  dispatch({
     type: EMPTY_CART
-  }
+  });
 }
 
 export const renderError = error => {
