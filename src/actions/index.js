@@ -3,6 +3,7 @@ import {
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
+  GET_HISTORY,
   RENDER_ERROR,
   REMOVE_BOOK,
   REMOVE_ERROR,
@@ -44,11 +45,11 @@ export const signIn = (firebase, email, password) => async dispatch => {
       let userCart, userHistory; 
       
       userCart = cartRef.on('value', (snapshot) => {
-        return userCart = snapshot.val();
+         userCart = snapshot.val();
       });
       
       historyRef.on('value', (snapshot) => {
-        return userHistory = snapshot.val();
+         userHistory = snapshot.val();
       });
 
 
@@ -63,10 +64,13 @@ export const signIn = (firebase, email, password) => async dispatch => {
             });
           })
         }
-      }, 200);
         // and put the purchase history somewhere
-
-    };
+        dispatch({
+          type: GET_HISTORY,
+          payload: userHistory
+        })
+      }, 200);
+      };
     
 }
 
@@ -175,6 +179,9 @@ export const removeBookFromCart = (firebase, book) => {
 }
 
 export const checkOut = (firebase, order, subtotal) => {
+  // if I decide to track purchases from ppl not signed in, I could do something like this:
+  // const user = props.firebase.auth().currentUser || { displayName: 'Guest', uid: Date.now() };
+
   const user = firebase.auth().currentUser;
 // push purchase details to purchaseHistory field on User  
   if (!!user){

@@ -4,7 +4,6 @@ import store from '../store';
 import { checkOut } from '../actions';
 
 const CheckoutModal = props => {
-  const user = props.firebase.auth().currentUser || { displayName: 'Guest', uid: Date.now() };
   return (
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
