@@ -174,6 +174,35 @@ export const removeBookFromCart = (firebase, book) => {
   }
 }
 
+export const checkOut = (firebase, order, subtotal) => {
+  const user = firebase.auth().currentUser;
+// push purchase details to purchaseHistory field on User  
+  if (!!user){
+    const userId = user.uid;
+    const database = firebase.database();
+    database.ref('users/' + userId +'/purchaseHistory/').once('value')
+      .then(snapshot => {
+        const index = (snapshot.val() ? snapshot.val().length : 1);
+        const path = `users/${userId}/purchaseHistory/${index}`;
+        database.ref(path)
+          .set({
+            order,
+            subtotal,
+            date: Date()
+          });
+      });
+    // also need to empty user's fb cart
+    setTimeout(() => {
+      database.ref('users/' + userId + '/cart')
+        .set([]);
+    }, 200);
+  }
+  // and empty UI cart
+  return {
+    type: EMPTY_CART
+  }
+}
+
 export const renderError = error => {
   console.log({
     type: RENDER_ERROR,

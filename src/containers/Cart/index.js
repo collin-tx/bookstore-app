@@ -73,6 +73,7 @@ export class CartContainer extends Component {
                 cart={this.props.cart}
                 checkoutBooks={checkoutBooks}
                 emptyCart={this.emptyCart}
+                firebase={this.props.firebase}
                 subtotal={subtotal}
                 user={(this.props.user && this.props.user.displayName) || 'guest'}
             />
