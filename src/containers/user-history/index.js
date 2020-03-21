@@ -1,13 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { generateKey } from '../../utils/helper';
 
-class UserHistoryContainer extends Component {
-
-    render(){
+const UserHistory = ({ userHistory }) => {
+    
+    const purchaseList = userHistory && userHistory.map((order, index) => {
+        const orderItems = order.order.map((book, i) => {
+            return (
+                <li className="list-group-item" key={generateKey(i)}>
+                    {book.volumeInfo.title}
+                    {book.volumeInfo.authors[0]}
+                </li>
+            );
+        });
         return (
-            'user history'
-            // <UserHistory />
-        )
-    }
-}
+            <li className="list-group-item" key={generateKey(index)}>
+                Subtotal: ${order.subtotal}------------------{order.date}
+                <ul className="list-group">
+                    {orderItems}
+                </ul>
 
-export default UserHistoryContainer;
+            </li>
+        );
+    });
+    
+    return (
+        <ul className="list-group">
+            {purchaseList}
+        </ul>
+    );
+};
+
+export default UserHistory;

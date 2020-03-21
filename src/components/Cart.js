@@ -5,7 +5,7 @@ import Subtotal from './Subtotal';
 import UserHistoryModalContainer from '../containers/user-history/modal';
 
 const Cart = props => {
-    // const userHistory = 'get the user history from props actually, not FB?';
+
     const {
         cart = [],
         booksInCart = [],
@@ -15,7 +15,7 @@ const Cart = props => {
         subtotal,
         user
     } = props;
-    console.log('hist', props.userHistory);
+
     return (
         <div id="cart">
             <h2 id="cart-title" className="text-center m-5">Cart</h2>
@@ -51,7 +51,7 @@ const Cart = props => {
                     </div>
             }
 
-            {
+            {   
                 // see if user has a purchaseHistory, render modal button conditionally
                 props.userHistory && (
                     <UserHistoryModalContainer />

@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
-import UserHistoryContainer from './index';
+import UserHistory from './index';
 
 const UserHistoryModal = props => {
     // render error fx
+    console.log('history', props.userHistory);
   return (
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
@@ -14,7 +15,7 @@ const UserHistoryModal = props => {
         {/* renderErrors() */}
       </Modal.Header>
       <Modal.Body>
-        <UserHistoryContainer firebase={props.firebase} />
+        <UserHistory userHistory={props.userHistory} />
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
         <Button onClick={props.onHide}>Close</Button>
@@ -37,6 +38,7 @@ export const UserHistoryModalContainer = props => {
             show={modalShow}
             firebase={props.firebase}
             error={props.error}
+            userHistory={props.userHistory}
         />
       </ButtonToolbar>
   );
@@ -50,10 +52,4 @@ const mapState = state => {
     }
 }
 
-const mapDispatch = dispatch => {
-    return {
-        // will I need this?
-    }
-}
-
-export default connect(mapState, mapDispatch)(UserHistoryModalContainer);
+export default connect(mapState)(UserHistoryModalContainer);
