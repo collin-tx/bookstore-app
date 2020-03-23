@@ -4,7 +4,7 @@ import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import UserHistory from './index';
 
 const UserHistoryModal = props => {
-    // render error fx
+    // render error fx goes here
     console.log('history', props.userHistory);
   return (
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -15,7 +15,11 @@ const UserHistoryModal = props => {
         {/* renderErrors() */}
       </Modal.Header>
       <Modal.Body>
-        <UserHistory userHistory={props.userHistory} />
+        {
+          props.userHistory ? (
+          <UserHistory userHistory={props.userHistory} /> ) : 
+          (<em>No past purchases on this account. Please checkout while signed in to see purchases here.</em>)
+        }
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
         <Button onClick={props.onHide}>Close</Button>

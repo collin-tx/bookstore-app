@@ -51,12 +51,8 @@ const Cart = props => {
                     </div>
             }
 
-            {   
-                // see if user has a purchaseHistory, render modal button conditionally
-                props.userHistory && (
-                    <UserHistoryModalContainer />
-                )
-            }
+            <UserHistoryModalContainer />
+
         </div>
     );
 }
