@@ -6,9 +6,11 @@ import CartContainer from './containers/Cart';
 import Nav from './components/Nav';
 import FeaturedContainer from './containers/Featured';
 import Footer from './components/Footer';
+import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
 import './App.css';
+import { getHistory, signInUI, signOutUI } from './actions';
 
 
 var firebaseConfig = {
@@ -27,6 +29,8 @@ if (!firebase.apps.length) {
 
 const database = firebase.database();
 
+store.dispatch(signInUI(firebase));
+store.dispatch(getHistory(firebase));
 
 const App = () => (
   <BrowserRouter>

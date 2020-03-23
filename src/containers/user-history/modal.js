@@ -5,7 +5,6 @@ import UserHistory from './index';
 
 const UserHistoryModal = props => {
     // render error fx goes here
-    console.log('history', props.userHistory);
   return (
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>

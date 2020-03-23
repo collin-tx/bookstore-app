@@ -70,17 +70,9 @@ export const signIn = (firebase, email, password) => async dispatch => {
           payload: userHistory
         })
       }, 200);
-      };
-    
+    };   
 }
 
-export const signInUI = (email, username) => {
-  const user = { email, displayName: username };
-  return {
-    type: SIGN_IN_UI,
-    payload: user
-  }
-}
 
 export const signOutUI = () => {
   return {
@@ -267,4 +259,63 @@ export const fetchBooks = searchTerm => async dispatch => {
     .catch(error => {
       console.log('error from actions', error);
   });
+}
+
+export const signInUI = firebase => async dispatch => {
+  
+  let user = await firebase.auth().currentUser;
+  
+  if (!user){
+    setTimeout(() => {
+      !!firebase.auth().currentUser ? user = firebase.auth().currentUser : user = null;
+        
+      dispatch({
+        type: SIGN_IN_UI,
+        payload: user
+      })
+    }, 400);
+  } else {
+
+    dispatch({
+      type: SIGN_IN_UI,
+      payload: user
+    });
+  }
+}
+
+export const getHistory = firebase => async dispatch => {
+
+  setTimeout(() => {
+
+    const getUser = () => {  
+        let user = firebase.auth().currentUser;
+        if (!user){
+          setTimeout(() => {
+            user = firebase.auth().currentUser;
+          }, 400);
+        }
+      return user;
+    }
+  
+    const getUserId = () => {
+      let user = getUser();
+      let userId = user && user.uid || null;
+      return userId ? userId : getUserId();
+    }
+  
+    const getUserHistory = async () => {
+          let userId = await getUserId();
+
+          const historyRef = await firebase.database().ref('users/' + userId + '/purchaseHistory');
+
+            historyRef.on('value', async (snapshot) => {
+              let userHistory = await snapshot.val() && snapshot.val().filter(i => !!i);
+              dispatch({
+                type: GET_HISTORY,
+                payload: userHistory
+              });
+            });
+    }
+    getUserHistory();
+  }, 400);
 }
