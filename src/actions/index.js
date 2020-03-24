@@ -291,7 +291,7 @@ export const getHistory = firebase => async dispatch => {
   
     const getUserId = () => {
       let user = getUser();
-      let userId = user && user.uid || null;
+      let userId = user && user.uid;
       return user && (userId ? userId : getUserId());
     }
   

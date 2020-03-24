@@ -10,7 +10,7 @@ import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
 import './App.css';
-import { getHistory, signInUI, signOutUI } from './actions';
+import { getHistory, signInUI } from './actions';
 
 
 var firebaseConfig = {
