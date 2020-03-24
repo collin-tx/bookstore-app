@@ -26,49 +26,43 @@ export const signIn = (firebase, email, password) => async dispatch => {
         });
       }
     })
-    .catch(error => {
-        dispatch({
-          type: RENDER_ERROR,
-          payload: {error}
-        });
-    });
-
-    // connect with user in db too - i.e. find user in db
-    // check whether user has items in user cart in db, populate the cart with them if so
-    // check for past purchases to display somehow
-
-    const user = firebase.auth().currentUser;
-    if (!!user){
-
+    .then(() => {
+      const user = firebase.auth().currentUser;
       const cartRef = firebase.database().ref('users/' + user.uid + '/cart');
       const historyRef = firebase.database().ref('users/' + user.uid + '/purchaseHistory');
       let userCart, userHistory; 
       
-      userCart = cartRef.on('value', (snapshot) => {
-         userCart = snapshot.val();
+      cartRef.on('value', async (snapshot) => {
+        userCart = await snapshot.val();
       });
       
       historyRef.on('value', (snapshot) => {
-         userHistory = snapshot.val();
+        userHistory = snapshot.val();
       });
 
-      setTimeout(() => { 
+      setTimeout(() => {
         if (!!userCart){
+          console.log('fbcart', userCart);
           // need to sync the redux cart with fb cart
-          Object.keys(userCart).map(book => {
+          Array.from(new Set(Object.keys(userCart))).map(book => {
             return dispatch({
               type: ADD_BOOK,
               payload: userCart[book].book
             });
           })
         }
-        // and put the purchase history in the store
         dispatch({
           type: GET_HISTORY,
           payload: userHistory
         })
-      }, 200);
-    };   
+      }, 1000);
+    })
+    .catch(error => {
+        dispatch({
+          type: RENDER_ERROR,
+          payload: {error}
+        });
+    });
 }
 
 
@@ -138,7 +132,6 @@ export const addBookToCart = (firebase, book) => {
   if (!!user){
     const userId = user.uid;
     const database = firebase.database();
-
     database.ref('users/' + userId +'/cart/' + book.id)
       .set({
         book
@@ -169,38 +162,40 @@ export const checkOut = (firebase, order, subtotal) => dispatch => {
   // if I decide to track purchases from ppl not signed in, I could do something like this:
   // const user = props.firebase.auth().currentUser || { displayName: 'Guest', uid: Date.now() };
   const user = firebase.auth().currentUser;
+  const database = firebase.database();
+  const userId = user && user.uid;
 
   // push purchase details to purchaseHistory field on User  
   if (!!user){
-    const userId = user.uid;
-    const database = firebase.database();
-    database.ref('users/' + userId +'/purchaseHistory/').once('value')
-      .then(snapshot => {
-        const index = (snapshot.val() ? snapshot.val().length : 1);
-        const path = `users/${userId}/purchaseHistory/${index}`;
-        database.ref(path)
-          .set({
-            order,
-            subtotal,
-            date: Date()
-          });
-      });
+    setTimeout(() => {
+      database.ref('users/' + userId +'/purchaseHistory/').once('value')
+        .then(snapshot => {
+          const index = (snapshot.val() ? snapshot.val().length : 1);
+          const path = `users/${userId}/purchaseHistory/${index}`;
+          database.ref(path)
+            .set({
+              order,
+              subtotal,
+              date: Date()
+            });
+        });
+    }, 500);
     // also need to empty user's fb cart
     setTimeout(() => {
       database.ref('users/' + userId + '/cart')
         .set([]);
     }, 200);
-  }
-  // refresh user history
-  const historyRef = firebase.database().ref('users/' + user.uid + '/purchaseHistory');
-  let userHistory;
-  historyRef.on('value', (snapshot) => {
-    userHistory = snapshot.val();
- });
-  dispatch({
-    type: GET_HISTORY,
-    payload: userHistory
+    // refresh user history
+    const historyRef = firebase.database().ref('users/' + user.uid + '/purchaseHistory');
+    let userHistory;
+    historyRef.on('value', (snapshot) => {
+      userHistory = snapshot.val();
   });
+    dispatch({
+      type: GET_HISTORY,
+      payload: userHistory
+    });
+  }
   // and empty UI cart
   dispatch({
     type: EMPTY_CART
@@ -256,8 +251,20 @@ export const signInUI = firebase => dispatch => {
   
   setTimeout(() => {
     const user = firebase.auth().currentUser;
-
-    if (user){
+    if (!!user) {
+      const cartRef = firebase.database().ref('users/' + user.uid + '/cart');
+      cartRef.on('value', async (snapshot) => {
+        const userCart = await snapshot.val();
+        if (!!userCart){
+          // need to sync the redux cart with fb cart
+          Array.from(new Set(Object.keys(userCart))).map(book => {
+            return dispatch({
+              type: ADD_BOOK,
+              payload: userCart[book].book
+            });
+          })
+        }
+      });
       dispatch({
         type: SIGN_IN_UI,
         payload: user

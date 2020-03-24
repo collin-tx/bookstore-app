@@ -66,7 +66,9 @@ const rootReducer = (state = [], action) => {
       return {
         ...state,
         signedIn: false,
-        user: null
+        user: null,
+        cart: [],
+        userHistory: []
       }
     case SIGN_IN_UI:
       return {
