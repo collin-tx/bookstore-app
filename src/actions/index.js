@@ -261,26 +261,18 @@ export const fetchBooks = searchTerm => async dispatch => {
   });
 }
 
-export const signInUI = firebase => async dispatch => {
+export const signInUI = firebase => dispatch => {
   
-  let user = await firebase.auth().currentUser;
-  
-  if (!user){
-    setTimeout(() => {
-      !!firebase.auth().currentUser ? user = firebase.auth().currentUser : user = null;
-        
+  setTimeout(() => {
+    const user = firebase.auth().currentUser;
+
+    if (user){
       dispatch({
         type: SIGN_IN_UI,
         payload: user
-      })
-    }, 400);
-  } else {
-
-    dispatch({
-      type: SIGN_IN_UI,
-      payload: user
-    });
-  }
+      });
+    }
+  }, 400);
 }
 
 export const getHistory = firebase => async dispatch => {
@@ -300,7 +292,7 @@ export const getHistory = firebase => async dispatch => {
     const getUserId = () => {
       let user = getUser();
       let userId = user && user.uid || null;
-      return userId ? userId : getUserId();
+      return user && (userId ? userId : getUserId());
     }
   
     const getUserHistory = async () => {

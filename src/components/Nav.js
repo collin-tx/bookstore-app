@@ -22,8 +22,8 @@ const Nav = props => {
                 <div className="float-right">
                     <SignInModalContainer firebase={firebase} />
                     {/* these two buttons below are just for dev testing stuff*/}
-                    <button className="btn btn-sm btn-info" onClick={() => {firebase.auth().signOut(); console.log('signed out I think', firebase.auth().currentUser);}}>logout FB</button>
-                    <button className="btn btn-sm btn-secondary" onClick={() => {console.log('currently, ', firebase.auth().currentUser);}}>current FB user</button> */}
+                    {/* <button className="btn btn-sm btn-info" onClick={() => {firebase.auth().signOut(); console.log('signed out I think', firebase.auth().currentUser);}}>logout FB</button>
+                    <button className="btn btn-sm btn-secondary" onClick={() => {console.log('currently, ', firebase.auth().currentUser);}}>current FB user</button> */} */}
                 </div>
             </div>
         </div>
