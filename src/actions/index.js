@@ -52,9 +52,7 @@ export const signIn = (firebase, email, password) => async dispatch => {
          userHistory = snapshot.val();
       });
 
-
       setTimeout(() => { 
-        // console.log('please', userCart, userHistory);
         if (!!userCart){
           // need to sync the redux cart with fb cart
           Object.keys(userCart).map(book => {
@@ -64,7 +62,7 @@ export const signIn = (firebase, email, password) => async dispatch => {
             });
           })
         }
-        // and put the purchase history somewhere
+        // and put the purchase history in the store
         dispatch({
           type: GET_HISTORY,
           payload: userHistory
@@ -87,14 +85,13 @@ export const createUser = (firebase, email, password, username) => async dispatc
       // set display name
       user.updateProfile({
         displayName: username,
-        // photoURL: ""
+        // photoURL: "" -- maybe add the ability to add user pics later
       })
     })
     .then(function() {
       dispatch(removeError());
     })
     .catch(error => {
-      // console.log('a createUser error, ', error);
       dispatch({
         type: RENDER_ERROR,
         payload: {error}
@@ -102,13 +99,12 @@ export const createUser = (firebase, email, password, username) => async dispatc
     });
   const user = firebase.auth().currentUser;
   if (!!user) {
-    // console.log('created new user -- ', user.displayName, user);
     dispatch({
       type: CREATE_USER,
       payload: user
     });
 
-  // create user in Users table in db
+  // now create user in Users table in db
 
   setTimeout(() => {
     const database = firebase.database();
@@ -137,7 +133,6 @@ export const addBookToCart = (firebase, book) => {
 
   // add book to users cart in FB here
   // books organized in cart by book.id
-  // perhaps we just add it to the db and have the UI read from the db??
 
   const user = firebase.auth().currentUser;
   if (!!user){
@@ -149,7 +144,7 @@ export const addBookToCart = (firebase, book) => {
         book
     });
   }
-
+  // and add book to store cart too
   return {
     type: ADD_BOOK,
     payload: book
@@ -162,7 +157,7 @@ export const removeBookFromCart = (firebase, book) => {
   const database = firebase.database();
 
   database.ref('users/' + userId + '/cart/' + book.id)
-  .remove();
+    .remove();
 
   return {
     type: REMOVE_BOOK,
@@ -173,9 +168,9 @@ export const removeBookFromCart = (firebase, book) => {
 export const checkOut = (firebase, order, subtotal) => dispatch => {
   // if I decide to track purchases from ppl not signed in, I could do something like this:
   // const user = props.firebase.auth().currentUser || { displayName: 'Guest', uid: Date.now() };
-console.log('checkin out', firebase, order, subtotal);
   const user = firebase.auth().currentUser;
-// push purchase details to purchaseHistory field on User  
+
+  // push purchase details to purchaseHistory field on User  
   if (!!user){
     const userId = user.uid;
     const database = firebase.database();
@@ -213,10 +208,6 @@ console.log('checkin out', firebase, order, subtotal);
 }
 
 export const renderError = error => {
-  console.log({
-    type: RENDER_ERROR,
-    payload: error
-  });
   return {
     type: RENDER_ERROR,
     payload: error
@@ -242,7 +233,7 @@ export const emptyCart = firebase => {
   }
 }
 
-// thunkstuff
+// get books
 const fetchRequest = searchTerm => fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
 
 export const fetchBooks = searchTerm => async dispatch => {
@@ -275,6 +266,8 @@ export const signInUI = firebase => dispatch => {
   }, 400);
 }
 
+
+// get a user's purchase history 
 export const getHistory = firebase => async dispatch => {
 
   setTimeout(() => {

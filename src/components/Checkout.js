@@ -22,7 +22,7 @@ const CheckoutModal = props => {
             {" | "}
             <p className="float-right">Checking out as {props.user || 'guest'}</p>
 
-          <Button className="btn btn-success" onClick={() => {alert('Thanks for your purchase!'); console.log('checkoutprops', props); store.dispatch(checkOut(props.firebase, props.cart, props.subtotal.toFixed(2))); }}>Confirm</Button>
+          <Button className="btn btn-success" onClick={() => {alert('Thanks for your purchase!'); store.dispatch(checkOut(props.firebase, props.cart, props.subtotal.toFixed(2))); }}>Confirm</Button>
           <Button className="btn btn-danger" onClick={props.onHide}>Cancel</Button>
       </Modal.Footer>
     </Modal>

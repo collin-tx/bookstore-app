@@ -1,12 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import store from '../store';
 
-const SignedIn = (props) => {
-  // const user = firebase.auth().currentUser;
-  // const logout = () => firebase.auth().signout();
-  console.log(props);
-  console.log(store.getState());
+const SignedIn = props => {
 
   const { user, logout } = props;
   return (
