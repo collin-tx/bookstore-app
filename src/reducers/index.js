@@ -4,12 +4,12 @@ import {
   EMPTY_CART,
   FETCH_BOOKS,
   GET_HISTORY,
-  REMOVE_BOOK,
   REMOVE_ERROR,
   RENDER_ERROR,
   SIGN_IN,
   SIGN_IN_UI,
   SIGN_OUT,
+  SYNC_CART
 } from '../actions/constants';
 
 const rootReducer = (state = [], action) => {
@@ -41,11 +41,6 @@ const rootReducer = (state = [], action) => {
         ...state,
         userHistory: action.payload
       }
-    case REMOVE_BOOK: 
-      return {
-        ...state,
-        cart: state.cart.filter(book => book !== action.payload)
-      }
     case REMOVE_ERROR:
       return {
         ...state,
@@ -76,8 +71,16 @@ const rootReducer = (state = [], action) => {
         signedIn: true,
         user: action.payload
       }
+    case SYNC_CART:
+      return {
+        ...state,
+        cart: action.payload
+      }
     default:
-      return state;
+      return {
+        ...state,
+        cart: []
+      }
   }
 }
 

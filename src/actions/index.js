@@ -5,11 +5,11 @@ import {
   FETCH_BOOKS,
   GET_HISTORY,
   RENDER_ERROR,
-  REMOVE_BOOK,
   REMOVE_ERROR,
   SIGN_IN,
   SIGN_OUT,
-  SIGN_IN_UI
+  SIGN_IN_UI,
+  SYNC_CART,
 } from './constants';
 
 
@@ -42,7 +42,6 @@ export const signIn = (firebase, email, password) => async dispatch => {
 
       setTimeout(() => {
         if (!!userCart){
-          console.log('fbcart', userCart);
           // need to sync the redux cart with fb cart
           Array.from(new Set(Object.keys(userCart))).map(book => {
             return dispatch({
@@ -123,7 +122,7 @@ export const signOut = firebase => {
   }
 }
 
-export const addBookToCart = (firebase, book) => {
+export const addBookToCart = (firebase, book) => dispatch => {
 
   // add book to users cart in FB here
   // books organized in cart by book.id
@@ -136,26 +135,50 @@ export const addBookToCart = (firebase, book) => {
       .set({
         book
     });
+    const cartRef = database.ref('users/' + userId + '/cart');
+    cartRef.on('value', async (snapshot) => {
+      const fbCart = await snapshot.val();
+      let fbCartArr = [];
+
+      for (let id in fbCart){
+        fbCartArr.push(fbCart[id]);
+      }
+
+      dispatch({
+        type: SYNC_CART, 
+        payload: fbCartArr
+      });
+    });
   }
   // and add book to store cart too
-  return {
-    type: ADD_BOOK,
-    payload: book
-  }
+  // return {
+  //   type: ADD_BOOK,
+  //   payload: book
+  // }
 }
 
 export const removeBookFromCart = (firebase, book) => {
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
-  const database = firebase.database();
-
-  database.ref('users/' + userId + '/cart/' + book.id)
+    const user = firebase.auth().currentUser;
+    const userId = user && user.uid;
+    const database = firebase.database();
+    
+    database.ref('users/' + userId + '/cart/' + book.id)
     .remove();
-
-  return {
-    type: REMOVE_BOOK,
-    payload: book
-  }
+    
+    let fbCartArr = [];
+    const cartRef = database.ref('users/' + userId + '/cart');
+    cartRef.on('value', async (snapshot) => {
+      const fbCart = await snapshot.val();
+      
+      for (let id in fbCart){
+        fbCartArr.push(fbCart[id]);
+      }
+    });
+      
+    return {
+      type: SYNC_CART,
+      payload: fbCartArr
+    }
 }
 
 export const checkOut = (firebase, order, subtotal) => dispatch => {
@@ -256,20 +279,43 @@ export const signInUI = firebase => dispatch => {
       cartRef.on('value', async (snapshot) => {
         const userCart = await snapshot.val();
         if (!!userCart){
-          // need to sync the redux cart with fb cart
-          Array.from(new Set(Object.keys(userCart))).map(book => {
-            return dispatch({
-              type: ADD_BOOK,
-              payload: userCart[book].book
-            });
-          })
+          let fbCartArr = [];
+
+          for (let book in userCart){
+            fbCartArr.push(userCart[book]);
+          }
+          dispatch({
+            type: SYNC_CART,
+            payload: fbCartArr
+          });
         }
       });
+    }
       dispatch({
         type: SIGN_IN_UI,
         payload: user
       });
-    }
+  }, 400);
+}
+
+// sync UI cart with FB cart
+export const syncCart = firebase => {
+  setTimeout(() => {
+    const user = firebase.auth().currentUser;
+      const cartRef = firebase.database().ref('users/' + (user && user.uid) + '/cart');
+      // should maybe just read once? notsure
+      cartRef.on('value', async (snapshot) => {
+        const fbCart = await snapshot.val();
+        let fbCartArr = [];
+
+        for (let id in fbCart){
+          fbCartArr.push(fbCart[id]);
+        }
+        return ({
+          type: SYNC_CART,
+          payload: fbCartArr
+        });
+      });
   }, 400);
 }
 
