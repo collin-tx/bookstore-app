@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Checkout } from './Checkout';
 import Subtotal from './Subtotal';
 import UserHistoryModalContainer from '../containers/user-history/modal';
+import { CheckoutModalContainer } from '../containers/checkout/modal';
 
 const Cart = props => {
 
@@ -23,7 +23,7 @@ const Cart = props => {
                 cart && subtotal > 0 && 
                     <div id="checkout-div">
                         {/* <p style={{ padding: '0', margin: '0' }}><small>{user || 'Guest'}</small></p> */}
-                        <Checkout subtotal={subtotal} books={checkoutBooks} user={user} firebase={firebase} cart={cart}/>
+                        <CheckoutModalContainer subtotal={subtotal} books={checkoutBooks} firebase={firebase} />
                         <p id="subtotal" className="text-right">
                             <Subtotal subtotal={subtotal} />
                         </p>
@@ -44,19 +44,25 @@ const Cart = props => {
                 cart && subtotal > 0 &&
                     <div>
                         <div id="checkout-bottom" className="p-2">
-                            <button className="btn btn-secondary ml-1 mr-1 text-white" onClick={() => emptyCart()}>empty cart</button>
-                            <Checkout subtotal={subtotal} books={checkoutBooks} user={user} firebase={firebase} />
+                            {/* <button className="btn btn-secondary ml-1 mr-1 text-white" onClick={() => emptyCart()}>empty cart</button> */}
+                            <CheckoutModalContainer subtotal={subtotal} books={checkoutBooks} firebase={firebase} />
                         </div>
                         <p className="text-right mr-3">Shopping as {user ? user : 'guest'}</p>
                     </div>
             }
 
-            <UserHistoryModalContainer />
+            {
+                !!user && 
+                <UserHistoryModalContainer firebase={firebase} />
+            }
 
         </div>
     );
 }
 
-const mapState = state => ({ userHistory: state.userHistory });
+const mapState = state => ({
+    userHistory: state.userHistory,
+    cart: state.cart
+});
 
 export default connect(mapState)(Cart);

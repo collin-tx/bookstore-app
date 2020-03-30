@@ -1,5 +1,4 @@
 import {
-  ADD_BOOK,
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
@@ -14,11 +13,6 @@ import {
 
 const rootReducer = (state = [], action) => {
   switch(action.type) {
-    case ADD_BOOK:
-      return {
-        ...state,
-        cart: [ ...(state.cart || []), action.payload ]
-      }
     case CREATE_USER:
       return {
         ...state,
@@ -79,7 +73,9 @@ const rootReducer = (state = [], action) => {
     default:
       return {
         ...state,
-        cart: []
+        cart: [],
+        user: null,
+        signedIn: false
       }
   }
 }

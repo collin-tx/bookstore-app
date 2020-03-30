@@ -1,5 +1,4 @@
 import { 
-  ADD_BOOK,
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
@@ -12,13 +11,37 @@ import {
   SYNC_CART,
 } from './constants';
 
+// utilities
+
+const getUser = firebase => {  
+  let user = firebase.auth().currentUser;
+// return user ? user : getUser(firebase);
+  return user;
+}
+
+const getUserId = user => {
+  return user && user.uid;
+}
+
+const getUserHistory = firebase => {
+  const user = getUser(firebase);
+  const userId = getUserId(user);
+  let userHistory = null;
+  const historyRef = firebase.database().ref('users/' + userId + '/purchaseHistory');
+  return historyRef.once('value')
+    .then(snapshot => {
+      userHistory = snapshot.val();
+      return userHistory ? userHistory : getUserHistory(firebase);
+  });
+}
+
 
 //action creators
 export const signIn = (firebase, email, password) => async dispatch => {
   await firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
       dispatch(removeError());
-      const user = firebase.auth().currentUser;
+      const user = getUser(firebase);
       if (!!user){
         dispatch({
           type: SIGN_IN,
@@ -27,33 +50,29 @@ export const signIn = (firebase, email, password) => async dispatch => {
       }
     })
     .then(() => {
-      const user = firebase.auth().currentUser;
-      const cartRef = firebase.database().ref('users/' + user.uid + '/cart');
-      const historyRef = firebase.database().ref('users/' + user.uid + '/purchaseHistory');
-      let userCart, userHistory; 
+      const user = getUser(firebase);
+      const userId = getUserId(user);
+      const cartRef = firebase.database().ref('users/' + userId + '/cart');
+      let userCart;
+      const userHistory = getUserHistory(firebase);
       
       cartRef.on('value', async (snapshot) => {
         userCart = await snapshot.val();
-      });
-      
-      historyRef.on('value', (snapshot) => {
-        userHistory = snapshot.val();
       });
 
       setTimeout(() => {
         if (!!userCart){
           // need to sync the redux cart with fb cart
-          Array.from(new Set(Object.keys(userCart))).map(book => {
-            return dispatch({
-              type: ADD_BOOK,
-              payload: userCart[book].book
-            });
-          })
+          dispatch({
+            type: SYNC_CART,
+            payload: userCart
+          });
         }
-        dispatch({
-          type: GET_HISTORY,
-          payload: userHistory
-        })
+        // dispatch({
+        //   type: GET_HISTORY,
+        //   payload: userHistory
+        // })
+        getHistory(firebase)(dispatch);
       }, 1000);
     })
     .catch(error => {
@@ -90,7 +109,7 @@ export const createUser = (firebase, email, password, username) => async dispatc
         payload: {error}
       })
     });
-  const user = firebase.auth().currentUser;
+  const user = getUser(firebase);
   if (!!user) {
     dispatch({
       type: CREATE_USER,
@@ -101,8 +120,7 @@ export const createUser = (firebase, email, password, username) => async dispatc
 
   setTimeout(() => {
     const database = firebase.database();
-    const user = firebase.auth().currentUser;
-    const userId = user.uid;
+    const userId = getUserId(user);
 
     database.ref('users/' + userId)
       .set({
@@ -127,9 +145,9 @@ export const addBookToCart = (firebase, book) => dispatch => {
   // add book to users cart in FB here
   // books organized in cart by book.id
 
-  const user = firebase.auth().currentUser;
+  const user = getUser(firebase);
   if (!!user){
-    const userId = user.uid;
+    const userId = getUserId(user);
     const database = firebase.database();
     database.ref('users/' + userId +'/cart/' + book.id)
       .set({
@@ -140,6 +158,7 @@ export const addBookToCart = (firebase, book) => dispatch => {
       const fbCart = await snapshot.val();
       let fbCartArr = [];
 
+      // eslint-disable-next-line
       for (let id in fbCart){
         fbCartArr.push(fbCart[id]);
       }
@@ -150,16 +169,11 @@ export const addBookToCart = (firebase, book) => dispatch => {
       });
     });
   }
-  // and add book to store cart too
-  // return {
-  //   type: ADD_BOOK,
-  //   payload: book
-  // }
 }
 
 export const removeBookFromCart = (firebase, book) => {
-    const user = firebase.auth().currentUser;
-    const userId = user && user.uid;
+    const user = getUser(firebase);
+    const userId = getUserId(user);
     const database = firebase.database();
     
     database.ref('users/' + userId + '/cart/' + book.id)
@@ -169,7 +183,7 @@ export const removeBookFromCart = (firebase, book) => {
     const cartRef = database.ref('users/' + userId + '/cart');
     cartRef.on('value', async (snapshot) => {
       const fbCart = await snapshot.val();
-      
+      // eslint-disable-next-line
       for (let id in fbCart){
         fbCartArr.push(fbCart[id]);
       }
@@ -182,47 +196,25 @@ export const removeBookFromCart = (firebase, book) => {
 }
 
 export const checkOut = (firebase, order, subtotal) => dispatch => {
-  // if I decide to track purchases from ppl not signed in, I could do something like this:
-  // const user = props.firebase.auth().currentUser || { displayName: 'Guest', uid: Date.now() };
-  const user = firebase.auth().currentUser;
+  const user = getUser(firebase);
   const database = firebase.database();
-  const userId = user && user.uid;
+  const userId = getUserId(user);
 
   // push purchase details to purchaseHistory field on User  
   if (!!user){
-    setTimeout(() => {
-      database.ref('users/' + userId +'/purchaseHistory/').once('value')
-        .then(snapshot => {
-          const index = (snapshot.val() ? snapshot.val().length : 1);
-          const path = `users/${userId}/purchaseHistory/${index}`;
-          database.ref(path)
-            .set({
-              order,
-              subtotal,
-              date: Date()
-            });
-        });
-    }, 500);
-    // also need to empty user's fb cart
-    setTimeout(() => {
-      database.ref('users/' + userId + '/cart')
-        .set([]);
-    }, 200);
-    // refresh user history
-    const historyRef = firebase.database().ref('users/' + user.uid + '/purchaseHistory');
-    let userHistory;
-    historyRef.on('value', (snapshot) => {
-      userHistory = snapshot.val();
-  });
-    dispatch({
-      type: GET_HISTORY,
-      payload: userHistory
-    });
+    const path = `users/${userId}/purchaseHistory`;
+    database.ref(path)
+      .push({
+        order,
+        subtotal,
+        date: Date()
+      });
   }
-  // and empty UI cart
-  dispatch({
-    type: EMPTY_CART
-  });
+  // empty cart and refresh userhistory
+  emptyCart(firebase);
+  setTimeout(() => {
+    getHistory(firebase)(dispatch);
+  }, 1000);
 }
 
 export const renderError = error => {
@@ -239,13 +231,19 @@ export const removeError = () => {
 }
 
 export const emptyCart = firebase => {
-  const user = firebase.auth().currentUser;
-  const userId = user.uid;
+  const user = getUser(firebase);
+  const userId = getUserId(user);
   const database = firebase.database();
 
   database.ref('users/' + userId + '/cart/')
     .set([]);
 
+  return {
+    type: EMPTY_CART
+  }
+}
+
+export const emptyCartUI = () => {
   return {
     type: EMPTY_CART
   }
@@ -273,14 +271,15 @@ export const fetchBooks = searchTerm => async dispatch => {
 export const signInUI = firebase => dispatch => {
   
   setTimeout(() => {
-    const user = firebase.auth().currentUser;
+    const user = getUser(firebase);
     if (!!user) {
-      const cartRef = firebase.database().ref('users/' + user.uid + '/cart');
+      const userId = getUserId(user);
+      const cartRef = firebase.database().ref('users/' + userId + '/cart');
       cartRef.on('value', async (snapshot) => {
         const userCart = await snapshot.val();
         if (!!userCart){
           let fbCartArr = [];
-
+          // eslint-disable-next-line
           for (let book in userCart){
             fbCartArr.push(userCart[book]);
           }
@@ -290,11 +289,11 @@ export const signInUI = firebase => dispatch => {
           });
         }
       });
-    }
       dispatch({
         type: SIGN_IN_UI,
         payload: user
       });
+    }
   }, 400);
 }
 
@@ -307,7 +306,7 @@ export const syncCart = firebase => {
       cartRef.on('value', async (snapshot) => {
         const fbCart = await snapshot.val();
         let fbCartArr = [];
-
+        // eslint-disable-next-line 
         for (let id in fbCart){
           fbCartArr.push(fbCart[id]);
         }
@@ -319,41 +318,17 @@ export const syncCart = firebase => {
   }, 400);
 }
 
-
-// get a user's purchase history 
+// get a user's purchase history into Redux
 export const getHistory = firebase => async dispatch => {
-
-  setTimeout(() => {
-
-    const getUser = () => {  
-        let user = firebase.auth().currentUser;
-        if (!user){
-          setTimeout(() => {
-            user = firebase.auth().currentUser;
-          }, 400);
-        }
-      return user;
-    }
-  
-    const getUserId = () => {
-      let user = getUser();
-      let userId = user && user.uid;
-      return user && (userId ? userId : getUserId());
-    }
-  
-    const getUserHistory = async () => {
-          let userId = await getUserId();
-
-          const historyRef = await firebase.database().ref('users/' + userId + '/purchaseHistory');
-
-            historyRef.on('value', async (snapshot) => {
-              let userHistory = await snapshot.val() && snapshot.val().filter(i => !!i);
-              dispatch({
-                type: GET_HISTORY,
-                payload: userHistory
-              });
-            });
-    }
-    getUserHistory();
-  }, 400);
+  await getUserHistory(firebase)
+    .then(res => {
+      Array.isArray(res) ? (
+        res = res.filter(b => !!b)
+      ) : res = Object.keys(res).map(k => res[k]);
+      dispatch({
+        type: GET_HISTORY,
+        payload: res
+      });
+      return res;
+    });
 }

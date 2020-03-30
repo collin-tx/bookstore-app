@@ -14,11 +14,7 @@ const UserHistoryModal = props => {
         {/* renderErrors() */}
       </Modal.Header>
       <Modal.Body>
-        {
-          props.userHistory ? (
-          <UserHistory userHistory={props.userHistory} /> ) : 
-          (<em>No past purchases on this account. Please checkout while signed in to see purchases here.</em>)
-        }
+          <UserHistory userHistory={props.userHistory} />
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
         <Button onClick={props.onHide}>Close</Button>
