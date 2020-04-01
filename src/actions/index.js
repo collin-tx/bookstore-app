@@ -15,7 +15,6 @@ import {
 
 const getUser = firebase => {  
   let user = firebase.auth().currentUser;
-// return user ? user : getUser(firebase);
   return user;
 }
 
@@ -240,10 +239,12 @@ export const fetchBooks = searchTerm => async dispatch => {
     })
     .catch(error => {
       console.log('error from actions', error);
+      // TODO: put this in state, render in home
   });
 }
 
 export const signInUI = firebase => dispatch => {
+  // relying on ST for now -- clearly needs better solution
   console.log('signing in ui');
   setTimeout(() => {
     const user = getUser(firebase);
