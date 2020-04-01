@@ -9,10 +9,11 @@ export class FeaturedContainer extends Component {
     state = {
         featuredBook: {},
         value: ''
+        // also in state, featured = db ref, database
     }
     
     componentDidMount(){
-        // db stuff
+        // connect to db and read from featured table
         let { database } = this.props;
         let featured = database.ref('featured');
         this.setState({ featured, database });
@@ -25,10 +26,12 @@ export class FeaturedContainer extends Component {
 
     addComment = () => {
         let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex +'/book/comments').push({
-            user: (this.props.user ? this.props.user.displayName : 'Anonymous') ,
-            key: this.state.value
-        });
+        this.state.database.ref('featured/' + featuredIndex +'/book/comments')
+            .push({
+                username: (this.props.user ? this.props.user.displayName : 'Anonymous') ,
+                key: this.state.value,
+                userId: this.props.user.uid
+            });
         this.setState({ value: '' })
     }
 
@@ -66,9 +69,16 @@ export class FeaturedContainer extends Component {
 
         allComments = allComments.map( (comment, index) => {
             return (
-                <Comment key={generateKey(index)} comment={comment.key} user={comment.user} 
-                edit={this.editComment} username={this.props.user && this.props.user.displayName} delete={this.deleteComment}
-                commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]} />
+                <Comment 
+                    key={generateKey(index)}
+                    comment={comment.key}
+                    username={comment.username}
+                    user={this.props.user}
+                    userId={comment.userId}
+                    edit={this.editComment}
+                    delete={this.deleteComment}
+                    commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]}
+                />
             )
         });
         return (
