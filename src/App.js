@@ -6,7 +6,6 @@ import CartContainer from './containers/Cart';
 import Nav from './components/Nav';
 import FeaturedContainer from './containers/Featured';
 import Footer from './components/Footer';
-import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
 import './App.css';
@@ -31,7 +30,7 @@ if (!firebase.apps.length) {
 const database = firebase.database();
 
 const App = props => {
-  
+  // on render, check for FB user + sign them in + get purchase history
   const { signInUI, getHistory } = props;
   signInUI(firebase);
   getHistory(firebase);

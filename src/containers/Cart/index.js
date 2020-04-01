@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CartBook from '../../components/CartBook';
 import Cart from '../../components/Cart';
-import { emptyCart, removeBookFromCart, syncCart } from '../../actions';
+import { emptyCart, removeBookFromCart } from '../../actions';
 
 export class CartContainer extends Component {  
 
