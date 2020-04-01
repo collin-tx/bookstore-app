@@ -37,10 +37,9 @@ const getUserHistory = firebase => {
 
 
 //action creators
-export const signIn = (firebase, email, password) => async dispatch => {
-  await firebase.auth().signInWithEmailAndPassword(email, password)
+export const signIn = (firebase, email, password) => dispatch => {
+  firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
-      dispatch(removeError());
       const user = getUser(firebase);
       if (!!user){
         dispatch({
@@ -48,41 +47,17 @@ export const signIn = (firebase, email, password) => async dispatch => {
           payload: user
         });
       }
-    })
-    .then(() => {
-      const user = getUser(firebase);
-      const userId = getUserId(user);
-      const cartRef = firebase.database().ref('users/' + userId + '/cart');
-      let userCart;
-      const userHistory = getUserHistory(firebase);
-      
-      cartRef.on('value', async (snapshot) => {
-        userCart = await snapshot.val();
-      });
-
-      setTimeout(() => {
-        if (!!userCart){
-          // need to sync the redux cart with fb cart
-          dispatch({
-            type: SYNC_CART,
-            payload: userCart
-          });
-        }
-        // dispatch({
-        //   type: GET_HISTORY,
-        //   payload: userHistory
-        // })
-        getHistory(firebase)(dispatch);
-      }, 1000);
+      syncCart(firebase)(dispatch);
+      getHistory(firebase)(dispatch);
+      dispatch(removeError());
     })
     .catch(error => {
         dispatch({
           type: RENDER_ERROR,
           payload: {error}
         });
-    });
+    })
 }
-
 
 export const signOutUI = () => {
   return {
@@ -269,7 +244,7 @@ export const fetchBooks = searchTerm => async dispatch => {
 }
 
 export const signInUI = firebase => dispatch => {
-  
+  console.log('signing in ui');
   setTimeout(() => {
     const user = getUser(firebase);
     if (!!user) {
@@ -294,32 +269,33 @@ export const signInUI = firebase => dispatch => {
         payload: user
       });
     }
-  }, 400);
+  }, 500);
+  console.log('signed in ui');
 }
 
 // sync UI cart with FB cart
-export const syncCart = firebase => {
-  setTimeout(() => {
-    const user = firebase.auth().currentUser;
-      const cartRef = firebase.database().ref('users/' + (user && user.uid) + '/cart');
-      // should maybe just read once? notsure
-      cartRef.on('value', async (snapshot) => {
-        const fbCart = await snapshot.val();
-        let fbCartArr = [];
-        // eslint-disable-next-line 
-        for (let id in fbCart){
-          fbCartArr.push(fbCart[id]);
-        }
-        return ({
-          type: SYNC_CART,
-          payload: fbCartArr
-        });
-      });
-  }, 400);
+export const syncCart = firebase => dispatch => {
+  console.log('syncing cart');
+  const user = firebase.auth().currentUser;
+  const cartRef = firebase.database().ref('users/' + (user && user.uid) + '/cart');
+  cartRef.on('value', async (snapshot) => {
+    const fbCart = await snapshot.val();
+    let fbCartArr = [];
+    // eslint-disable-next-line 
+    for (let id in fbCart){
+      fbCartArr.push(fbCart[id]);
+    }
+    dispatch({
+      type: SYNC_CART,
+      payload: fbCartArr
+    });
+  });
+  console.log('synced cart');
 }
 
 // get a user's purchase history into Redux
 export const getHistory = firebase => async dispatch => {
+  console.log('getting history');
   await getUserHistory(firebase)
     .then(res => {
       Array.isArray(res) ? (
@@ -331,4 +307,5 @@ export const getHistory = firebase => async dispatch => {
       });
       return res;
     });
+  console.log('got history');
 }

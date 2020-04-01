@@ -10,6 +10,7 @@ import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
 import './App.css';
+import { connect } from 'react-redux';
 import { getHistory, signInUI } from './actions';
 
 
@@ -29,22 +30,30 @@ if (!firebase.apps.length) {
 
 const database = firebase.database();
 
-store.dispatch(signInUI(firebase));
-store.dispatch(getHistory(firebase));
+const App = props => {
+  
+  const { signInUI, getHistory } = props;
+  signInUI(firebase);
+  getHistory(firebase);
 
-const App = () => (
-  <BrowserRouter>
-    <Nav firebase={firebase} />
-    <Header />
-    <Switch>
-      <Route path="/" render={ () => <Home firebase={firebase} />} exact />
-      <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
-      <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
-      <Route component={Error} />
-    </Switch>
-    <Footer />
-  </BrowserRouter>
-);
+  return (
+    <BrowserRouter>
+      <Nav firebase={firebase} />
+      <Header />
+      <Switch>
+        <Route path="/" render={ () => <Home firebase={firebase} />} exact />
+        <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
+        <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
+        <Route component={Error} />
+      </Switch>
+      <Footer />
+    </BrowserRouter>
+  );
+}
 
+const mapDispatch = dispatch => ({
+  signInUI: firebase => (signInUI(firebase)(dispatch)),
+  getHistory: firebase => (getHistory(firebase)(dispatch))
+})
 
-export default App;
+export default connect(null, mapDispatch)(App);

@@ -23,10 +23,11 @@ const CheckoutModal = props => {
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-        { props.user ? `Thanks for shopping with us, ${props.user.displayName}!` : `Thanks for shopping with us!` }
+        { props.user ? `Thanks for shopping with us, ${props.user && props.user.displayName}!` : `Thanks for shopping with us!` }
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {renderError()}
         {
           !props.checkedOut ? (
             <CheckoutContainer books={props.books} />

@@ -15,7 +15,6 @@ export class CartContainer extends Component {
     }
 
     render() {
-
         let booksInCart = !!this.props.cart && this.props.cart.map(record => {
             return (
                 <CartBook title={record.book.volumeInfo.title} book={record.book}
@@ -89,8 +88,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => ({ 
     removeBookFromCart: (fb, book) => dispatch(removeBookFromCart(fb, book)),
-    emptyCart: (fb) => dispatch(emptyCart(fb)),
-    syncCart: (fb, cart) => dispatch(syncCart(fb, cart))
+    emptyCart: fb => dispatch(emptyCart(fb))
 });
 
 export default connect(mapState, mapDispatch)(CartContainer);
