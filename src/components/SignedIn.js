@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const SignedIn = props => {
-
+  // TODO: this needs a better implementation/styling obvs
   const { user, logout } = props;
   return (
     <div> hi

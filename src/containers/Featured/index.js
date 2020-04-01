@@ -9,7 +9,6 @@ export class FeaturedContainer extends Component {
     state = {
         featuredBook: {},
         value: ''
-        // also in state, featured = db ref, database
     }
     
     componentDidMount(){

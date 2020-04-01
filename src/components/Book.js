@@ -2,7 +2,6 @@ import React from 'react';
 
 const Book = ({
     author,
-    book,
     img,
     index,
     preview,

@@ -26,18 +26,19 @@ const Books = ({
                 </div>
         }
 
+        {/* TODO: better solution for notifying user a book is being/has been added */}
         { adding && 
             <div id="adding-div" className="text-center">
                 <p>Adding book to cart...</p>
             </div>
         }
-        
+        {/* TODO: better solution here */}
         { loading &&
             <div id="loading-div" className="text-center">
                 <p>Loading...</p>
             </div>
         }
-
+        {/* TODO: needs work */}
         { searched && !books.length && !loading &&
             <div id="error-div" className="text-center"> {/* that div is poorly named! TODO! */}
                 <p>No Books found</p>

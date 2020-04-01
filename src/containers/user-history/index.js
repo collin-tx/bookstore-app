@@ -2,7 +2,7 @@ import React from 'react';
 import { generateKey } from '../../utils/helper';
 
 const UserHistory = ({ userHistory = [] }) => {
-    
+    // TODO: massive styling/flow changes
     const purchaseListArr = Array.isArray(userHistory) ? userHistory : Object.keys(userHistory).map((p, i) => userHistory[p]);
         const purchaseList = purchaseListArr.map((purchase, index) => {
             const orderItemsArr = Array.isArray(purchase.order) ? purchase.order : Object.keys(purchase.order).map(o => purchase.order[o]);
