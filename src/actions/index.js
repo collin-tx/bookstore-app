@@ -269,8 +269,8 @@ export const signInUI = firebase => dispatch => {
         payload: user
       });
     }
-  }, 500);
-  console.log('signed in ui');
+    console.log('signed in ui');
+  }, 800);
 }
 
 // sync UI cart with FB cart
