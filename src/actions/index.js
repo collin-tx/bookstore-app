@@ -185,9 +185,7 @@ export const checkOut = (firebase, order, subtotal) => dispatch => {
   }
   // empty cart and refresh userhistory
   emptyCart(firebase);
-  setTimeout(() => {
-    getHistory(firebase)(dispatch);
-  }, 1000);
+  getHistory(firebase)(dispatch);
 }
 
 export const renderError = error => {
@@ -232,7 +230,6 @@ export const fetchBooks = searchTerm => async dispatch => {
       return response.json();
     })
     .then(data => {
-      console.log('bookdata', data);
       dispatch({
         type: FETCH_BOOKS,
         payload: [data],
@@ -245,7 +242,7 @@ export const fetchBooks = searchTerm => async dispatch => {
       }
     })
     .catch(error => {
-      console.log('error from actions', error);
+      // console.log('error from actions', error);
       dispatch({
         type: RENDER_ERROR,
         payload: {error}
@@ -255,7 +252,7 @@ export const fetchBooks = searchTerm => async dispatch => {
 
 export const signInUI = firebase => dispatch => {
   // relying on ST for now -- clearly needs better solution
-  console.log('signing in ui');
+  // console.log('signing in ui');
   setTimeout(() => {
     const user = getUser(firebase);
     if (!!user) {
@@ -280,13 +277,13 @@ export const signInUI = firebase => dispatch => {
         payload: user
       });
     }
-    console.log('signed in ui');
+    // console.log('signed in ui');
   }, 800);
 }
 
 // sync UI cart with FB cart
 export const syncCart = firebase => dispatch => {
-  console.log('syncing cart');
+  // console.log('syncing cart');
   const user = firebase.auth().currentUser;
   const cartRef = firebase.database().ref('users/' + (user && user.uid) + '/cart');
   cartRef.on('value', async (snapshot) => {
@@ -301,12 +298,12 @@ export const syncCart = firebase => dispatch => {
       payload: fbCartArr
     });
   });
-  console.log('synced cart');
+  // console.log('synced cart');
 }
 
 // get a user's purchase history into Redux
 export const getHistory = firebase => async dispatch => {
-  console.log('getting history');
+  // console.log('getting history');
   await getUserHistory(firebase)
     .then(res => {
       Array.isArray(res) ? (
@@ -318,5 +315,5 @@ export const getHistory = firebase => async dispatch => {
       });
       return res;
     });
-  console.log('got history');
+  // console.log('got history');
 }
