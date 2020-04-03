@@ -11,7 +11,7 @@ const UserHistory = ({ userHistory = [] }) => {
                     <li className="list-group-item" key={generateKey(i)}>
                         {book.book.volumeInfo && book.book.volumeInfo.title}
                         {" by "}
-                        {book.book.volumeInfo && book.book.volumeInfo.authors[0]}
+                        {book.book.volumeInfo && book.book.volumeInfo.authors && book.book.volumeInfo.authors[0]}
                         {/* more book info? */}
                     </li>
                 );
