@@ -242,7 +242,6 @@ export const fetchBooks = searchTerm => async dispatch => {
       }
     })
     .catch(error => {
-      // console.log('error from actions', error);
       dispatch({
         type: RENDER_ERROR,
         payload: {error}
@@ -251,8 +250,7 @@ export const fetchBooks = searchTerm => async dispatch => {
 }
 
 export const signInUI = firebase => dispatch => {
-  // relying on ST for now -- clearly needs better solution
-  // console.log('signing in ui');
+  // relying on ST for now -- TODO: better solution for async options here
   setTimeout(() => {
     const user = getUser(firebase);
     if (!!user) {
@@ -277,13 +275,11 @@ export const signInUI = firebase => dispatch => {
         payload: user
       });
     }
-    // console.log('signed in ui');
   }, 800);
 }
 
 // sync UI cart with FB cart
 export const syncCart = firebase => dispatch => {
-  // console.log('syncing cart');
   const user = firebase.auth().currentUser;
   const cartRef = firebase.database().ref('users/' + (user && user.uid) + '/cart');
   cartRef.on('value', async (snapshot) => {
@@ -298,12 +294,10 @@ export const syncCart = firebase => dispatch => {
       payload: fbCartArr
     });
   });
-  // console.log('synced cart');
 }
 
 // get a user's purchase history into Redux
 export const getHistory = firebase => async dispatch => {
-  // console.log('getting history');
   await getUserHistory(firebase)
     .then(res => {
       Array.isArray(res) ? (
@@ -315,5 +309,4 @@ export const getHistory = firebase => async dispatch => {
       });
       return res;
     });
-  // console.log('got history');
 }

@@ -43,16 +43,16 @@ const Books = ({
                 <p>Adding book to cart...</p>
             </div>
         }
-        {/* TODO: better solution here */}
+        {/* TODO: better looking loading bar */}
         { loading &&
             <div id="loading-div" className="text-center">
                 <p>Loading...</p>
             </div>
         }
-        {/* TODO: needs work */}
+        {/* TODO: better looking nbf indicator */}
         { searched && noBooks && !loading &&
-            <div id="error-div" className="text-center"> {/* that div id is poorly named! TODO! */}
-                <p>No Books found</p>
+            <div className="text-center">
+                <p>No Books Found</p>
             </div>
         }
 
