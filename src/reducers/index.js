@@ -82,7 +82,8 @@ const rootReducer = (state = [], action) => {
         ...state,
         cart: [],
         user: null,
-        signedIn: false
+        signedIn: false,
+        error: null
       }
   }
 }

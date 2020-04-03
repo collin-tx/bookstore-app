@@ -4,6 +4,7 @@ const Books = ({
     adding,
     bookList = [],
     books = [],
+    error = {},
     loading,
     noBooks = false,
     onSubmit = () => {},
@@ -25,6 +26,15 @@ const Books = ({
                     <h3 className="text-center m-5">Happy Reading!</h3>
                     <p className="text-center mt-5">Your search results will display here.</p>
                 </div>
+        }
+
+        {
+            // display error
+            !!error && error.message && (
+                <div>
+                    <p className="error">{error.message}</p>
+                </div>
+            )
         }
 
         {/* TODO: better solution for notifying user a book is being/has been added */}

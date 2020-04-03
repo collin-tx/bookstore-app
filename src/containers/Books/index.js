@@ -87,7 +87,8 @@ const mapState = state => ({
     books: state.books,
     searchTerm: state.term,
     cart: state.cart,
-    noBooks: state.noBooks
+    noBooks: state.noBooks,
+    error: state.error
 });
 
 const mapDispatch = dispatch => ({ 
