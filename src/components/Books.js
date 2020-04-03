@@ -5,6 +5,7 @@ const Books = ({
     bookList = [],
     books = [],
     loading,
+    noBooks = false,
     onSubmit = () => {},
     term,
     onChange = () => {},
@@ -39,7 +40,7 @@ const Books = ({
             </div>
         }
         {/* TODO: needs work */}
-        { searched && !books.length && !loading &&
+        { searched && noBooks && !loading &&
             <div id="error-div" className="text-center"> {/* that div is poorly named! TODO! */}
                 <p>No Books found</p>
             </div>

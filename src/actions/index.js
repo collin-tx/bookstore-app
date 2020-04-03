@@ -3,6 +3,7 @@ import {
   EMPTY_CART,
   FETCH_BOOKS,
   GET_HISTORY,
+  NO_BOOKS,
   RENDER_ERROR,
   REMOVE_ERROR,
   SIGN_IN,
@@ -230,12 +231,19 @@ export const fetchBooks = searchTerm => async dispatch => {
   await fetchRequest(searchTerm)
     .then(response => {
       return response.json();
-    }).then(data => {
-        return dispatch({
-          type: FETCH_BOOKS,
-          payload: [data],
-          searchTerm
+    })
+    .then(data => {
+      console.log('bookdata', data);
+      dispatch({
+        type: FETCH_BOOKS,
+        payload: [data],
+        searchTerm
+      });
+      if (data && !data.items){
+        dispatch({
+          type: NO_BOOKS
         });
+      }
     })
     .catch(error => {
       console.log('error from actions', error);

@@ -3,6 +3,7 @@ import {
   EMPTY_CART,
   FETCH_BOOKS,
   GET_HISTORY,
+  NO_BOOKS,
   REMOVE_ERROR,
   RENDER_ERROR,
   SIGN_IN,
@@ -28,12 +29,18 @@ const rootReducer = (state = [], action) => {
       return {
         ...state,
         books: action.payload[0].items,
-        searchTerm: action.searchTerm
+        searchTerm: action.searchTerm,
+        noBooks: false
       }
     case GET_HISTORY:
       return {
         ...state,
         userHistory: action.payload
+      }
+    case NO_BOOKS:
+      return {
+        ...state,
+        noBooks: true
       }
     case REMOVE_ERROR:
       return {

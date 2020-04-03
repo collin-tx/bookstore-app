@@ -30,24 +30,21 @@ export class BooksContainer extends Component {
     addToCart = (e, index) => {
         this.setState({ adding: true })
         const bookToAdd = this.props.books[index];
-        setTimeout( ()=> {
-            this.setState({ adding: false });
-        }, 1000);
+        this.setState({ adding: false });
         this.props.addBookToCart(this.props.firebase, bookToAdd);
     }
 
     getBooks = searchTerm => {
+        this.setState(() => {
+            return { loading: true,  searched: true }
+        });
         this.props.fetchBooks(searchTerm)
+        .then(() => {
+            this.setState({ loading: false });
+        })
         .catch(error => {
             this.setState({ error, loading: false });
         });
-        this.setState( () => {
-            return { loading: true,  searched: true }
-        });
-
-        setTimeout( () => {
-            this.setState({ loading: false });
-        }, 1000);
     }
 
     render() {
@@ -72,14 +69,15 @@ export class BooksContainer extends Component {
         return (
             <Books
             adding={this.state.adding}
-            quote={quote}
-            bookList={allBooks}
-            onSubmit={this.handleSubmit} 
-            term={this.state.term}
-            onChange={this.handleChange}
-            searched={this.state.searched}
             books={this.props.books}
+            bookList={allBooks}
             loading={this.state.loading}
+            noBooks={this.props.noBooks}
+            onChange={this.handleChange}
+            onSubmit={this.handleSubmit} 
+            quote={quote}
+            searched={this.state.searched}
+            term={this.state.term}
             />
         );
     }
@@ -88,7 +86,8 @@ export class BooksContainer extends Component {
 const mapState = state => ({
     books: state.books,
     searchTerm: state.term,
-    cart: state.cart
+    cart: state.cart,
+    noBooks: state.noBooks
 });
 
 const mapDispatch = dispatch => ({ 
