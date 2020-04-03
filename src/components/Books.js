@@ -51,7 +51,7 @@ const Books = ({
         }
         {/* TODO: needs work */}
         { searched && noBooks && !loading &&
-            <div id="error-div" className="text-center"> {/* that div is poorly named! TODO! */}
+            <div id="error-div" className="text-center"> {/* that div id is poorly named! TODO! */}
                 <p>No Books found</p>
             </div>
         }

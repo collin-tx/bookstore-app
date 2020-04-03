@@ -78,34 +78,32 @@ export const createUser = (firebase, email, password, username) => async dispatc
     .then(function() {
       dispatch(removeError());
     })
+    .then(() => {
+      const user = getUser(firebase);
+      if (!!user) {
+        dispatch({
+          type: CREATE_USER,
+          payload: user
+        });
+        // now create user in Users table in db
+        const database = firebase.database();
+        const userId = getUserId(user);
+        database.ref('users/' + userId)
+          .set({
+            username,
+            email,
+            cart: [],
+            purchaseHistory: []
+        });
+      }
+    })
     .catch(error => {
       dispatch({
         type: RENDER_ERROR,
         payload: {error}
       })
     });
-  const user = getUser(firebase);
-  if (!!user) {
-    dispatch({
-      type: CREATE_USER,
-      payload: user
-    });
 
-  // now create user in Users table in db
-
-  setTimeout(() => {
-    const database = firebase.database();
-    const userId = getUserId(user);
-
-    database.ref('users/' + userId)
-      .set({
-        username,
-        email,
-        cart: [],
-        purchaseHistory: []
-    });
-  }, 1000);
-  }
 }
 
 export const signOut = firebase => {
