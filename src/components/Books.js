@@ -4,7 +4,9 @@ const Books = ({
     adding,
     bookList = [],
     books = [],
+    error = {},
     loading,
+    noBooks = false,
     onSubmit = () => {},
     term,
     onChange = () => {},
@@ -26,21 +28,31 @@ const Books = ({
                 </div>
         }
 
+        {
+            // display error
+            !!error && error.message && (
+                <div>
+                    <p className="error">{error.message}</p>
+                </div>
+            )
+        }
+
+        {/* TODO: better solution for notifying user a book is being/has been added */}
         { adding && 
             <div id="adding-div" className="text-center">
                 <p>Adding book to cart...</p>
             </div>
         }
-        
+        {/* TODO: better looking loading bar */}
         { loading &&
             <div id="loading-div" className="text-center">
                 <p>Loading...</p>
             </div>
         }
-
-        { searched && !books.length && !loading &&
-            <div id="error-div" className="text-center">
-                <p>No Books found</p>
+        {/* TODO: better looking nbf indicator */}
+        { searched && noBooks && !loading &&
+            <div className="text-center">
+                <p>No Books Found</p>
             </div>
         }
 

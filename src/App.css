@@ -272,6 +272,14 @@ justify-content: center;
   margin: 0 auto;
 }
 
+.modal-sign-link {
+  text-decoration: underline !important;
+}
+
+.modal-sign-link:hover {
+  cursor: pointer;
+}
+
 
 @media(max-width: 600px){
 

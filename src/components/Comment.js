@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 export class Comment extends Component {
     
@@ -26,7 +26,7 @@ export class Comment extends Component {
     } 
 
     render() {
-        const { comment, user, username } = this.props;
+        const { comment, user, username, userId } = this.props;
         return (
             <li className="list-group-item comment">
 
@@ -35,7 +35,7 @@ export class Comment extends Component {
                         <i className="fas fa-user"></i>
                     </div>
                     <div className="username">
-                        <p>{user || 'anonymous'}</p>
+                        <p>{username}</p>
                     </div>
                 </div>
 
@@ -44,21 +44,24 @@ export class Comment extends Component {
                 </div>
 
                 <div className="comment-buttons">
-                    
-                {this.state.editing && 
-                    <form onSubmit={this.submitHandler} className="edit-comment-form">
-                        <input type="text" value={this.state.value} className="edit-comment-field" 
-                            onChange={this.changeHandler} placeholder="comment..." />
-                        <button type="submit" className="btn btn-sm btn-secondary">
-                            change
-                        </button>
-                    </form>}
-                    
-                    {
-                        // not the best way to do this but... I'll improve it when I start on the 0Auth stuff
-                        // user is the user who originally made the comment
-                        // while username is the user who is currently signed in
-                        (user === username) &&
+
+                {/* editing form */}
+                {
+                    this.state.editing && (
+                        <form onSubmit={this.submitHandler} className="edit-comment-form">
+                            <input type="text" value={this.state.value} className="edit-comment-field" 
+                                onChange={this.changeHandler} placeholder="comment..." />
+                            <button type="submit" className="btn btn-sm btn-secondary">
+                                change
+                            </button>
+                        </form>
+                    )
+                }
+                {/* user actions */}
+                {
+                    // checks if the currently signedIn user's ID matches the ID of the user who left the comment
+                    // if it's a match, the user may edit/delete their comment
+                    user && (userId === user.uid) && (
                         <div>
                             <button className="btn btn-info btn-sm float-right" onClick={this.clickEdit}>
                                 {this.state.editing ? "cancel" : 'edit'}
@@ -68,7 +71,8 @@ export class Comment extends Component {
                                 delete
                             </button>
                         </div>
-                    }
+                    )
+                }
                 </div>
             </li>
         )
