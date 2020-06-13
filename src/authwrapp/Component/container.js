@@ -6,7 +6,7 @@ const AuthwrappContainer = props => {
   const { isNewUser, firebase, setIsNewUser, unwrap } = props;
 
   return (
-    <div class="authwrap-container">
+    <div className="authwrap-container">
       <SignIn firebase={firebase} isNewUser={isNewUser} unwrap={unwrap} />
       {
         isNewUser ? (
