@@ -312,3 +312,17 @@ justify-content: center;
 .error {
   border: red 1px solid;
 }
+
+
+
+
+
+
+
+
+/* authwrapp */
+
+.authwrap-container {
+  max-width: 60%;
+  margin: 0 auto;
+}

@@ -12,6 +12,8 @@ import './App.css';
 import { connect } from 'react-redux';
 import { getHistory, signInUI } from './actions';
 
+import Authwrapp from './authwrapp/App';
+
 
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -32,26 +34,33 @@ const database = firebase.database();
 const App = props => {
   // on render, check for FB user + sign them in + get purchase history
   const { signInUI, getHistory } = props;
-  signInUI(firebase);
+  // signInUI(firebase);
   getHistory(firebase);
 
-  return (
-    <BrowserRouter>
-      <Nav firebase={firebase} />
-      <Header />
-      <Switch>
-        <Route path="/" render={ () => <Home firebase={firebase} />} exact />
-        <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
-        <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
-        <Route component={Error} />
-      </Switch>
-      <Footer />
-    </BrowserRouter>
-  );
+  const [ isLoggedIn, setIsLoggedIn ] = React.useState(false);
+
+  if (!!isLoggedIn) {
+      return (
+        <BrowserRouter>
+          <Nav firebase={firebase} />
+          <Header />
+          <Switch>
+            <Route path="/" render={ () => <Home firebase={firebase} />} exact />
+            <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
+            <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
+            <Route component={Error} />
+          </Switch>
+          <Footer />
+        </BrowserRouter>
+      );
+  }
+
+
+return <Authwrapp firebase={firebase} login={setIsLoggedIn} />;
 }
 
 const mapDispatch = dispatch => ({
-  signInUI: firebase => (signInUI(firebase)(dispatch)),
+  // signInUI: firebase => (signInUI(firebase)(dispatch)),
   getHistory: firebase => (getHistory(firebase)(dispatch))
 })
 
