@@ -32,36 +32,42 @@ if (!firebase.apps.length) {
 const database = firebase.database();
 
 const App = props => {
-  // on render, check for FB user + sign them in + get purchase history
-  const { signInUI, getHistory } = props;
-  // signInUI(firebase);
+  // on render, check for FB user + get purchase history
+  // Authwrapp will create or + sign them in 
+  // Unwraps to Bookshop -> welcome modal etc. -> bookshop
+  
+  const { getHistory, isSignedIn } = props;
+
   getHistory(firebase);
 
-  const [ isLoggedIn, setIsLoggedIn ] = React.useState(false);
-
-  if (!!isLoggedIn) {
-      return (
-        <BrowserRouter>
-          <Nav firebase={firebase} />
-          <Header />
-          <Switch>
-            <Route path="/" render={ () => <Home firebase={firebase} />} exact />
-            <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
-            <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
-            <Route component={Error} />
-          </Switch>
-          <Footer />
-        </BrowserRouter>
-      );
+  if (!isSignedIn) {
+    return <Authwrapp firebase={firebase} />;
   }
-
-
-return <Authwrapp firebase={firebase} login={setIsLoggedIn} />;
+  
+  
+  return (
+    <BrowserRouter>
+      <Nav firebase={firebase} />
+      <Header />
+      <Switch>
+        <Route path="/" render={ () => <Home firebase={firebase} />} exact />
+        <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
+        <Route path="/featured" render={ ()=> <FeaturedContainer database={database} />} />
+        <Route component={Error} />
+      </Switch>
+      <Footer />
+    </BrowserRouter>
+  );
 }
+
+const mapState = state => ({
+  // signInUI: firebase => (signInUI(firebase)(dispatch)),
+  isSignedIn: state.signedIn
+});
 
 const mapDispatch = dispatch => ({
   // signInUI: firebase => (signInUI(firebase)(dispatch)),
   getHistory: firebase => (getHistory(firebase)(dispatch))
-})
+});
 
-export default connect(null, mapDispatch)(App);
+export default connect(mapState, mapDispatch)(App);
