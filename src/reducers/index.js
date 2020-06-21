@@ -3,13 +3,15 @@ import {
   EMPTY_CART,
   FETCH_BOOKS,
   GET_HISTORY,
+  LOADING,
   NO_BOOKS,
   REMOVE_ERROR,
   RENDER_ERROR,
   SIGN_IN,
   SIGN_IN_UI,
   SIGN_OUT,
-  SYNC_CART
+  SYNC_CART,
+  UNWRAP
 } from '../actions/constants';
 
 const rootReducer = (state = [], action) => {
@@ -37,6 +39,12 @@ const rootReducer = (state = [], action) => {
         ...state,
         userHistory: action.payload
       }
+    case LOADING: 
+      return {
+        ...state,
+        loading: action.payload
+      }
+
     case NO_BOOKS:
       return {
         ...state,
@@ -77,13 +85,19 @@ const rootReducer = (state = [], action) => {
         ...state,
         cart: action.payload
       }
+    case UNWRAP:
+      return {
+        ...state,
+        signedIn: true
+      }
     default:
       return {
         ...state,
         cart: [],
-        user: null,
+        error: null,
+        loading: false,
         signedIn: false,
-        error: null
+        user: null
       }
   }
 }
