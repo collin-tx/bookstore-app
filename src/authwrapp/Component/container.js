@@ -1,13 +1,15 @@
 import React from 'react';
-import SignIn from '../../containers/sign-in';
+import SignIn from '../sign-in/container';
 
 const AuthwrappContainer = props => {
 
-  const { isNewUser, firebase, setIsNewUser, unwrap } = props;
+  const { firebase } = props;
+
+  const  [ isNewUser, setIsNewUser ] = React.useState(true);
 
   return (
     <div className="authwrap-container">
-      <SignIn firebase={firebase} isNewUser={isNewUser} unwrap={unwrap} />
+      <SignIn firebase={firebase} isNewUser={isNewUser} />
       {
         isNewUser ? (
           <p>Already have an account? <button className="modal-sign-link" onClick={() => setIsNewUser(false)}>sign in</button></p>) : (
