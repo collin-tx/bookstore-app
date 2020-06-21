@@ -3,6 +3,7 @@ import {
   EMPTY_CART,
   FETCH_BOOKS,
   GET_HISTORY,
+  LOADING,
   NO_BOOKS,
   RENDER_ERROR,
   REMOVE_ERROR,
@@ -10,6 +11,7 @@ import {
   SIGN_OUT,
   SIGN_IN_UI,
   SYNC_CART,
+  UNWRAP,
 } from './constants';
 
 // utilities
@@ -66,6 +68,7 @@ export const signOutUI = () => {
 }
 
 export const createUser = (firebase, email, password, username) => async dispatch => {
+  // create a new fb user auth credentials - clear any errors - create bookshop user in redux state - create User instance in db - render any errors
   await firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       const user = firebase.auth().currentUser;
@@ -81,6 +84,7 @@ export const createUser = (firebase, email, password, username) => async dispatc
     .then(() => {
       const user = getUser(firebase);
       if (!!user) {
+        console.log('user from actions - created ', user);
         dispatch({
           type: CREATE_USER,
           payload: user
@@ -88,6 +92,7 @@ export const createUser = (firebase, email, password, username) => async dispatc
         // now create user in Users table in db
         const database = firebase.database();
         const userId = getUserId(user);
+        console.log('user id from actions - created ', userId);
         database.ref('users/' + userId)
           .set({
             username,
@@ -145,6 +150,7 @@ export const addBookToCart = (firebase, book) => dispatch => {
 }
 
 export const removeBookFromCart = (firebase, book) => {
+  // find the book and suck it outta there
     const user = getUser(firebase);
     const userId = getUserId(user);
     const database = firebase.database();
@@ -251,6 +257,7 @@ export const fetchBooks = searchTerm => async dispatch => {
 
 export const signInUI = firebase => dispatch => {
   // relying on ST for now -- TODO: better solution for async options here
+  //  solution: split it up - break down with new approach to sign in authrwarop whatejfijsdf
   setTimeout(() => {
     const user = getUser(firebase);
     if (!!user) {
@@ -310,3 +317,11 @@ export const getHistory = firebase => async dispatch => {
       return res;
     });
 }
+
+
+export const isLoading = bool => ({
+  type: LOADING,
+  payload: bool
+});
+
+export const unwrap = () => ({ type: UNWRAP });

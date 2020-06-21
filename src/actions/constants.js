@@ -11,3 +11,5 @@ export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
 export const SIGN_IN_UI = 'SIGN_IN_UI';
 export const SYNC_CART = 'SYNC_CART';
+export const LOADING = 'LOADING';
+export const UNWRAP = 'UNWRAP';
