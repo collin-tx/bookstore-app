@@ -1,26 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
 import Nav from '../../components/Nav.js';
 import AuthWrapp from '../Component/container';
-import { signInUI } from '../../actions/index.js';
+import { isSignedIn, signOut, storeHistory } from '../../actions';
 import Bookshop from '../../bookshop';
 
 const mapState = state => ({
-  isSignedIn: state.signedIn
+  signedIn: state.signedIn
 });
 
 const mapDispatch = dispatch => ({
-  signInUI: fb => dispatch(signInUI(fb))
-
+  isSignedIn: (fb) => dispatch(isSignedIn(fb)),
+  signOut: fb => dispatch(signOut(fb)),
+  storeHistory: () => dispatch(storeHistory())
 });
 
 
 const App = props => {
 
-  const { isSignedIn, firebase } = props;
+  const { signedIn, firebase } = props;
   const user = firebase.auth().currentUser;
   
   
@@ -35,22 +36,44 @@ const App = props => {
   </BrowserRouter>
   );
   
-  let view = <Auth firebase={firebase} auth="hi" />;
+  let view = <Auth firebase={firebase} />;
+  let viewRef = 'auth';
 
-  // THIS CAN DEF BE IMPROVED
-  // TODO: 
-  if (!isSignedIn) {
+  // THIS CAN DEF BE IMPROVED 
+  // TODO:  - useref
+  if (!signedIn) {
     setInterval(() => {
       if (firebase.auth().currentUser) {
-        props.signInUI(firebase);
         view = <Bookshop firebase={firebase} />;
+        viewRef = 'bookshop';
+      } else {
+        if (!firebase.auth().currentUser && viewRef === 'bookshop') {
+          props.signOut(firebase);
+          view = <Auth firebase={firebase} />;
+          viewRef = 'auth';
+        }
       }
-    }, 100);
+    }, 200);
   }
 
-  if (isSignedIn || !!user) {
-    props.signInUI(firebase);
+  useEffect(() => {
+    if (firebase.auth().currentUser) {
+            props.isSignedIn(firebase);
+            props.storeHistory();
+          } else {
+            if (signedIn && !firebase.auth().currentUser) {
+              props.signOut(firebase);
+            }
+          }
+  });
+
+  if (signedIn || !!user) {
+    props.isSignedIn(firebase);
     view = <Bookshop firebase={firebase} />;
+    viewRef = 'bookshop';
+  } else {
+    view = <Auth firebase={firebase} />;
+    viewRef = 'auth';
   }
 
   return view;
