@@ -8,10 +8,11 @@ import {
   REMOVE_ERROR,
   RENDER_ERROR,
   SIGN_IN,
-  SIGN_IN_UI,
+  IS_SIGNED_IN,
   SIGN_OUT,
   SYNC_CART,
-  UNWRAP
+  UNWRAP,
+  FIREBASE
 } from '../actions/constants';
 
 const rootReducer = (state = [], action) => {
@@ -34,6 +35,12 @@ const rootReducer = (state = [], action) => {
         searchTerm: action.searchTerm,
         noBooks: false
       }
+    case FIREBASE: {
+      return {
+        ...state,
+        firebase: action.payload
+      }
+    }
     case GET_HISTORY:
       return {
         ...state,
@@ -74,7 +81,7 @@ const rootReducer = (state = [], action) => {
         cart: [],
         userHistory: []
       }
-    case SIGN_IN_UI:
+    case IS_SIGNED_IN:
       return {
         ...state,
         signedIn: true,
@@ -95,6 +102,7 @@ const rootReducer = (state = [], action) => {
         ...state,
         cart: [],
         error: null,
+        firebase: null,
         loading: false,
         signedIn: false,
         user: null

@@ -11,7 +11,7 @@ const SignUp = ({
   passwordVerify,
   username
 }) => (
-    <form id="sign-up-form" className="form-horizontal" onSubmit={(e) => handleSubmit(e, email, password, passwordVerify, true)}>
+    <form id="sign-up-form" className="form-horizontal" onSubmit={e => handleSubmit(e, email, password, passwordVerify, true)}>
     <div className="form-group">
         <label htmlFor="username">username:</label>
         <input type="text" onChange={handleUsername} value={username} className="form-control" />

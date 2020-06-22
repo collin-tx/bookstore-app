@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import UserHistory from './index';
+import { getHistory } from '../../actions/selectors';
 
 const UserHistoryModal = props => {
     // render error fx goes here
@@ -26,7 +27,6 @@ const UserHistoryModal = props => {
 export const UserHistoryModalContainer = props => {
   
   const [ modalShow, setModalShow ] = React.useState(false);
-
   return (
       <ButtonToolbar>
             <Button variant="primary" onClick={() => setModalShow(true)} id="show-purchase-history" className="navLink mr-1">
@@ -46,7 +46,7 @@ export const UserHistoryModalContainer = props => {
 const mapState = state => {
     return {
         user: state.user,
-        userHistory: state.userHistory,
+        userHistory: getHistory(state),
         error: state.error
     }
 }

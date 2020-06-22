@@ -8,14 +8,14 @@ import FeaturedContainer from '../containers/Featured';
 import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
-import { connect } from 'react-redux';
-import { getHistory } from '../actions';
+import { storeHistory } from '../actions';
+import { useDispatch } from 'react-redux';
 
-const Bookshop = ({ getHistory, firebase }) => {
-  // on render, check for FB user + get purchase history
-  // Authwrapp will create or + sign them in 
-  // Unwraps to Bookshop -> welcome modal etc. -> bookshop
-  getHistory(firebase);
+
+const Bookshop = ({ firebase }) => {
+
+  const dispatch = useDispatch();
+  dispatch(storeHistory());
   
   return (
     <BrowserRouter>
@@ -32,15 +32,5 @@ const Bookshop = ({ getHistory, firebase }) => {
   );
 }
 
-const mapState = state => ({
-  // this component (ie. the app) can now be ignorant of sign in stuff
-  //  because the auth wrapper will bounce them out of the club if they dont have id
-  // isSignedIn: state.signedIn
-});
 
-const mapDispatch = dispatch => ({
-  // signInUI: firebase => (signInUI(firebase)(dispatch)),
-  getHistory: firebase => (getHistory(firebase)(dispatch))
-});
-
-export default connect(mapState, mapDispatch)(Bookshop);
+export default Bookshop;

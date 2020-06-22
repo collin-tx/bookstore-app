@@ -1,7 +1,7 @@
 import React from 'react';
 import { generateKey } from '../../utils/helper';
 
-const UserHistory = ({ userHistory = [] }) => {
+const UserHistory = ({ userHistory = {} }) => {
     // TODO: massive styling/flow changes
     const purchaseListArr = Array.isArray(userHistory) ? userHistory : Object.keys(userHistory).map((p, i) => userHistory[p]);
         const purchaseList = purchaseListArr.map((purchase, index) => {
@@ -28,7 +28,7 @@ const UserHistory = ({ userHistory = [] }) => {
     });
 
     return (
-            !!userHistory.length ? (
+            purchaseListArr.length ? (
                 <ul className="list-group">
                     {purchaseList}
                 </ul>
