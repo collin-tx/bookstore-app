@@ -13,7 +13,8 @@ export class FeaturedContainer extends Component {
     
     componentDidMount(){
         // connect to db and read from featured table
-        let { database } = this.props;
+        let { firebase } = this.props;
+        let database = firebase.database();
         let featured = database.ref('featured');
         this.setState({ featured, database });
 

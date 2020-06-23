@@ -24,7 +24,7 @@ const Bookshop = ({ firebase }) => {
       <Switch>
         <Route path="/" render={ () => <Home firebase={firebase} />} exact />
         <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
-        <Route path="/featured" render={ ()=> <FeaturedContainer database={firebase.database()} />} />
+        <Route path="/featured" render={ ()=> <FeaturedContainer firebase={firebase} />} />
         <Route component={Error} />
       </Switch>
       <Footer />
