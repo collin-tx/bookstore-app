@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Header from '../../components/Header.js';
 import Footer from '../../components/Footer.js';
 import Nav from '../../components/Nav.js';
-import AuthWrapp from '../Component/container';
+import AuthWrapper from '../Component';
 import { isSignedIn, signOut, storeHistory } from '../../actions';
 import Bookshop from '../../bookshop';
 
@@ -29,7 +29,7 @@ const App = props => {
     <BrowserRouter>
       <Nav firebase={firebase} />
       <Header />
-      <AuthWrapp
+      <AuthWrapper
         firebase={firebase}
         />
       <Footer />

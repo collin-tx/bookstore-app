@@ -11,7 +11,6 @@ import {
   IS_SIGNED_IN,
   SIGN_OUT,
   SYNC_CART,
-  UNWRAP,
   FIREBASE
 } from '../actions/constants';
 
@@ -91,11 +90,6 @@ const rootReducer = (state = [], action) => {
       return {
         ...state,
         cart: action.payload
-      }
-    case UNWRAP:
-      return {
-        ...state,
-        signedIn: true
       }
     default:
       return {
