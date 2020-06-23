@@ -12,5 +12,4 @@ export const SIGN_OUT = 'SIGN_OUT';
 export const IS_SIGNED_IN = 'IS_SIGNED_IN';
 export const SYNC_CART = 'SYNC_CART';
 export const LOADING = 'LOADING';
-export const UNWRAP = 'UNWRAP';
 export const FIREBASE = 'FIREBASE';

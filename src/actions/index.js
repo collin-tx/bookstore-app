@@ -1,4 +1,3 @@
-import React from 'react'
 import firebase from 'firebase';
 import { 
   CREATE_USER,
@@ -14,9 +13,7 @@ import {
   SIGN_OUT,
   IS_SIGNED_IN,
   SYNC_CART,
-  UNWRAP,
 } from './constants';
-
 import {
   getUser,
   getUserId,
@@ -24,11 +21,8 @@ import {
   getUserHistoryFB,
   getFirebase
 } from './selectors';
-
 import store from '../store';
 
-import { useSelector } from 'react-redux';
-import { createSelector } from 'reselect';
 
 //action creators
 export const signIn = (firebase, email, password) => dispatch => {
@@ -344,8 +338,6 @@ export const isLoading = bool => ({
   type: LOADING,
   payload: bool
 });
-
-export const unwrap = () => ({ type: UNWRAP });
 
 export const initialize = () => dispatch => {
   var firebaseConfig = {
