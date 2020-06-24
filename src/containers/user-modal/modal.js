@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
-// import SignInContainer from './index';
 import { signOut } from '../../actions';
 
 const UserModal = props => {
   
-  const { user, onHide } = props;  
+  const { user, onHide, onSignOut } = props;  
   const renderError = () => {
     return (props.error && 
       <div className="error">
@@ -20,15 +19,15 @@ const UserModal = props => {
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          { username + ' || badass bookshop user' }
+          { (username ? username : 'Boo Radley') + ' || badass bookshop user' }
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {renderError()}
-        {/* <SignInContainer firebase={props.firebase} isNewUser={isNewUser} /> */}
         a bunch of user stuff will go here soon.
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
+      <Button onClick={onSignOut}>Sign Out</Button>
         <Button onClick={onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
@@ -50,19 +49,22 @@ export const UserModalContainer = props => {
       <ButtonToolbar>
       
         <div>
-            <p className="navLink mr-2">{props.user && props.user.displayName ? props.user.displayName : 'newbie :)'}</p>
-            <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => onSignOut()}>
-                <small>sign out</small>
+            {/* <p className="navLink mr-2">{props.user && props.user.displayName ? props.user.displayName : ''}</p> */}
+            <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => setModalShow(true)}>
+                <small>{props.user && props.user.displayName || '[no user]'}</small>
+                {/* maybe a user icon here? */}
             </Button>
         </div>
       
       <UserModal 
           onHide={() => setModalShow(false)}
+          onSignOut={onSignOut}
           show={modalShow}
           firebase={props.firebase}
           error={props.error}
           user={props.user}
       />
+
       </ButtonToolbar>
   );
 }
