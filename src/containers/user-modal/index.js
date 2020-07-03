@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import SignedIn from '../../components/SignedIn';
 import { connect } from 'react-redux';
-import { signOut, removeError, renderError, signIn } from '../../actions';
+import { signOut, removeError, renderError } from '../../actions';
 import UserModal from './modal';
 
 class UserModalContainer extends Component {

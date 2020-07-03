@@ -19,12 +19,12 @@ const UserModal = props => {
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          { (username ? username : 'Boo Radley') + ' || badass bookshop user' }
+          { `${username} || badass bookshop user` }
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {renderError()}
-        a bunch of user stuff will go here soon.
+        a bunch of user stuff will go here soon. like books and suggestions and whatever ? Idk
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
       <Button onClick={onSignOut}>Sign Out</Button>
