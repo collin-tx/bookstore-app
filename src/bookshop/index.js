@@ -1,15 +1,19 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Home from '../components/Home';
-import CartContainer from '../containers/Cart';
 import Nav from '../components/Nav';
-import FeaturedContainer from '../containers/Featured';
-import Footer from '../components/Footer';
-import 'bootstrap/dist/css/bootstrap.css';
-import '../App.css';
+
+import Cart from './Cart';
+import Featured from './Featured';
+
 import { storeHistory } from '../actions';
-import { useDispatch } from 'react-redux';
+
+import '../App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 const Bookshop = ({ firebase }) => {
@@ -23,8 +27,8 @@ const Bookshop = ({ firebase }) => {
       <Header />
       <Switch>
         <Route path="/" render={ () => <Home firebase={firebase} />} exact />
-        <Route path="/cart" render={ () => <CartContainer firebase={firebase} />} />
-        <Route path="/featured" render={ ()=> <FeaturedContainer firebase={firebase} />} />
+        <Route path="/cart" render={ () => <Cart firebase={firebase} />} />
+        <Route path="/featured" render={ ()=> <Featured firebase={firebase} />} />
         <Route component={Error} />
       </Switch>
       <Footer />
