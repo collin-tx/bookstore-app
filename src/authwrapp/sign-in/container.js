@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import SignIn from '../../components/SignIn'
-import SignUp from '../../components/SignUp';
 import { connect } from 'react-redux';
+
+import SignIn from './SignIn'
+import SignUp from './SignUp';
+
 import { signIn, isSignedIn, signOut, createUser, removeError, renderError} from '../../actions';
 import { validateEmail, validatePassword } from '../../utils/helper';
 
