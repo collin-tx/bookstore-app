@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import Authwrapp from './authwrapp/App';
+import Authwrapper from './authwrapper/App';
 
 import { initialize } from './actions';
 
@@ -11,7 +11,7 @@ import './App.css';
 const App = () => {
   const dispatch = useDispatch();
   const firebase = dispatch(initialize());
-  return <Authwrapp firebase={firebase} />;
+  return <Authwrapper firebase={firebase} />;
 }
 
 export default App;
