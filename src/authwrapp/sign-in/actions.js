@@ -1,23 +1,23 @@
 // import firebase from 'firebase';
 import { 
   CREATE_USER,
-  FIREBASE,
+  // FIREBASE,
   GET_HISTORY,
-  LOADING,
+  // LOADING,
   RENDER_ERROR,
-  REMOVE_ERROR,
+  // REMOVE_ERROR,
   SIGN_IN,
-  SIGN_OUT,
+  // SIGN_OUT,
   IS_SIGNED_IN,
   SYNC_CART,
 } from '../../actions/constants';
 
 import {
   getUser,
-  getUserId,
-  getHistory,
-  getUserHistoryFB,
-  getFirebase
+  // getUserId,
+  // getHistory,
+  // getUserHistoryFB,
+  // getFirebase
 } from '../../actions/selectors';
 
 import {
