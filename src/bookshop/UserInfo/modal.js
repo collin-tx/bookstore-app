@@ -45,13 +45,15 @@ export const UserModalContainer = props => {
     });
   }
 
+  const displayName = props.user && props.user.displayName;
+
   return (
       <ButtonToolbar>
       
         <div>
             {/* <p className="navLink mr-2">{props.user && props.user.displayName ? props.user.displayName : ''}</p> */}
             <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => setModalShow(true)}>
-                <small>{props.user && props.user.displayName || '[no user]'}</small>
+                <small>{displayName || '[no user]'}</small>
                 {/* maybe a user icon here? */}
             </Button>
         </div>
