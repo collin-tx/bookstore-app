@@ -1,20 +1,17 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+
 import Authwrapp from './authwrapp/App';
-import 'bootstrap/dist/css/bootstrap.css';
-import './App.css';
-import { connect } from 'react-redux';
+
 import { initialize } from './actions';
 
-const App = ({
-  initialize
-}) => {
+import 'bootstrap/dist/css/bootstrap.css';
+import './App.css';
 
-  const firebase = initialize();
+const App = () => {
+  const dispatch = useDispatch();
+  const firebase = dispatch(initialize());
   return <Authwrapp firebase={firebase} />;
 }
 
-const mapDispatch = dispatch => ({
-  initialize: () => dispatch(initialize()),
-});
-
-export default connect(null, mapDispatch)(App);
+export default App;
