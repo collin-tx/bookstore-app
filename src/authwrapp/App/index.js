@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import Header from '../../components/Header.js';
-import Footer from '../../components/Footer.js';
-import Nav from '../../components/Nav.js';
+import Header from '../../bookshop/components/Header';
+import Footer from '../../bookshop/components/Footer';
+import Nav from '../../bookshop/components/Nav';
 
-import AuthWrapper from '../Component';
+import AuthWrapper from './AuthWrapper';
 
-import { isSignedIn, signOut, storeHistory } from '../../actions';
+import { isSignedIn } from '../sign-in/actions';
+import { signOut, storeHistory } from '../../actions';
 import Bookshop from '../../bookshop';
 
 const mapState = state => ({

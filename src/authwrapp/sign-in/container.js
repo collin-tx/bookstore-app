@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import SignIn from './SignIn'
 import SignUp from './SignUp';
 
-import { signIn, isSignedIn, signOut, createUser, removeError, renderError} from '../../actions';
+import { signOut } from '../../actions';
+import { signIn, isSignedIn, createUser} from './actions';
+import { removeError, renderError } from '../../actions';
 import { validateEmail, validatePassword } from '../../utils/helper';
-
 
 class SignInContainer extends Component {
 
@@ -47,6 +48,8 @@ class SignInContainer extends Component {
 
   handleSubmit = (e, email, password, passwordVerify, newUser = false) => {
     e.preventDefault();
+
+    // console.log('this', e, arguments);
     if (validateEmail(email) && validatePassword(password, passwordVerify)) {
       if (this.props.isNewUser) {
         if (!!this.state.username.length){
