@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
-import Checkout from './index';
 import CheckedOut from './CheckedOut';
+import Checkout from './index';
 
 import { checkOut } from '../../actions';
 import store from '../../store';
