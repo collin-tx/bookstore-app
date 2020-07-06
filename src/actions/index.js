@@ -13,7 +13,7 @@ import {
 } from './constants';
 import {
   getUser,
-  getUserId,
+  // getUserId,
   getHistory,
   getUserHistoryFB,
   getFirebase
@@ -35,7 +35,7 @@ export const addBookToCart = (firebase, book) => dispatch => {
 
   const user = getUser(store.getState());
   if (!!user){
-    const userId = getUserId(user);
+    const userId = user && user.uid;
     const database = firebase.database();
     database.ref('users/' + userId +'/cart/' + book.id)
       .set({
@@ -62,7 +62,8 @@ export const addBookToCart = (firebase, book) => dispatch => {
 export const removeBookFromCart = (firebase, book) => {
   // find the book and suck it outta there
     const user = getUser(store.getState());
-    const userId = getUserId(user);
+    // const userId = getUserId(user);
+    const userId = user && user.uid;
     const database = firebase.database();
     
     database.ref('users/' + userId + '/cart/' + book.id)
@@ -85,13 +86,16 @@ export const removeBookFromCart = (firebase, book) => {
 }
 
 export const checkOut = (firebase, order, subtotal) => dispatch => {
-  const user = getUser(store.getState());
   const database = firebase.database();
-  const userId = getUserId(user);
+  const user = getUser(store.getState());
+  const userId = user && user.uid;
+  console.log('checkout =----', order, subtotal);
 
   // push purchase details to purchaseHistory field on User  
   if (!!user){
     const path = `users/${userId}/purchaseHistory`;
+
+    console.log('path', path);
     database.ref(path)
       .push({
         order,
@@ -119,7 +123,9 @@ export const removeError = () => {
 
 export const emptyCart = firebase => {
   const user = getUser(store.getState());
-  const userId = getUserId(user);
+  // const userId = getUserId(user);
+  const userId = user && user.uid;
+
   const database = firebase.database();
 
   database.ref('users/' + userId + '/cart/')
@@ -186,28 +192,38 @@ export const syncCart = firebase => dispatch => {
 
 // get a user's purchase history into Redux
 export const storeHistory = () => {
-  let history = getHistory(store.getState()) || getUserHistoryFB(store.getState());
-  // console.log('history', history ? history : 'nah');
+  let history;
+
+  if (!store.getState().length) {
+    history = getUserHistoryFB(store.getState());
+  } else {
+    history = getHistory(store.getState());
+  }
+  // getHistory(store.getState()) || getUserHistoryFB(store.getState());
+  console.log('history', history ? history : 'nah');
 
   if (!history) {
     const fb = getFirebase(store.getState());
-    const userId = getUserId(store.getState());
+    // const userId = getUserId(store.getState())
+    const user = getUser(store.getState())
+    const userId = user && user.uid;
+
     const historyRef = fb.database().ref('users/' + userId + '/purchaseHistory');
     history = historyRef.once('value')
       .then(snapshot => {
         return snapshot.val();
     });
-  }
-
-      let result = Array.isArray(history) ? (
-        history.filter(b => !!b)
+    let result = Array.isArray(history) ? (
+      history.filter(b => !!b)
       ) : Object.keys(history).map(k => history[k]);
-
+      
+      console.log(result);
       return ({
         type: GET_HISTORY,
         payload: result
       });
-}
+    }
+  }
 
 
 export const storeFirebase = firebase => ({
