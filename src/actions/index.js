@@ -13,10 +13,6 @@ import {
 } from './constants';
 import {
   getUser,
-  // getUserId,
-  getHistory,
-  getUserHistoryFB,
-  getFirebase
 } from './selectors';
 import store from '../store';
 
@@ -105,7 +101,23 @@ export const checkOut = (firebase, order, subtotal) => dispatch => {
   }
   // empty cart and refresh userhistory
   dispatch(emptyCart(firebase));
-  dispatch(storeHistory());
+  dispatch(getHistory(firebase, userId));
+}
+
+export const getHistory = (firebase, userId = null) => dispatch => {
+  if (!userId) {
+    const user = firebase.auth().currentUser;
+    userId = user && user.uid;
+  }
+  const historyRef = firebase.database().ref('users/' + userId + '/purchaseHistory');
+  historyRef.once('value')
+    .then(snapshot => {
+      const userHistory = snapshot.val();
+      dispatch({
+        type: GET_HISTORY,
+        payload: userHistory
+      })
+    });
 }
 
 export const renderError = error => {
@@ -189,42 +201,6 @@ export const syncCart = firebase => dispatch => {
     });
   });
 }
-
-// get a user's purchase history into Redux
-export const storeHistory = () => {
-  let history;
-
-  if (!store.getState().length) {
-    history = getUserHistoryFB(store.getState());
-  } else {
-    history = getHistory(store.getState());
-  }
-  // getHistory(store.getState()) || getUserHistoryFB(store.getState());
-  console.log('history', history ? history : 'nah');
-
-  if (!history) {
-    const fb = getFirebase(store.getState());
-    // const userId = getUserId(store.getState())
-    const user = getUser(store.getState())
-    const userId = user && user.uid;
-
-    const historyRef = fb.database().ref('users/' + userId + '/purchaseHistory');
-    history = historyRef.once('value')
-      .then(snapshot => {
-        return snapshot.val();
-    });
-    let result = Array.isArray(history) ? (
-      history.filter(b => !!b)
-      ) : Object.keys(history).map(k => history[k]);
-      
-      console.log(result);
-      return ({
-        type: GET_HISTORY,
-        payload: result
-      });
-    }
-  }
-
 
 export const storeFirebase = firebase => ({
   type: FIREBASE,

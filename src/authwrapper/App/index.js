@@ -9,7 +9,7 @@ import Nav from '../../bookshop/components/Nav';
 import AuthWrapper from './AuthWrapper';
 
 import { isSignedIn } from '../sign-in/actions';
-import { signOut, storeHistory } from '../../actions';
+import { signOut, getHistory } from '../../actions';
 import Bookshop from '../../bookshop';
 
 const mapState = state => ({
@@ -17,9 +17,9 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  isSignedIn: (fb) => dispatch(isSignedIn(fb)),
+  isSignedIn: fb => dispatch(isSignedIn(fb)),
   signOut: fb => dispatch(signOut(fb)),
-  storeHistory: () => dispatch(storeHistory())
+  getHistory: fb => dispatch(getHistory(fb))
 });
 
 
@@ -63,7 +63,7 @@ const App = props => {
   useEffect(() => {
     if (firebase.auth().currentUser) {
             props.isSignedIn(firebase);
-            props.storeHistory();
+            props.getHistory(firebase)
           } else {
             if (signedIn && !firebase.auth().currentUser) {
               props.signOut(firebase);

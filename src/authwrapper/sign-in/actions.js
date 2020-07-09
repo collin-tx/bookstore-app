@@ -13,43 +13,27 @@ import {
 } from '../../actions/constants';
 
 import {
-  getUser,
-  // getUserId,
-  // getHistory,
-  // getUserHistoryFB,
-  // getFirebase
-} from '../../actions/selectors';
-
-import {
   removeError,
-  syncCart
+  syncCart,
+  getHistory
 } from '../../actions';
-
-import store from '../../store';
-
 
 export const signIn = (firebase, email, password) => dispatch => {
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
-      const user = getUser(store.getState());
+      const user = firebase.auth().currentUser;
       const userId = user && user.uid;
+
       if (!!user){
         dispatch({
           type: SIGN_IN,
           payload: user
         });
       }
+
       syncCart(firebase)(dispatch);
       dispatch(removeError());
-      const historyRef = firebase.database().ref('users/' + userId + '/purchaseHistory');
-      historyRef.once('value')
-        .then(snapshot => {
-          const userHistory = snapshot.val();
-          dispatch({
-            type: GET_HISTORY,
-            payload: userHistory
-          })
-        });
+      dispatch(getHistory(firebase, userId));
     })
     .catch(error => {
         dispatch({
@@ -65,9 +49,8 @@ export const signIn = (firebase, email, password) => dispatch => {
   //  solution: split it up - break down with new approach to sign in authrwarop whatejfijsdf
 
   setTimeout(() => {
-    const user = getUser(store.getState());
+    const user = firebase.auth().currentUser;
     if (!!user) {
-      // dispatch(storeHistory());
       const userId = user && user.uid;
       const cartRef = firebase.database().ref('users/' + userId + '/cart');
       cartRef.on('value', async (snapshot) => {
@@ -85,15 +68,7 @@ export const signIn = (firebase, email, password) => dispatch => {
         }
       });
 
-      const historyRef = firebase.database().ref('users/' + userId + '/purchaseHistory');
-      historyRef.once('value')
-        .then(snapshot => {
-          const userHistory = snapshot.val();
-          dispatch({
-            type: GET_HISTORY,
-            payload: userHistory
-          })
-        });    
+      dispatch(getHistory(firebase, userId));
       dispatch({
         type: IS_SIGNED_IN,
         payload: user

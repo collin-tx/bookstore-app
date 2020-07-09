@@ -6,6 +6,7 @@ import CheckedOut from './CheckedOut';
 import Checkout from './index';
 
 import { checkOut } from '../../actions';
+import { getUser, getCart } from '../../actions/selectors';
 import store from '../../store';
 
 const CheckoutModal = props => {
@@ -63,8 +64,8 @@ export const CheckoutModalContainer = props => {
   
     const [modalShow, setModalShow] = React.useState(false);
     const [checkedOut, setCheckedOut] = React.useState(false);
-    const cart = store.getState().cart;
-    const user = store.getState().user;
+    const cart = getCart(store.getState());
+    const user = getUser(store.getState());
 
     return (
         <ButtonToolbar>
