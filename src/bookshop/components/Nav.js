@@ -1,7 +1,5 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-import { connect } from 'react-redux';
-
 import UserModal from '../UserInfo';
 
 const Nav = props => {
@@ -46,11 +44,4 @@ const Nav = props => {
     );
 }
 
-const mapState = state => ({
-    ...state,
-    signedIn: state.signedIn,
-    user: state.user
-});
-
-
-export default connect(mapState)(Nav);
+export default Nav;

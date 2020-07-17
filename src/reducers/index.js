@@ -80,10 +80,12 @@ const rootReducer = (state = [], action) => {
     case SIGN_OUT:
       return {
         ...state,
-        isSignedIn: false,
-        user: null,
         cart: [],
-        userHistory: []
+        error: null,
+        isSignedIn: false,
+        loading: false,
+        queries: [],
+        user: null
       }
     case UNWRAP:
       return {
@@ -98,7 +100,6 @@ const rootReducer = (state = [], action) => {
       }
     default:
       return {
-        ...state,
         cart: [],
         error: null,
         firebase: null,
