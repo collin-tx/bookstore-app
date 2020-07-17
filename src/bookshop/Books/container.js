@@ -35,11 +35,11 @@ export class BooksContainer extends Component {
         this.props.addBookToCart(this.props.firebase, bookToAdd);
     }
 
-    getBooks = searchTerm => {
+    getBooks = query => {
         this.setState(() => {
             return { loading: true,  searched: true }
         });
-        this.props.fetchBooks(searchTerm)
+        this.props.fetchBooks(query)
         .then(() => {
             this.setState({ loading: false });
         })
@@ -86,14 +86,14 @@ export class BooksContainer extends Component {
 
 const mapState = state => ({
     books: state.books,
-    searchTerm: state.term,
+    query: state.term,
     cart: state.cart,
     noBooks: state.noBooks,
     error: state.error
 });
 
 const mapDispatch = dispatch => ({ 
-    fetchBooks: searchTerm => dispatch(fetchBooks(searchTerm)),
+    fetchBooks: query => dispatch(fetchBooks(query)),
     addBookToCart: (fb, book) => dispatch(addBookToCart(fb, book))
 });
 

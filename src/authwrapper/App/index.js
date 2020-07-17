@@ -8,16 +8,16 @@ import Nav from '../../bookshop/components/Nav';
 
 import AuthWrapper from './AuthWrapper';
 
-import { isSignedIn } from '../sign-in/actions';
+import { unwrap } from '../sign-in/actions';
 import { signOut, getHistory } from '../../actions';
 import Bookshop from '../../bookshop';
 
 const mapState = state => ({
-  signedIn: state.signedIn
+  isSignedIn: state.isSignedIn,
 });
 
 const mapDispatch = dispatch => ({
-  isSignedIn: fb => dispatch(isSignedIn(fb)),
+  unwrap: fb => dispatch(unwrap(fb)),
   signOut: fb => dispatch(signOut(fb)),
   getHistory: fb => dispatch(getHistory(fb))
 });
@@ -25,7 +25,7 @@ const mapDispatch = dispatch => ({
 
 const App = props => {
 
-  const { signedIn, firebase } = props;
+  const { isSignedIn, firebase, unwrap } = props;
   const user = firebase.auth().currentUser;
   
   
@@ -45,7 +45,7 @@ const App = props => {
 
   // THIS CAN DEF BE IMPROVED 
   // TODO:  - useref
-  if (!signedIn) {
+  if (!isSignedIn) {
     setInterval(() => {
       if (firebase.auth().currentUser) {
         view = <Bookshop firebase={firebase} />;
@@ -62,17 +62,17 @@ const App = props => {
 
   useEffect(() => {
     if (firebase.auth().currentUser) {
-            props.isSignedIn(firebase);
+            props.unwrap(firebase);
             props.getHistory(firebase)
           } else {
-            if (signedIn && !firebase.auth().currentUser) {
+            if (isSignedIn && !firebase.auth().currentUser) {
               props.signOut(firebase);
             }
           }
   });
 
-  if (signedIn || !!user) {
-    props.isSignedIn(firebase);
+  if (isSignedIn || !!user) {
+    props.unwrap(firebase);
     view = <Bookshop firebase={firebase} />;
     viewRef = 'bookshop';
   } else {

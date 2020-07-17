@@ -5,7 +5,7 @@ import SignIn from './SignIn'
 import SignUp from './SignUp';
 
 import { signOut } from '../../actions';
-import { signIn, isSignedIn, createUser} from './actions';
+import { signIn, unwrap, createUser} from './actions';
 import { removeError, renderError } from '../../actions';
 import { validateEmail, validatePassword } from '../../utils/helper';
 
@@ -21,8 +21,8 @@ class SignInContainer extends Component {
   componentDidMount(){
     const user = this.props.firebase.auth().currentUser;
     if (!!user){
-      if (!this.state.signedIn) {
-        this.props.isSignedIn(this.props.firebase);
+      if (!this.state.isSignedIn) {
+        this.props.unwrap(this.props.firebase);
       }
       
     } else {
@@ -55,7 +55,7 @@ class SignInContainer extends Component {
         if (!!this.state.username.length){
 
           this.props.createUser(this.props.firebase, this.state.email, this.state.password, this.state.username);
-          this.props.isSignedIn(this.props.firebase);
+          this.props.unwrap(this.props.firebase);
         }
       }
       
@@ -63,7 +63,7 @@ class SignInContainer extends Component {
         this.loginUser(this.state.email, this.state.password);
         const user = this.props.firebase.auth().currentUser
         if (!!user) {
-          this.props.isSignedIn(this.props.firebase);
+          this.props.unwrap(this.props.firebase);
         } 
       }
     }
@@ -109,18 +109,20 @@ class SignInContainer extends Component {
   renderSignIn = () => {
 
     const { email, password } = this.state;
-    const { error, user, signedIn } = this.props;
+    const devCred = ['app@app.com', 'app123987'];
+    const { error, user, isSignedIn } = this.props;
 
     return (
       <SignIn
             user={user}
-            signedIn={signedIn}
+            isSignedIn={isSignedIn}
             email={email}
             error={error}
             handleEmail={this.handleEmail}
             handlePassword={this.handlePassword}
             handleSubmit={this.handleSubmit}
             password={password}
+            devCred={devCred}
           />
 
       );
@@ -135,14 +137,14 @@ class SignInContainer extends Component {
 
 const mapState = state => ({
     user: state.user,
-    signedIn: state.signedIn,
+    isSignedIn: state.isSignedIn,
     error: state.error,
 });
 
 const mapDispatch = dispatch => ({
     signIn: (firebase, email, password) => dispatch(signIn(firebase, email, password)),
     signOut: firebase => dispatch(signOut(firebase)),
-    isSignedIn: firebase => dispatch(isSignedIn(firebase)),
+    unwrap: firebase => dispatch(unwrap(firebase)),
     createUser: (firebase, email, password, username) => dispatch(createUser(firebase, email, password, username)),
     removeError: () => dispatch(removeError()),
     renderError: error => dispatch(renderError(error)),

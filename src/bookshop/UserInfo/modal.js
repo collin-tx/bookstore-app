@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import { signOut } from '../../actions';
+import UserHistory from '../UserHistory/modal';
 
 const UserModal = props => {
   
-  const { user, onHide, onSignOut } = props;  
+  const { firebase, user, onHide, onSignOut } = props;  
   const renderError = () => {
     return (props.error && 
       <div className="error">
@@ -24,6 +25,7 @@ const UserModal = props => {
       </Modal.Header>
       <Modal.Body>
         {renderError()}
+        <UserHistory firebase={firebase} />
         a bunch of user stuff will go here soon. like books and suggestions and whatever ? Idk
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
@@ -74,7 +76,6 @@ export const UserModalContainer = props => {
 const mapState = state => {
     return {
         user: state.user,
-        signedIn: state.signedIn,
         error: state.error
     }
 }
