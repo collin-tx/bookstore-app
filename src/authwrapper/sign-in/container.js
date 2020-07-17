@@ -131,7 +131,11 @@ class SignInContainer extends Component {
 
   render() {
     const { isNewUser } = this.props;
-    return isNewUser ? this.renderSignUp() : this.renderSignIn();
+    return (
+      <div class="authwrapper">
+        {isNewUser ? this.renderSignUp() : this.renderSignIn()}
+      </div>
+    );
   }
 }
 

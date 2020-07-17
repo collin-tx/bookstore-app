@@ -264,13 +264,25 @@ justify-content: center;
   width: 400px;
 }
 
-#sign-in-form {
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+/* auth */
+
+.authwrapper {
+  padding: 5%;
+}
+
+.auth-form {
+  width: 60%;
   margin: 0 auto;
 }
+
+.auth-form--signup {
+  display: grid;
+  grid-template-columns: 1fr 1fr !important;
+  grid-gap: 5%;
+}
+
+/* .auth-form--signin {
+} */
 
 .modal-sign-link {
   text-decoration: underline !important;
