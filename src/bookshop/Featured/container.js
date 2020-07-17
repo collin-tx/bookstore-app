@@ -91,7 +91,7 @@ export class FeaturedContainer extends Component {
                 featuredIndex={featuredIndex}
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
-                signedIn={this.props.signedIn}
+                isSignedIn={this.props.isSignedIn}
                 user={(this.props.user && this.props.user.displayName) || 'guest'}
                 value={this.state.value}
             />
@@ -102,7 +102,7 @@ export class FeaturedContainer extends Component {
 const mapState = state => {
     return {
         user: state.user,
-        signedIn: state.signedIn,
+        isSignedIn: state.isSignedIn,
         state
     }
 }
