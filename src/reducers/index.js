@@ -2,16 +2,17 @@ import {
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
+  FIREBASE,
   GET_HISTORY,
+  GET_QUERY_LOG,
   LOADING,
   NO_BOOKS,
   REMOVE_ERROR,
   RENDER_ERROR,
   SIGN_IN,
-  IS_SIGNED_IN,
   SIGN_OUT,
   SYNC_CART,
-  FIREBASE
+  UNWRAP
 } from '../actions/constants';
 
 const rootReducer = (state = [], action) => {
@@ -19,7 +20,7 @@ const rootReducer = (state = [], action) => {
     case CREATE_USER:
       return {
         ...state,
-        signedIn: true,
+        isSignedIn: true,
         user: action.payload
       }
     case EMPTY_CART:
@@ -31,7 +32,7 @@ const rootReducer = (state = [], action) => {
       return {
         ...state,
         books: action.payload[0].items,
-        searchTerm: action.searchTerm,
+        query: action.query,
         noBooks: false
       }
     case FIREBASE: {
@@ -45,12 +46,16 @@ const rootReducer = (state = [], action) => {
         ...state,
         userHistory: action.payload
       }
+    case GET_QUERY_LOG:
+      return {
+        ...state,
+        queries: action.payload
+      }
     case LOADING: 
       return {
         ...state,
         loading: action.payload
       }
-
     case NO_BOOKS:
       return {
         ...state,
@@ -69,21 +74,21 @@ const rootReducer = (state = [], action) => {
     case SIGN_IN:
       return {
         ...state,
-        signedIn: true,
+        isSignedIn: true,
         user: action.payload
       }
     case SIGN_OUT:
       return {
         ...state,
-        signedIn: false,
+        isSignedIn: false,
         user: null,
         cart: [],
         userHistory: []
       }
-    case IS_SIGNED_IN:
+    case UNWRAP:
       return {
         ...state,
-        signedIn: true,
+        isSignedIn: true,
         user: action.payload
       }
     case SYNC_CART:
@@ -97,8 +102,9 @@ const rootReducer = (state = [], action) => {
         cart: [],
         error: null,
         firebase: null,
+        isSignedIn: false,
         loading: false,
-        signedIn: false,
+        queries: [],
         user: null
       }
   }

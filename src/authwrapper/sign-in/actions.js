@@ -1,21 +1,15 @@
-// import firebase from 'firebase';
 import { 
   CREATE_USER,
-  // FIREBASE,
-  GET_HISTORY,
-  // LOADING,
   RENDER_ERROR,
-  // REMOVE_ERROR,
   SIGN_IN,
-  // SIGN_OUT,
-  IS_SIGNED_IN,
-  SYNC_CART,
+  UNWRAP,
 } from '../../actions/constants';
 
 import {
   removeError,
   syncCart,
-  getHistory
+  getHistory,
+  storeQueryLog
 } from '../../actions';
 
 export const signIn = (firebase, email, password) => dispatch => {
@@ -34,6 +28,7 @@ export const signIn = (firebase, email, password) => dispatch => {
       syncCart(firebase)(dispatch);
       dispatch(removeError());
       dispatch(getHistory(firebase, userId));
+      dispatch(storeQueryLog(firebase));
     })
     .catch(error => {
         dispatch({
@@ -44,37 +39,21 @@ export const signIn = (firebase, email, password) => dispatch => {
   }
 
 
-  export const isSignedIn = firebase => dispatch => {
+  export const unwrap = firebase => dispatch => {
   // relying on ST for now -- TODO: better solution for async options here
   //  solution: split it up - break down with new approach to sign in authrwarop whatejfijsdf
 
-  setTimeout(() => {
+  // setTimeout(() => {
     const user = firebase.auth().currentUser;
     if (!!user) {
-      const userId = user && user.uid;
-      const cartRef = firebase.database().ref('users/' + userId + '/cart');
-      cartRef.on('value', async (snapshot) => {
-        const userCart = await snapshot.val();
-        if (!!userCart){
-          let fbCartArr = [];
-          // eslint-disable-next-line
-          for (let book in userCart){
-            fbCartArr.push(userCart[book]);
-          }
-          dispatch({
-            type: SYNC_CART,
-            payload: fbCartArr
-          });
-        }
-      });
-
-      dispatch(getHistory(firebase, userId));
+      dispatch(syncCart(firebase));
+      dispatch(getHistory(firebase, user && user.uid));
       dispatch({
-        type: IS_SIGNED_IN,
+        type: UNWRAP,
         payload: user
       });
     }
-  }, 800);
+  // }, 800);
 }
 
 export const createUser = (firebase, email, password, username) => async dispatch => {

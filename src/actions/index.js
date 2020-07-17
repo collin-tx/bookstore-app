@@ -4,6 +4,7 @@ import {
   FETCH_BOOKS,
   FIREBASE,
   GET_HISTORY,
+  GET_QUERY_LOG,
   LOADING,
   NO_BOOKS,
   RENDER_ERROR,
@@ -11,8 +12,11 @@ import {
   SIGN_OUT,
   SYNC_CART,
 } from './constants';
+
 import {
   getUser,
+  getQueries,
+  getFirebase
 } from './selectors';
 import store from '../store';
 
@@ -155,11 +159,11 @@ export const emptyCartUI = () => {
 }
 
 // get books
-const fetchRequest = searchTerm => fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
+const fetchRequest = query => fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
 
-export const fetchBooks = searchTerm => async dispatch => {
+export const fetchBooks = query => async dispatch => {
   dispatch(removeError())
-  await fetchRequest(searchTerm)
+  await fetchRequest(query)
     .then(response => {
       return response.json();
     })
@@ -167,7 +171,7 @@ export const fetchBooks = searchTerm => async dispatch => {
       dispatch({
         type: FETCH_BOOKS,
         payload: [data],
-        searchTerm
+        query
       });
       if (data && !data.items){
         dispatch({
@@ -175,6 +179,7 @@ export const fetchBooks = searchTerm => async dispatch => {
         });
       }
     })
+    .then(() => dispatch(logQuery(query, getFirebase(store.getState()))))
     .catch(error => {
       dispatch({
         type: RENDER_ERROR,
@@ -233,3 +238,39 @@ export const initialize = () => dispatch => {
   });
   return firebase;
 };
+
+export const storeQueryLog = firebase  => dispatch => {
+  const user = firebase.auth().currentUser;
+  const queryLogRef = firebase.database().ref('users/' + (user && user.uid) + '/log');
+
+  queryLogRef.on('value', async (snapshot) => {
+    const log = await snapshot.val();
+    let logArr = [];
+    // eslint-disable-next-line 
+    for (let q in log){
+      // logArr.push(log[q]);
+      logArr.push(log[q]);
+    }
+    dispatch({
+      type: GET_QUERY_LOG,
+      payload: logArr
+    });
+  });
+}
+
+export const logQuery = (query, firebase) => dispatch => {
+  debugger;
+  const user = firebase.auth().currentUser;
+  if (!!user) {
+    const userId = user && user.uid;
+    const database = firebase.database();
+    const count = 'Q' + String(getQueries(store.getState()).length + 1);
+    database.ref('users/' + userId +'/log/' + count)
+      .set({
+        query,
+        date: Date.now()
+    })
+      .then(() => storeQueryLog(firebase))(dispatch);
+  }
+  return false;
+}
