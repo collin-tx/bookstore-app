@@ -259,7 +259,6 @@ export const storeQueryLog = firebase  => dispatch => {
 }
 
 export const logQuery = (query, firebase) => dispatch => {
-  debugger;
   const user = firebase.auth().currentUser;
   if (!!user) {
     const userId = user && user.uid;
