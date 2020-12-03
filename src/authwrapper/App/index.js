@@ -25,7 +25,7 @@ const mapDispatch = dispatch => ({
 
 const App = props => {
 
-  const { isSignedIn, firebase, unwrap } = props;
+  const { isSignedIn, firebase } = props;
   const user = firebase.auth().currentUser;
   
   

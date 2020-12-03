@@ -217,28 +217,6 @@ export const isLoading = bool => ({
   payload: bool
 });
 
-export const initialize = () => dispatch => {
-  var firebaseConfig = {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: "books-app-249318.firebaseapp.com",
-    databaseURL: "https://books-app-249318.firebaseio.com",
-    projectId: "books-app-249318",
-    storageBucket: "",
-    messagingSenderId: "776537219409",
-    appId: process.env.REACT_APP_FIREBASE_APP_ID
-  };
-
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-
-  dispatch({
-    type: FIREBASE,
-    payload: firebase
-  });
-  return firebase;
-};
-
 export const storeQueryLog = firebase  => dispatch => {
   const user = firebase.auth().currentUser;
   const queryLogRef = firebase.database().ref('users/' + (user && user.uid) + '/log');

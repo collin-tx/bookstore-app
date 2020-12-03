@@ -1,17 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-
-import Authwrapper from './authwrapper/App';
-
-import { initialize } from './actions';
-
+import Auth from './authwrapper/App';
+import { initialize } from './db-bookshop';
+import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
-const App = () => {
-  const dispatch = useDispatch();
-  const firebase = dispatch(initialize());
-  return <Authwrapper firebase={firebase} />;
-}
+const App = () => <Auth firebase={initialize()(store.dispatch)} />;
 
 export default App;

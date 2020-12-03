@@ -1,6 +1,5 @@
 import React from 'react';
-// import SignIn from '../sign-in';
-import AuthNew from '../auth-new/container';
+import SignIn from '../sign-in';
 
 const AuthWrapper = props => {
 
@@ -14,8 +13,7 @@ const AuthWrapper = props => {
 
   return (
     <div className="authwrap-container">
-      {/* <SignIn firebase={firebase} isNewUser={isNewUser} /> */}
-      <AuthNew firebase={firebase} isNewUser={isNewUser} />
+      <SignIn firebase={firebase} isNewUser={isNewUser} />
       <p className="text-center">{isNewUser ? 'Already have an account?' : "Don't have an account?"}
         <button className="modal-sign-link" onClick={onClick}>
           {isNewUser ? 'sign in' : 'sign up'}
