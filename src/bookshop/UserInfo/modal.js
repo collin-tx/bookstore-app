@@ -24,9 +24,13 @@ const UserModal = props => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {renderError()}
-        <UserHistory firebase={firebase} />
-        a bunch of user stuff will go here soon. like books and suggestions and whatever ? Idk
+        {/* {renderError()} */}
+        <p>Thanks for being a bookshopper. Here's a little space for you. You'll be able to see suggestions, previous orders, favorited books and more!</p>
+        <div className="d-flex justify-center">
+          <UserHistory firebase={firebase} />
+          <Button className="navLink mr-1">Suggestions</Button>
+          <Button className="navLink mr-1">Favorites</Button>
+        </div>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
       <Button onClick={onSignOut}>Sign Out</Button>
@@ -47,7 +51,7 @@ export const UserModalContainer = props => {
     });
   }
 
-  const displayName = props.user && props.user.displayName;
+  // const displayName = props.user && props.user.displayName;
 
   return (
       <ButtonToolbar>
@@ -55,7 +59,7 @@ export const UserModalContainer = props => {
         <div>
             {/* <p className="navLink mr-2">{props.user && props.user.displayName ? props.user.displayName : ''}</p> */}
             <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => setModalShow(true)}>
-                <small>{displayName || '[no user]'}</small>
+                <small>{props.user.displayName || ['user']}</small>
                 {/* maybe a user icon here? */}
             </Button>
         </div>

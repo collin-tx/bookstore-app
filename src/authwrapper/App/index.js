@@ -31,7 +31,9 @@ const App = props => {
   
   const Auth = ({firebase}) => (
     <BrowserRouter>
-      <Nav firebase={firebase} environment={'dev'} />
+      {/* in dev env, includes some helpful features  */}
+      {/* <Nav firebase={firebase} environment={'dev'} /> */}
+      <Nav firebase={firebase}/>
       <Header />
       <AuthWrapper
         firebase={firebase}
