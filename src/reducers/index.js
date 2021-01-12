@@ -102,6 +102,7 @@ const rootReducer = (state = [], action) => {
       return {
         cart: [],
         error: null,
+        favorites: [],
         firebase: null,
         isSignedIn: false,
         loading: false,
