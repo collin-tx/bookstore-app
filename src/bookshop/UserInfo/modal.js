@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import { signOut } from '../../actions';
 import UserHistory from '../UserHistory/modal';
+import Favorites from '../Favorites/modal';
 
 const UserModal = props => {
   
   const { firebase, user, onHide, onSignOut } = props;  
-  const renderError = () => {
-    return (props.error && 
-      <div className="error">
-        <p>{props.error.message}</p>
-      </div>
-  )};
+  // const renderError = () => {
+  //   return (props.error && 
+  //     <div className="error">
+  //       <p>{props.error.message}</p>
+  //     </div>
+  // )};
 
   const username = user && user.displayName;
 
@@ -29,7 +30,7 @@ const UserModal = props => {
         <div className="d-flex justify-center">
           <UserHistory firebase={firebase} />
           <Button className="navLink mr-1">Suggestions</Button>
-          <Button className="navLink mr-1">Favorites</Button>
+          <Favorites firebase={firebase} />
         </div>
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
@@ -51,7 +52,6 @@ export const UserModalContainer = props => {
     });
   }
 
-  // const displayName = props.user && props.user.displayName;
 
   return (
       <ButtonToolbar>

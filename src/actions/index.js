@@ -1,4 +1,3 @@
-import firebase from 'firebase';
 import { 
   EMPTY_CART,
   FETCH_BOOKS,
