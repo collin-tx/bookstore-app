@@ -4,6 +4,7 @@ import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import { signOut } from '../../actions';
 import UserHistory from '../UserHistory/modal';
 import Favorites from '../Favorites/modal';
+import Suggestions from '../Suggestions/modal';
 
 const UserModal = props => {
   
@@ -29,7 +30,7 @@ const UserModal = props => {
         <p>Thanks for being a bookshopper. Here's a little space for you. You'll be able to see suggestions, previous orders, favorited books and more!</p>
         <div className="d-flex justify-center">
           <UserHistory firebase={firebase} />
-          <Button className="navLink mr-1">Suggestions</Button>
+          <Suggestions firebase={firebase}>Suggestions</Suggestions>
           <Favorites firebase={firebase} />
         </div>
       </Modal.Body>
