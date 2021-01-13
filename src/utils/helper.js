@@ -13,7 +13,8 @@ export const stripWhiteSpace = string => {
 }
 
 export const generateKey = index => {
-    return `${index}_${new Date().getTime() * (Math.floor(Math.random() * 67) * (Math.floor(Math.random() * 67)))}`;
+    const random = () => Math.floor(Math.random() * 100000);
+    return `${index}_${new Date().getTime() * random() * random() + 69}`;
 }
 
 export const validateEmail = email => {
