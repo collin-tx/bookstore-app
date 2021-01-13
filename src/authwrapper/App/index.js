@@ -12,6 +12,10 @@ import { unwrap } from '../sign-in/actions';
 import { signOut, getHistory } from '../../actions';
 import Bookshop from '../../bookshop';
 
+import store from '../../store';
+
+import { initialize } from '../../db-bookshop';
+
 const mapState = state => ({
   isSignedIn: state.isSignedIn,
 });
@@ -25,10 +29,10 @@ const mapDispatch = dispatch => ({
 
 const App = props => {
 
-  const { isSignedIn, firebase } = props;
+  const { isSignedIn } = props;
+  const firebase = initialize()(store.dispatch);
   const user = firebase.auth().currentUser;
-  
-  
+
   const Auth = ({firebase}) => (
     <BrowserRouter>
       {/* in dev env, includes some helpful features  */}
