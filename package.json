@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.22",
     "@fortawesome/free-solid-svg-icons": "^5.10.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -24,10 +25,7 @@
     "reselect": "^4.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -43,5 +41,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "react-test-renderer": "^17.0.1"
   }
 }
