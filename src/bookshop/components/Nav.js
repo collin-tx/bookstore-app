@@ -6,7 +6,6 @@ const Nav = props => {
 
     const { firebase } = props;
 
-    props.firebase.auth().currentUser ? console.log('yes') : console.log('no');
     if (props.environment && props.environment === 'dev') {
         return (
             <div >
@@ -34,13 +33,9 @@ const Nav = props => {
                     Featured
                 </NavLink>
                 <div className="float-right">
-                {/* so the whole structure of this sign in modal container works - the button with user name will stay but will open to user details and stuf */}
                     {
                         props.firebase.auth().currentUser && <UserModal firebase={firebase} />
                     }
-                    {/* these two buttons below are just for dev testing */}
-                    {/* <button className="btn btn-sm btn-info" onClick={() => {firebase.auth().signOut(); console.log('signed out I think', firebase.auth().currentUser);}}>logout FB</button>
-                    <button className="btn btn-sm btn-secondary" onClick={() => {console.log('currently, ', firebase.auth().currentUser);}}>current FB user</button> */}
                 </div>
             </div>
         </div>

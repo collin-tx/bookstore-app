@@ -70,7 +70,6 @@ export const createUser = (firebase, email, password, username) => async dispatc
       dispatch(removeError());
       
       if (!!user) {
-        console.log('user from actions - created ', user);
         dispatch({
           type: CREATE_USER,
           payload: user
@@ -78,7 +77,7 @@ export const createUser = (firebase, email, password, username) => async dispatc
         // now create user in Users table in db
         const database = firebase.database();
         const userId = user && user.uid;
-        console.log('user id from actions - created ', userId);
+
         database.ref('users/' + userId)
         .set({
           username,

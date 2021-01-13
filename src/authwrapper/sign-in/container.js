@@ -49,7 +49,6 @@ class SignInContainer extends Component {
   handleSubmit = (e, email, password, passwordVerify, newUser = false) => {
     e.preventDefault();
 
-    // console.log('this', e, arguments);
     if (validateEmail(email) && validatePassword(password, passwordVerify)) {
       if (this.props.isNewUser) {
         if (!!this.state.username.length){
@@ -142,7 +141,7 @@ class SignInContainer extends Component {
 const mapState = state => ({
     user: state.user,
     isSignedIn: state.isSignedIn,
-    error: state.error,
+    error: state.error
 });
 
 const mapDispatch = dispatch => ({

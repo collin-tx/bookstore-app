@@ -88,13 +88,11 @@ export const checkOut = (firebase, order, subtotal) => dispatch => {
   const database = firebase.database();
   const user = getUser(store.getState());
   const userId = user && user.uid;
-  console.log('checkout =----', order, subtotal);
 
   // push purchase details to purchaseHistory field on User  
   if (!!user){
     const path = `users/${userId}/purchaseHistory`;
 
-    console.log('path', path);
     database.ref(path)
       .push({
         order,

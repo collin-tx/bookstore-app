@@ -7,8 +7,6 @@ const AuthWrapper = props => {
 
   const  [ isNewUser, setIsNewUser ] = React.useState(true);
 
-  console.log('isnew user', isNewUser);
-
   const onClick = () => setIsNewUser(!isNewUser);
 
   return (
