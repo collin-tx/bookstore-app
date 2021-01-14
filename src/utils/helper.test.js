@@ -1,4 +1,5 @@
 import {
+  formatDate,
   generateKey,
   handleErrors,
   stripWhiteSpace,
@@ -8,13 +9,20 @@ import {
 
 describe('utils : helper functions', () => {
 
+  describe('formatDate', () => {
+    it('returns a human readable date string', () => {
+      expect(formatDate(new Date('2020-01-17 12:30'))).toBe('January 17 2020');
+      expect(formatDate(new Date('1969-08-01 12:30'))).toBe('August 1 1969');
+    });
+  });
+  
   describe('generateKey', () => {
     it('generates an appropriate, unique key', () => {
       expect(generateKey(0).length).toBeGreaterThan(5);
     });
   });
 
-  describe('generateKey', () => {
+  describe('handleErrors', () => {
     
     it('should not throw error', () => {
       const response = { ok: true };
@@ -27,12 +35,6 @@ describe('utils : helper functions', () => {
       expect(() => {
         handleErrors(response);
       }).toThrow();
-    });
-  });
-
-  describe('generateKey', () => {
-    it('generates an appropriate, unique key', () => {
-      expect(generateKey(0).length).toBeGreaterThan(5);
     });
   });
 
