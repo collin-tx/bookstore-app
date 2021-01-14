@@ -12,11 +12,15 @@ const AuthWrapper = props => {
   return (
     <div className="authwrap-container">
       <SignIn firebase={firebase} isNewUser={isNewUser} />
-      <p className="text-center">{isNewUser ? 'Already have an account?' : "Don't have an account?"}
-        <button className="modal-sign-link" onClick={onClick}>
-          {isNewUser ? 'sign in' : 'sign up'}
-        </button>
-      </p>
+        <div className="auth-form--switch">
+        <p className="text-center">{isNewUser ? 'Already have an account?' : "Don't have an account?"}
+        </p>
+          <div className="">
+          <button className="btn btn-secondary" onClick={onClick}>
+            {isNewUser ? 'sign in' : 'sign up'}
+          </button>
+          </div>
+        </div>
     </div>
   )
 }

@@ -291,6 +291,14 @@ justify-content: center;
   grid-gap: 5%;
 }
 
+.auth-form--switch {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
 .modal-sign-link {
   text-decoration: underline !important;
 }

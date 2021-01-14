@@ -21,7 +21,7 @@ const SignIn = ({
         <input type="password" onChange={handlePassword} value={password} className="form-control" />
       </div>
     </div>
-    <button className="btn btn-secondary form-control">
+    <button className="btn btn-primary form-control">
       Sign In
     </button>
   </form>
