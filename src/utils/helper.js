@@ -13,7 +13,8 @@ export const stripWhiteSpace = string => {
 }
 
 export const generateKey = index => {
-    return `${index}_${new Date().getTime() * (Math.floor(Math.random() * 67) * (Math.floor(Math.random() * 67)))}`;
+    const random = () => Math.floor(Math.random() * 100000);
+    return `${index}_${new Date().getTime() * random() * random() + 69}`;
 }
 
 export const validateEmail = email => {
@@ -27,3 +28,39 @@ export const validatePassword = (pass1, pass2) => {
 
 let quotesLength = Object.keys(quotes).length;
 export const quote = quotes[Math.ceil(Math.random() * quotesLength)];
+
+export const formatDate = date => {
+    const dateToFormat = date instanceof Date ? date : new Date(date);
+    return `${getMonthFormatted(dateToFormat.getMonth())} ${dateToFormat.getDate()} ${dateToFormat.getFullYear()}`;
+}
+
+const getMonthFormatted = month => {
+    switch (String(month)) {
+        case "0":
+            return 'January';
+        case "1":
+            return 'February';
+        case "2":
+            return 'March';
+        case "3":
+            return 'April';
+        case "4":
+            return 'May';
+        case "5":
+            return 'June';
+        case "6":
+            return 'July';
+        case "7":
+            return 'August';
+        case "8":
+            return 'September';
+        case "9":
+            return 'October';
+        case "10":
+            return 'November';
+        case "11":
+            return 'December';
+        default:
+            return null;
+    }
+}

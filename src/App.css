@@ -264,12 +264,39 @@ justify-content: center;
   width: 400px;
 }
 
-#sign-in-form {
-  width: 30%;
+/* auth */
+
+.authwrapper {
+  padding: 5%;
+  /* background-color: #dddddd; */
+}
+
+.auth-form {
+  width: 60%;
+  margin: 0 auto;
+  /* position:relative;
+  height: 300px; */
+  /* background-color: #fff; */
+}
+
+.auth-form--signup {
+  display: grid;
+  grid-template-columns: 1fr 1fr !important;
+  grid-gap: 5%;
+}
+
+.auth-form--signin {
+  display: grid;
+  grid-template-columns: 1fr 1fr !important;
+  grid-gap: 5%;
+}
+
+.auth-form--switch {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   justify-content: center;
-  margin: 0 auto;
+  align-items: center;
 }
 
 .modal-sign-link {
@@ -311,4 +338,18 @@ justify-content: center;
 
 .error {
   border: red 1px solid;
+}
+
+
+
+
+
+
+
+
+/* authwrapp */
+
+.authwrap-container {
+  max-width: 60%;
+  margin: 0 auto;
 }

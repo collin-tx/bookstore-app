@@ -1,110 +1,24 @@
 import { 
-  CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
+  FIREBASE,
   GET_HISTORY,
+  GET_QUERY_LOG,
+  LOADING,
   NO_BOOKS,
   RENDER_ERROR,
   REMOVE_ERROR,
-  SIGN_IN,
   SIGN_OUT,
-  SIGN_IN_UI,
   SYNC_CART,
 } from './constants';
 
-// utilities
+import {
+  getUser,
+  getQueries,
+  getFirebase
+} from './selectors';
+import store from '../store';
 
-const getUser = firebase => {  
-  let user = firebase.auth().currentUser;
-  return user;
-}
-
-const getUserId = user => {
-  return user && user.uid;
-}
-
-const getUserHistory = firebase => {
-  const user = getUser(firebase);
-  const userId = getUserId(user);
-  let userHistory = null;
-  const historyRef = firebase.database().ref('users/' + userId + '/purchaseHistory');
-  return historyRef.once('value')
-    .then(snapshot => {
-      userHistory = snapshot.val();
-      return userHistory ? userHistory : getUserHistory(firebase);
-  });
-}
-
-
-//action creators
-export const signIn = (firebase, email, password) => dispatch => {
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => {
-      const user = getUser(firebase);
-      if (!!user){
-        dispatch({
-          type: SIGN_IN,
-          payload: user
-        });
-      }
-      syncCart(firebase)(dispatch);
-      getHistory(firebase)(dispatch);
-      dispatch(removeError());
-    })
-    .catch(error => {
-        dispatch({
-          type: RENDER_ERROR,
-          payload: {error}
-        });
-    })
-}
-
-export const signOutUI = () => {
-  return {
-    type: SIGN_OUT
-  }
-}
-
-export const createUser = (firebase, email, password, username) => async dispatch => {
-  await firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      const user = firebase.auth().currentUser;
-      // set display name
-      user.updateProfile({
-        displayName: username,
-        // photoURL: "" -- maybe add the ability to add user pics later
-      })
-    })
-    .then(function() {
-      dispatch(removeError());
-    })
-    .then(() => {
-      const user = getUser(firebase);
-      if (!!user) {
-        dispatch({
-          type: CREATE_USER,
-          payload: user
-        });
-        // now create user in Users table in db
-        const database = firebase.database();
-        const userId = getUserId(user);
-        database.ref('users/' + userId)
-          .set({
-            username,
-            email,
-            cart: [],
-            purchaseHistory: []
-        });
-      }
-    })
-    .catch(error => {
-      dispatch({
-        type: RENDER_ERROR,
-        payload: {error}
-      })
-    });
-
-}
 
 export const signOut = firebase => {
   firebase.auth().signOut();
@@ -118,9 +32,9 @@ export const addBookToCart = (firebase, book) => dispatch => {
   // add book to users cart in FB here
   // books organized in cart by book.id
 
-  const user = getUser(firebase);
+  const user = getUser(store.getState());
   if (!!user){
-    const userId = getUserId(user);
+    const userId = user && user.uid;
     const database = firebase.database();
     database.ref('users/' + userId +'/cart/' + book.id)
       .set({
@@ -145,8 +59,10 @@ export const addBookToCart = (firebase, book) => dispatch => {
 }
 
 export const removeBookFromCart = (firebase, book) => {
-    const user = getUser(firebase);
-    const userId = getUserId(user);
+  // find the book and suck it outta there
+    const user = getUser(store.getState());
+    // const userId = getUserId(user);
+    const userId = user && user.uid;
     const database = firebase.database();
     
     database.ref('users/' + userId + '/cart/' + book.id)
@@ -169,13 +85,14 @@ export const removeBookFromCart = (firebase, book) => {
 }
 
 export const checkOut = (firebase, order, subtotal) => dispatch => {
-  const user = getUser(firebase);
   const database = firebase.database();
-  const userId = getUserId(user);
+  const user = getUser(store.getState());
+  const userId = user && user.uid;
 
   // push purchase details to purchaseHistory field on User  
   if (!!user){
     const path = `users/${userId}/purchaseHistory`;
+
     database.ref(path)
       .push({
         order,
@@ -184,8 +101,24 @@ export const checkOut = (firebase, order, subtotal) => dispatch => {
       });
   }
   // empty cart and refresh userhistory
-  emptyCart(firebase);
-  getHistory(firebase)(dispatch);
+  dispatch(emptyCart(firebase));
+  dispatch(getHistory(firebase, userId));
+}
+
+export const getHistory = (firebase, userId = null) => dispatch => {
+  if (!userId) {
+    const user = firebase.auth().currentUser;
+    userId = user && user.uid;
+  }
+  const historyRef = firebase.database().ref('users/' + userId + '/purchaseHistory');
+  historyRef.once('value')
+    .then(snapshot => {
+      const userHistory = snapshot.val();
+      dispatch({
+        type: GET_HISTORY,
+        payload: userHistory
+      })
+    });
 }
 
 export const renderError = error => {
@@ -202,8 +135,10 @@ export const removeError = () => {
 }
 
 export const emptyCart = firebase => {
-  const user = getUser(firebase);
-  const userId = getUserId(user);
+  const user = getUser(store.getState());
+  // const userId = getUserId(user);
+  const userId = user && user.uid;
+
   const database = firebase.database();
 
   database.ref('users/' + userId + '/cart/')
@@ -221,11 +156,11 @@ export const emptyCartUI = () => {
 }
 
 // get books
-const fetchRequest = searchTerm => fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
+const fetchRequest = query => fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
 
-export const fetchBooks = searchTerm => async dispatch => {
+export const fetchBooks = query => async dispatch => {
   dispatch(removeError())
-  await fetchRequest(searchTerm)
+  await fetchRequest(query)
     .then(response => {
       return response.json();
     })
@@ -233,7 +168,7 @@ export const fetchBooks = searchTerm => async dispatch => {
       dispatch({
         type: FETCH_BOOKS,
         payload: [data],
-        searchTerm
+        query
       });
       if (data && !data.items){
         dispatch({
@@ -241,6 +176,7 @@ export const fetchBooks = searchTerm => async dispatch => {
         });
       }
     })
+    .then(() => dispatch(logQuery(query, getFirebase(store.getState()))))
     .catch(error => {
       dispatch({
         type: RENDER_ERROR,
@@ -249,34 +185,6 @@ export const fetchBooks = searchTerm => async dispatch => {
   });
 }
 
-export const signInUI = firebase => dispatch => {
-  // relying on ST for now -- TODO: better solution for async options here
-  setTimeout(() => {
-    const user = getUser(firebase);
-    if (!!user) {
-      const userId = getUserId(user);
-      const cartRef = firebase.database().ref('users/' + userId + '/cart');
-      cartRef.on('value', async (snapshot) => {
-        const userCart = await snapshot.val();
-        if (!!userCart){
-          let fbCartArr = [];
-          // eslint-disable-next-line
-          for (let book in userCart){
-            fbCartArr.push(userCart[book]);
-          }
-          dispatch({
-            type: SYNC_CART,
-            payload: fbCartArr
-          });
-        }
-      });
-      dispatch({
-        type: SIGN_IN_UI,
-        payload: user
-      });
-    }
-  }, 800);
-}
 
 // sync UI cart with FB cart
 export const syncCart = firebase => dispatch => {
@@ -296,17 +204,47 @@ export const syncCart = firebase => dispatch => {
   });
 }
 
-// get a user's purchase history into Redux
-export const getHistory = firebase => async dispatch => {
-  await getUserHistory(firebase)
-    .then(res => {
-      Array.isArray(res) ? (
-        res = res.filter(b => !!b)
-      ) : res = Object.keys(res).map(k => res[k]);
-      dispatch({
-        type: GET_HISTORY,
-        payload: res
-      });
-      return res;
+export const storeFirebase = firebase => ({
+  type: FIREBASE,
+  payload: firebase
+});
+
+export const isLoading = bool => ({
+  type: LOADING,
+  payload: bool
+});
+
+export const storeQueryLog = firebase  => dispatch => {
+  const user = firebase.auth().currentUser;
+  const queryLogRef = firebase.database().ref('users/' + (user && user.uid) + '/log');
+
+  queryLogRef.on('value', async (snapshot) => {
+    const log = await snapshot.val();
+    let logArr = [];
+    // eslint-disable-next-line 
+    for (let q in log){
+      // logArr.push(log[q]);
+      logArr.push(log[q]);
+    }
+    dispatch({
+      type: GET_QUERY_LOG,
+      payload: logArr
     });
+  });
+}
+
+export const logQuery = (query, firebase) => dispatch => {
+  const user = firebase.auth().currentUser;
+  if (!!user) {
+    const userId = user && user.uid;
+    const database = firebase.database();
+    const count = 'Q' + String(getQueries(store.getState()).length + 1);
+    database.ref('users/' + userId +'/log/' + count)
+      .set({
+        query,
+        date: Date.now()
+    })
+      .then(() => storeQueryLog(firebase))(dispatch);
+  }
+  return false;
 }

@@ -2,14 +2,17 @@ import {
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
+  FIREBASE,
   GET_HISTORY,
+  GET_QUERY_LOG,
+  LOADING,
   NO_BOOKS,
   REMOVE_ERROR,
   RENDER_ERROR,
   SIGN_IN,
-  SIGN_IN_UI,
   SIGN_OUT,
-  SYNC_CART
+  SYNC_CART,
+  UNWRAP
 } from '../actions/constants';
 
 const rootReducer = (state = [], action) => {
@@ -17,7 +20,7 @@ const rootReducer = (state = [], action) => {
     case CREATE_USER:
       return {
         ...state,
-        signedIn: true,
+        isSignedIn: true,
         user: action.payload
       }
     case EMPTY_CART:
@@ -29,13 +32,29 @@ const rootReducer = (state = [], action) => {
       return {
         ...state,
         books: action.payload[0].items,
-        searchTerm: action.searchTerm,
+        query: action.query,
         noBooks: false
       }
+    case FIREBASE: {
+      return {
+        ...state,
+        firebase: action.payload
+      }
+    }
     case GET_HISTORY:
       return {
         ...state,
         userHistory: action.payload
+      }
+    case GET_QUERY_LOG:
+      return {
+        ...state,
+        queries: action.payload
+      }
+    case LOADING: 
+      return {
+        ...state,
+        loading: action.payload
       }
     case NO_BOOKS:
       return {
@@ -55,21 +74,23 @@ const rootReducer = (state = [], action) => {
     case SIGN_IN:
       return {
         ...state,
-        signedIn: true,
+        isSignedIn: true,
         user: action.payload
       }
     case SIGN_OUT:
       return {
         ...state,
-        signedIn: false,
-        user: null,
         cart: [],
-        userHistory: []
+        error: null,
+        isSignedIn: false,
+        loading: false,
+        queries: [],
+        user: null
       }
-    case SIGN_IN_UI:
+    case UNWRAP:
       return {
         ...state,
-        signedIn: true,
+        isSignedIn: true,
         user: action.payload
       }
     case SYNC_CART:
@@ -79,11 +100,14 @@ const rootReducer = (state = [], action) => {
       }
     default:
       return {
-        ...state,
         cart: [],
-        user: null,
-        signedIn: false,
-        error: null
+        error: null,
+        favorites: [],
+        firebase: null,
+        isSignedIn: false,
+        loading: false,
+        queries: [],
+        user: null
       }
   }
 }
