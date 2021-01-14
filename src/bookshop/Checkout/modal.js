@@ -10,6 +10,7 @@ import { getUser, getCart } from '../../actions/selectors';
 import store from '../../store';
 
 const CheckoutModal = props => {
+
   const renderError = () => {
     return (props.error && 
       <div className="error">
@@ -17,8 +18,10 @@ const CheckoutModal = props => {
       </div>
   )};
 
+  const [checkedOut, setCheckedOut] = React.useState(false);
+
   const onCheckout = () => {
-    props.setCheckedOut(false);
+    setCheckedOut(false);
     store.dispatch(checkOut(props.firebase, props.cart, props.subtotal.toFixed(2)));
   }
 
@@ -32,7 +35,7 @@ const CheckoutModal = props => {
       <Modal.Body>
         {renderError()}
         {
-          !props.checkedOut ? (
+          !checkedOut ? (
             <Checkout books={props.books} />
           ) : (
             <CheckedOut />
@@ -42,15 +45,28 @@ const CheckoutModal = props => {
       <Modal.Footer style={{ width: '100%' }}>
 
         {
-          props.checkedOut ? (
+          checkedOut ? (
             <Button className="btn btn-success" onClick={() => onCheckout()}>Ok</Button>
           ) : (
-            <div>
-              <p className="float-left">Your total is ${props.subtotal.toFixed(2)} plus tax</p> 
-               | 
-              <p className="float-right">Checking out as {props.user.displayName || 'guest'}</p>
-              <Button className="btn btn-success" onClick={() => props.setCheckedOut(true)}>Confirm</Button>
-              <Button className="btn btn-danger" onClick={props.onHide}>Cancel</Button>
+            <div 
+              className="d-flex flex-columns justify-content-between align-items-center" 
+              style={{ width: '100%' }}
+            >
+              <p style={{ margin: '0' }}>
+                Your total is ${props.subtotal.toFixed(2)} plus tax
+              </p> 
+              <div className="d-flex flex-columns justify-content-between">
+                <button 
+                  style={{ marginRight: '10px' }}
+                  className="btn btn-success"
+                  onClick={() => setCheckedOut(true)}
+                >
+                  Confirm
+                </button>
+                <button className="btn btn-danger" onClick={props.onHide}>
+                  Cancel
+                </button>
+              </div>
             </div>
           )
         }
@@ -62,33 +78,27 @@ const CheckoutModal = props => {
   
 export const CheckoutModalContainer = props => {
   
-    const [modalShow, setModalShow] = React.useState(false);
-    const [checkedOut, setCheckedOut] = React.useState(false);
-    const cart = getCart(store.getState());
-    const user = getUser(store.getState());
+  const [modalShow, setModalShow] = React.useState(false);
 
-    return (
-        <ButtonToolbar>
-        <Button variant="primary" onClick={() => setModalShow(true)} 
-            className="btn btn-success float-right" id="checkout-btn"
-        >
-            checkout
-        </Button>
+  return (
+    <ButtonToolbar>
+      <Button variant="primary" onClick={() => setModalShow(true)} 
+          className="btn btn-success float-right" id="checkout-btn"
+      >
+          checkout
+      </Button>
 
-            <CheckoutModal 
-                books={props.books}
-                cart={cart}
-                firebase={props.firebase}
-                onHide={() => setModalShow(false)}
-                show={modalShow}
-                checkedOut={checkedOut}
-                setCheckedOut={setCheckedOut}
-                subtotal = {props.subtotal}
-                user={user}
-            /> 
-        
-        </ButtonToolbar>
-    );
+      <CheckoutModal 
+        books={props.books}
+        cart={getCart(store.getState())}
+        firebase={props.firebase}
+        onHide={() => setModalShow(false)}
+        show={modalShow}
+        subtotal = {props.subtotal}
+        user={getUser(store.getState())}
+      /> 
+    </ButtonToolbar>
+  );
 }
 
 export default connect()(CheckoutModalContainer);
