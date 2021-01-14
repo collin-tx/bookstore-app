@@ -1,7 +1,10 @@
 import React from 'react';
 
 const CheckedOut = props => (
-    <p>Awesome. you have checked out</p>
+    <div>
+        <h3>Checkout Complete!</h3>
+        <p>Check out the user modal (link in the top right corner) to view a list of your purchases.</p>
+    </div>
 );
 
 export default CheckedOut;

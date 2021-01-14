@@ -44,15 +44,13 @@ const Cart = ({
         <div>
           <div id="checkout-bottom" className="p-2">
             <button className="btn btn-secondary ml-1 mr-1 text-white" onClick={() => emptyCart()}>empty cart</button>
+            {
+              !!user && <UserHistory firebase={firebase} />
+            }
             <Checkout subtotal={subtotal} books={checkoutBooks} firebase={firebase} />
           </div>
           <p className="text-right mr-3">Shopping as {user ? user : 'guest'}</p>
         </div>
-    }
-
-    {
-      !!user && 
-        <UserHistory firebase={firebase} />
     }
 
   </div>
