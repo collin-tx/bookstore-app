@@ -32,7 +32,7 @@ export const SuggestionsModalContainer = props => {
   return (
       <ButtonToolbar>
             <Button variant="primary" onClick={() => setModalShow(true)} id="show-purchase-history" className="navLink mr-1">
-                Suggestions
+                suggestions
             </Button> 
         <SuggestionsModal 
             onHide={() => setModalShow(false)}

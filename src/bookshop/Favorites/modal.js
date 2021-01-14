@@ -32,7 +32,7 @@ export const FavoritesModalContainer = props => {
   return (
       <ButtonToolbar>
             <Button variant="primary" onClick={() => setModalShow(true)} id="show-purchase-history" className="navLink mr-1">
-                Favorites
+                favorites
             </Button> 
         <FavoritesModal 
             onHide={() => setModalShow(false)}
