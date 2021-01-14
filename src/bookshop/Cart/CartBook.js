@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { generateKey } from '../../utils/helper';
 
 const CartBook = ({
   author,
@@ -12,7 +13,7 @@ const CartBook = ({
   subtitle,
   title
 }) => (
-  <div>
+  <div key={generateKey(book.id)}>
     <li className="list-group-item cartBook">
       
       <div className="col">
