@@ -8,8 +8,11 @@ import Favorites from './index';
 
 const FavoritesModal = props => {
     // render error fx goes here
+
+  const { onHide, show } = props;
+
   return (
-    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal show={show} onHide={onHide} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           Favorites
