@@ -1,6 +1,6 @@
 import React from 'react';
 import UserHistory from './UserHistory';
-import { generateKey } from '../../utils/helper';
+import { formatDate, generateKey } from '../../utils/helper';
 
 const UserHistoryContainer = ({ userHistory = {} }) => {
 // TODO: massive styling/flow changes
@@ -16,14 +16,14 @@ const UserHistoryContainer = ({ userHistory = {} }) => {
         {book.book.volumeInfo && book.book.volumeInfo.title}
         {" by "}
         {book.book.volumeInfo && book.book.volumeInfo.authors && book.book.volumeInfo.authors[0]}
-        {/* more book info? */}
       </li>
       );
       });
 
     return (
     <li className="list-group-item" key={generateKey(index)}>
-      Subtotal: ${purchase.subtotal}------------------{purchase.date}
+      <h5>{formatDate(purchase.date)}</h5> 
+      <p>Subtotal: ${purchase.subtotal}</p>
       <ul className="list-group">
         {orderItems}
       </ul>
