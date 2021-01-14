@@ -35,13 +35,13 @@ const UserModal = props => {
       <Modal.Body>
         {/* {renderError()} */}
         <p>Thanks for being a bookshopper. Here's a little space for you. You'll be able to see suggestions, previous orders, favorited books and more!</p>
-        <div className="d-flex justify-content-center align-content-center align-items-center">
+        <div className="d-flex flex-columns justify-content-center">
           <UserHistory firebase={firebase} />
           <Suggestions firebase={firebase} />
           <Favorites firebase={firebase} />
         </div>
       </Modal.Body>
-      <Modal.Footer className="d-flex justify-content-between">
+      <Modal.Footer className="d-flex justify-content-end">
         <button className="btn btn-outline-primary" onClick={onSignOut}>Sign Out</button>
         <button className="btn btn-outline-danger" onClick={onHide}>Close</button>
       </Modal.Footer>
