@@ -58,7 +58,7 @@ export const UserModalContainer = props => {
     
       <div>
         <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => setModalShow(true)}>
-          <i className="fa fa-user" aria-hidden="true"></i>
+          <i className="fa fa-user"></i>
             <small> {props.user.displayName || ['user']}</small>
         </Button>
       </div>
