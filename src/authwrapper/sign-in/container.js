@@ -108,7 +108,6 @@ class SignInContainer extends Component {
   renderSignIn = () => {
 
     const { email, password } = this.state;
-    const devCred = ['app@app.com', 'app123987'];
     const { error, user, isSignedIn } = this.props;
 
     return (
@@ -121,7 +120,6 @@ class SignInContainer extends Component {
             handlePassword={this.handlePassword}
             handleSubmit={this.handleSubmit}
             password={password}
-            devCred={devCred}
           />
 
       );
