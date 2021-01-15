@@ -23,57 +23,58 @@ export class Comment extends Component {
 
     clickDelete = e => {
         this.props.delete(e, this.props.commentKey);
-    } 
+    }
 
+    renderEditActions = () => {
+        return this.state.editing ? (
+            <form onSubmit={this.submitHandler} className="edit-comment-form">
+                <input type="text" value={this.state.value} className="edit-comment-field" 
+                    onChange={this.changeHandler} placeholder="new comment..." />
+                <button type="submit" className="btn btn-sm btn-info">
+                    submit
+                </button>
+                <button type="submit" className="btn btn-sm btn-secondary" onClick={this.clickEdit}>
+                    cancel
+                </button>
+            </form>
+        ) : (
+            <div className="featured_comment-actions--buttons">
+                <button className="btn btn-info btn-sm" onClick={this.clickEdit}>
+                    edit
+                </button>
+
+                <button className="btn btn-danger btn-sm" onClick={this.clickDelete}>
+                    delete
+                </button>
+            </div>
+            )
+    }
+ 
     render() {
         const { comment, user, username, userId } = this.props;
         return (
             <li className="list-group-item comment">
 
-                <div className="user">
-                    <div className="user-icon">                    
-                        <i className="fas fa-user"></i>
+                <div className="featured_comment-div">
+                    
+                    <div className="featured_comment-user-div">
+                        <i className="fas fa-user featured_comment-userIcon"></i>
+                        <p className="featured_comment-username">{username}</p>
                     </div>
-                    <div className="username">
-                        <p>{username}</p>
+
+                    <div className="featured_comment-text-div">
+                        <span>{comment}</span>
+                    </div>
+
+                    <div className="featured_comment-actions">
+                    {
+                        // checks if the currently signedIn user's ID matches the ID of the user who left the comment
+                        // if it's a match, the user may edit/delete their comment
+                        user && (userId === user.uid) && this.renderEditActions()
+                    }
                     </div>
                 </div>
 
-                <div className="comment-content">
-                    <p>{comment}</p>
-                </div>
-
-                <div className="comment-buttons">
-
-                {/* editing form */}
-                {
-                    this.state.editing && (
-                        <form onSubmit={this.submitHandler} className="edit-comment-form">
-                            <input type="text" value={this.state.value} className="edit-comment-field" 
-                                onChange={this.changeHandler} placeholder="comment..." />
-                            <button type="submit" className="btn btn-sm btn-secondary">
-                                change
-                            </button>
-                        </form>
-                    )
-                }
-                {/* user actions */}
-                {
-                    // checks if the currently signedIn user's ID matches the ID of the user who left the comment
-                    // if it's a match, the user may edit/delete their comment
-                    user && (userId === user.uid) && (
-                        <div>
-                            <button className="btn btn-info btn-sm float-right" onClick={this.clickEdit}>
-                                {this.state.editing ? "cancel" : 'edit'}
-                            </button>
-
-                            <button className="btn btn-danger btn-sm float-right" onClick={this.clickDelete}>
-                                delete
-                            </button>
-                        </div>
-                    )
-                }
-                </div>
             </li>
         )
     }

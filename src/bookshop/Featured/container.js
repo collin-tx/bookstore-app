@@ -32,7 +32,7 @@ export class FeaturedContainer extends Component {
             .push({
                 username: (this.props.user ? this.props.user.displayName : 'Anonymous') ,
                 key: this.state.value,
-                userId: this.props.user.uid
+                userId: this.props.user?.uid || '999&guest=user&666'
             });
         this.setState({ value: '' })
     }

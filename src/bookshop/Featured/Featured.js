@@ -29,7 +29,7 @@ const Featured = ({
                 <div id="comments">
                     <h3 className="text-center m-5">Comments</h3>
 
-                    <ul className="list-group">
+                    <ul className="list-group featured_comment-list">
                         {allComments}
                     </ul>
 
