@@ -49,21 +49,23 @@ export class BooksContainer extends Component {
     }
 
     render() {
+
         let allBooks = this.props.books && this.props.books.map((book, index) => {
             return (
-                <Book title={book.volumeInfo.title} book={book}
-                      author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
-                      category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
-                      description={book.volumeInfo.description}
-                      price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
-                      img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
-                      infoLink={book.volumeInfo.infoLink} 
-                      preview={book.volumeInfo.previewLink} 
-                      id={book.id} index={index}
-                      key={book.etag} 
-                      pageCount={book.volumeInfo.pageCount} 
-                      subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
-                      addToCart={this.addToCart}
+                <Book 
+                    title={book.volumeInfo.title} book={book}
+                    author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
+                    category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
+                    description={book.volumeInfo.description}
+                    price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
+                    img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
+                    infoLink={book.volumeInfo.infoLink} 
+                    preview={book.volumeInfo.previewLink} 
+                    id={book.id} index={index}
+                    key={book.etag} 
+                    pageCount={book.volumeInfo.pageCount} 
+                    subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
+                    addToCart={this.addToCart}
                 />
             );
         });
