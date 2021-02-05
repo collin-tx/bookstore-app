@@ -2,8 +2,10 @@ import React from 'react';
 
 const Book = ({
   author,
+  favorited,
   img,
   index,
+  onClickFavorite = () => {},
   preview,
   price,
   title,
@@ -27,6 +29,7 @@ const Book = ({
             <i className="fas fa-shopping-cart"></i> Add to Cart
           </button>
       }
+      <button className="btn" onClick={onClickFavorite}><i className={favorited ? "fas fa-heart" : "far fa-heart"}></i></button>
     </div>
     
   </li>
