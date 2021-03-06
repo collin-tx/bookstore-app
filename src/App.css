@@ -287,12 +287,17 @@ justify-content: center;
   display: grid;
   grid-template-columns: 1fr 1fr !important;
   grid-gap: 5%;
+  border: 1px lightgrey solid;
+  padding: 10px;
+  margin-bottom: 25px;
+  border-radius: 5px;
 }
 
 .auth-form--signin {
-  display: grid;
-  grid-template-columns: 1fr 1fr !important;
-  grid-gap: 5%;
+  border: 1px lightgrey solid;
+  padding: 10px;
+  margin-bottom: 25px;
+  border-radius: 5px;
 }
 
 .auth-form--switch {
@@ -346,14 +351,16 @@ justify-content: center;
 
 
 
-
-
-
-
-
 /* authwrapp */
+
+/* TODO: media queries */
 
 .authwrap-container {
   max-width: 60%;
   margin: 0 auto;
+}
+
+.auth-form--signin,
+.auth-form--signup {
+  height: 200px;
 }
