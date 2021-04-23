@@ -1,4 +1,5 @@
 import {
+  bookHasPrice,
   formatDate,
   generateKey,
   handleErrors,
@@ -64,6 +65,46 @@ describe('utils : helper functions', () => {
 
     it('returns true', () => {
       expect(validatePassword('password1', 'password1')).toBe(true);
+    });
+  });
+
+  describe('bookHasPrice', () => {
+
+    it('returns false', () => {
+      expect(bookHasPrice()).toBe(false);
+
+      expect(bookHasPrice({ hello: 'world' })).toBe(false);
+
+      expect(bookHasPrice({
+        saleInfo: {
+          saleability: 'NOT_FOR_SALE',
+          listPrice: {
+            amount: 'this should not matter'
+          }
+        }
+      })).toBe(false);
+
+    });
+
+    it('returns true', () => {
+      expect(bookHasPrice({
+        saleInfo: {
+          saleability: 'FOR_SALE',
+          listPrice: {
+            amount: '99.99'
+          }
+        }
+      })).toBe(true);
+
+      expect(bookHasPrice({
+        saleInfo: {
+          saleability: 'FREE',
+          listPrice: {
+            amount: 'this should not matter'
+          }
+        }
+      })).toBe(true);
+
     });
   });
 
