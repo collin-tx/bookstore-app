@@ -64,3 +64,16 @@ const getMonthFormatted = month => {
             return null;
     }
 }
+
+export const bookHasPrice = (book = {}) => {
+
+    if (book.saleInfo?.saleability === "NOT_FOR_SALE") {
+        return false;
+    }
+
+    if (book.saleInfo?.listPrice?.amount) {
+        return true;
+    }
+
+    return false;
+}
