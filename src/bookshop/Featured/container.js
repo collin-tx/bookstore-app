@@ -6,6 +6,8 @@ import Comment from './Comment';
 
 import { generateKey } from '../../utils/helper';
 
+import { getFeaturedBook } from '../../entities/featured';
+
 export class FeaturedContainer extends Component {
     
     state = {
@@ -15,19 +17,16 @@ export class FeaturedContainer extends Component {
     
     componentDidMount(){
         // connect to db and read from featured table
-        let { firebase } = this.props;
+        let { firebase, getFeatured } = this.props;
         let database = firebase.database();
-        let featured = database.ref('featured');
-        this.setState({ featured, database });
+        
+        getFeatured(firebase);
 
-        featured.on('value', response => {
-            const featuredData = response.val();
-            this.setState({ featuredBook: featuredData });
-        });
+        this.setState({ database });
     }
 
     addComment = () => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
+        let featuredIndex = Object.keys(this.props.featured);
         this.state.database.ref('featured/' + featuredIndex +'/book/comments')
             .push({
                 username: (this.props.user ? this.props.user.displayName : 'Anonymous') ,
@@ -47,21 +46,21 @@ export class FeaturedContainer extends Component {
     }
 
     editComment = (e, key, newComment) => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
+        let featuredIndex = Object.keys(this.props.featured);
         this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
             .update({key:newComment});
         this.setState({ value: '', editing: false });
     }
 
     deleteComment = (e, key) => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
+        let featuredIndex = Object.keys(this.props.featured);
         this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
             .remove();
     }
 
     render() {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
+        let featuredIndex = Object.keys(this.props.featured);
+        let book = this.props.featured[featuredIndex] && this.props.featured[featuredIndex].book;
         
         let allComments = [];
             // eslint-disable-next-line
@@ -79,7 +78,7 @@ export class FeaturedContainer extends Component {
                     userId={comment.userId}
                     edit={this.editComment}
                     delete={this.deleteComment}
-                    commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]}
+                    commentKey={Object.keys(this.props.featured[featuredIndex].book.comments)[index]}
                 />
             )
         });
@@ -87,7 +86,7 @@ export class FeaturedContainer extends Component {
             <Featured 
                 allComments={allComments}
                 book={book}
-                featuredBook={this.state.featuredBook}
+                featuredBook={this.props.featured}
                 featuredIndex={featuredIndex}
                 handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
@@ -103,8 +102,13 @@ const mapState = state => {
     return {
         user: state.user,
         isSignedIn: state.isSignedIn,
-        state
+        featuredBook: state.featured,
+        ...state
     }
 }
 
-export default connect(mapState)(FeaturedContainer);
+const mapDispatch = dispatch => ({
+    getFeatured: (firebase) => dispatch(getFeaturedBook(firebase))
+});
+
+export default connect(mapState, mapDispatch)(FeaturedContainer);
