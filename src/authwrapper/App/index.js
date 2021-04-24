@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { connect, useStore } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import Header from '../../bookshop/components/Header';
@@ -10,9 +10,8 @@ import AuthWrapper from './AuthWrapper';
 
 import { unwrap } from '../sign-in/actions';
 import { signOut, getHistory } from '../../actions';
+import { getFeaturedBook } from '../../entities/featured';
 import Bookshop from '../../bookshop';
-
-import store from '../../store';
 
 import { initialize } from '../../db-bookshop';
 
@@ -23,15 +22,18 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   unwrap: fb => dispatch(unwrap(fb)),
   signOut: fb => dispatch(signOut(fb)),
-  getHistory: fb => dispatch(getHistory(fb))
+  getHistory: fb => dispatch(getHistory(fb)),
+  getFeaturedBook: fb => dispatch(getFeaturedBook(fb))
 });
 
 
 const App = props => {
-
+  const store = useStore();
   const { isSignedIn } = props;
   const firebase = initialize()(store.dispatch);
   const user = firebase.auth().currentUser;
+
+  props.getFeaturedBook(firebase);
 
   const Auth = ({firebase}) => (
     <BrowserRouter>
@@ -69,7 +71,7 @@ const App = props => {
   useEffect(() => {
     if (firebase.auth().currentUser) {
             props.unwrap(firebase);
-            props.getHistory(firebase)
+            props.getHistory(firebase);
           } else {
             if (isSignedIn && !firebase.auth().currentUser) {
               props.signOut(firebase);
@@ -77,6 +79,7 @@ const App = props => {
           }
   });
 
+  // TODO:
   if (isSignedIn || !!user) {
     props.unwrap(firebase);
     view = <Bookshop firebase={firebase} />;
