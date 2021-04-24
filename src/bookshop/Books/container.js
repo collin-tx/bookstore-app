@@ -1,89 +1,82 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect, useDispatch } from 'react-redux';
 
 import Book from '../Book';
 import Books from './Books';
 
 import { quote } from '../../utils/helper';
-import { fetchBooks, addBookToCart } from '../../actions';
+import { addBookToCart } from '../../actions';
+import {
+    fetchBooks
+} from '../../entities/search'
 
-export class BooksContainer extends Component {
-    
-    state = {
-        term: '',
-        loading: false,
-        error: '',
-        cart: [],
-        adding: false,
-        searched: false
-    }
+const BooksContainer = props => {
 
-    handleChange = e => {
-        this.setState({ term: e.target.value });
-    }
+    // state
+    const [ term, setTerm ] = React.useState('');
+    const [ error, setError ] = React.useState('');
+    const [ adding, setAdding ] = React.useState(false);
+    const [ loading, setLoading ] = React.useState(false);
+    const [ searched, setSearched ] = React.useState(false);
 
-    handleSubmit = e => {
+
+    const handleChange = e => setTerm(e.target.value);
+
+    const handleSubmit = e => {
         e.preventDefault();
-        this.getBooks(this.state.term);
-        this.setState({ term: '' });
+        getBooks(term);
+        setTerm('');
     }
 
-    addToCart = (e, index) => {
-        this.setState({ adding: true })
-        const bookToAdd = this.props.books[index];
-        this.setState({ adding: false });
-        this.props.addBookToCart(this.props.firebase, bookToAdd);
+    const addToCart = (e, index) => {
+        setAdding(true);
+        const bookToAdd = props.books[index];
+        props.addBookToCart(props.firebase, bookToAdd);
+        setAdding(false);
     }
 
-    getBooks = query => {
-        this.setState(() => {
-            return { loading: true,  searched: true }
-        });
-        this.props.fetchBooks(query)
-        .then(() => {
-            this.setState({ loading: false });
-        })
-        .catch(error => {
-            this.setState({ error, loading: false });
-        });
+    const getBooks = query => {
+        setLoading(true);
+        setSearched(true);
+        props.fetchBooks(query, props.firebase);
+        setLoading(false);
     }
 
-    render() {
+    let allBooks = props.books && props.books.map((book, index) => {
 
-        let allBooks = this.props.books && this.props.books.map((book, index) => {
-            return (
-                <Book 
-                    title={book.volumeInfo.title} book={book}
-                    author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
-                    category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
-                    description={book.volumeInfo.description}
-                    price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
-                    img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
-                    infoLink={book.volumeInfo.infoLink} 
-                    preview={book.volumeInfo.previewLink} 
-                    id={book.id} index={index}
-                    key={book.etag} 
-                    pageCount={book.volumeInfo.pageCount} 
-                    subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
-                    addToCart={this.addToCart}
-                />
-            );
-        });
         return (
-            <Books
-            adding={this.state.adding}
-            books={this.props.books}
-            bookList={allBooks}
-            loading={this.state.loading}
-            noBooks={this.props.noBooks}
-            onChange={this.handleChange}
-            onSubmit={this.handleSubmit} 
-            quote={quote}
-            searched={this.state.searched}
-            term={this.state.term}
+            <Book 
+                title={book.volumeInfo.title} book={book}
+                author={book.volumeInfo.authors && book.volumeInfo.authors[0]} 
+                category={book.volumeInfo.categories && book.volumeInfo.categories[0]} 
+                description={book.volumeInfo.description}
+                price={book.saleInfo.listPrice && book.saleInfo.listPrice.amount} 
+                img={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
+                infoLink={book.volumeInfo.infoLink} 
+                preview={book.volumeInfo.previewLink} 
+                id={book.id} index={index}
+                key={book.etag} 
+                pageCount={book.volumeInfo.pageCount} 
+                subtitle={book.volumeInfo.subtitle && book.volumeInfo.subtitle}
+                addToCart={addToCart}
             />
         );
-    }
+    });
+
+    return (
+        <Books
+            adding={adding}
+            books={props.books}
+            bookList={allBooks}
+            loading={loading}
+            noBooks={props.noBooks}
+            onChange={handleChange}
+            onSubmit={handleSubmit} 
+            quote={quote}
+            searched={searched}
+            term={term}
+        />
+    );
 }
 
 const mapState = state => ({
@@ -95,7 +88,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({ 
-    fetchBooks: query => dispatch(fetchBooks(query)),
+    fetchBooks: (query, fb) => dispatch(fetchBooks(query, fb)),
     addBookToCart: (fb, book) => dispatch(addBookToCart(fb, book))
 });
 
