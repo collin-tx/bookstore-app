@@ -17,7 +17,7 @@ export const addComment = (firebase, book, comment) => {
   const user = firebase.auth()?.currentUser;
   firebase.database().ref('featured/' + Object.keys(book) + '/book/comments')
     .push({
-        username: (user?.displayName ?? 'User') ,
+        username: (user?.displayName ?? 'User'),
         key: comment,
         userId: user?.uid || '999&guest=user&666'
     });
