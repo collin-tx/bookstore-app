@@ -12,13 +12,10 @@ const Book = ({
   addToCart = () => {}
 }) => (
   <li className="book list-group-item">
-    
     <h2>{title}</h2>
     <img src={img} alt={title + "book cover"} className="book-cover" />
     <p>{author}</p>
-    
     {price ? <p>{"$ " + price.toFixed(2)}</p> : <p>Not for sale</p>}
-    
     <div className="book-actions">
       <a className="btn btn-info mr-1 preview-link" href={preview} target="_blank" rel="noopener noreferrer">
         <i className="fas fa-book-reader"></i> Preview
@@ -31,7 +28,6 @@ const Book = ({
       }
       <button className="btn" onClick={onClickFavorite}><i className={favorited ? "fas fa-heart" : "far fa-heart"}></i></button>
     </div>
-    
   </li>
 );
 
