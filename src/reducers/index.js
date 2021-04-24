@@ -3,8 +3,10 @@ import {
   EMPTY_CART,
   FETCH_BOOKS,
   FIREBASE,
+  GET_FEATURED,
   GET_HISTORY,
   GET_QUERY_LOG,
+  GET_SUGGESTIONS,
   LOADING,
   NO_BOOKS,
   REMOVE_ERROR,
@@ -41,6 +43,11 @@ const rootReducer = (state = [], action) => {
         firebase: action.payload
       }
     }
+    case GET_FEATURED:
+      return {
+        ...state,
+        featured: action.payload
+      }
     case GET_HISTORY:
       return {
         ...state,
@@ -50,6 +57,11 @@ const rootReducer = (state = [], action) => {
       return {
         ...state,
         queries: action.payload
+      }
+    case GET_SUGGESTIONS:
+      return {
+        ...state,
+        suggestions: action.payload
       }
     case LOADING: 
       return {
@@ -103,10 +115,12 @@ const rootReducer = (state = [], action) => {
         cart: [],
         error: null,
         favorites: [],
+        featured: {},
         firebase: null,
         isSignedIn: false,
         loading: false,
         queries: [],
+        suggestions: [],
         user: null
       }
   }
