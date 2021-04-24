@@ -6,7 +6,12 @@ import Comment from './Comment';
 
 import { generateKey } from '../../utils/helper';
 
-import { getFeaturedBook } from '../../entities/featured';
+import {
+    addComment,
+    deleteComment,
+    getFeaturedBook,
+    updateComment
+} from '../../entities/featured';
 
 export class FeaturedContainer extends Component {
     
@@ -16,24 +21,15 @@ export class FeaturedContainer extends Component {
     }
     
     componentDidMount(){
-        // connect to db and read from featured table
         let { firebase, getFeatured } = this.props;
         let database = firebase.database();
-        
         getFeatured(firebase);
-
         this.setState({ database });
     }
 
     addComment = () => {
-        let featuredIndex = Object.keys(this.props.featured);
-        this.state.database.ref('featured/' + featuredIndex +'/book/comments')
-            .push({
-                username: (this.props.user ? this.props.user.displayName : 'Anonymous') ,
-                key: this.state.value,
-                userId: this.props.user?.uid || '999&guest=user&666'
-            });
-        this.setState({ value: '' })
+        addComment(this.props.firebase, this.props.featured, this.state.value);
+        this.setState({ value: '' });
     }
 
     handleChange = e => {
@@ -46,16 +42,12 @@ export class FeaturedContainer extends Component {
     }
 
     editComment = (e, key, newComment) => {
-        let featuredIndex = Object.keys(this.props.featured);
-        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
-            .update({key:newComment});
+        updateComment(this.props.firebase, this.props.featured, key, newComment);
         this.setState({ value: '', editing: false });
     }
 
     deleteComment = (e, key) => {
-        let featuredIndex = Object.keys(this.props.featured);
-        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
-            .remove();
+        deleteComment(this.props.firebase, this.props.featured, key);
     }
 
     render() {
