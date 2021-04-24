@@ -4,6 +4,7 @@ export const CREATE_USER = 'CREATE_USER';
 export const EMPTY_CART = 'EMPTY_CART';
 export const FETCH_BOOKS = 'FETCH_BOOKS';
 export const GET_FAVORITES = 'GET_FAVORITES';
+export const GET_FEATURED = 'GET_FEATURED';
 export const GET_HISTORY = 'GET_HISTORY';
 export const GET_QUERY_LOG = 'GET_QUERY_LOG';
 export const GET_SUGGESTIONS = 'GET_SUGGESTIONS';
