@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import React from 'react';
+import { useSelector, useStore } from 'react-redux';
 
 import Featured from './Featured';
 import Comment from './Comment';
@@ -9,7 +9,6 @@ import { generateKey } from '../../utils/helper';
 import {
     addComment as addCommentAction,
     deleteComment as deleteCommentAction,
-    getFeaturedBook as getFeaturedBookAction,
     updateComment as updateCommentAction
 } from '../../entities/featured';
 
@@ -20,25 +19,22 @@ import {
 const FeaturedContainer = ({
     firebase
 }) => {
-
-    const featured = useSelector(state => getFeatured(state));
+    // set up state
     const [ commentValue, setCommentValue ] = React.useState('');
-
-    console.log('featured', featured);
-
     const {
         isSignedIn,
         user
     } = useStore().getState();
+
+    const featured = useSelector(state => getFeatured(state));
+    const book = featured[Object.keys(featured)].book;
 
     const addComment = () => {
         addCommentAction(firebase, featured, commentValue);
         setCommentValue('');
     }
 
-    const handleChange = e => {
-        setCommentValue(e.target.value);
-    }
+    const handleChange = e => setCommentValue(e.target.value);
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -48,16 +44,11 @@ const FeaturedContainer = ({
     const editComment = (e, key, newComment) => {
         updateCommentAction(firebase, featured, key, newComment);
         setCommentValue('');
-        // setEditing(false);
     }
 
-    const deleteComment = (e, key) => {
-        deleteCommentAction(firebase, featured, key);
-    }
+    const deleteComment = (e, key) => deleteCommentAction(firebase, featured, key);
 
-    const featuredIndex = Object.keys(featured);
-    const book = featured[featuredIndex].book;
-
+    // grabs comments from db.featured
     let allComments = [];
         // eslint-disable-next-line
     for (let keyOfComment in book?.comments){
@@ -76,7 +67,7 @@ const FeaturedContainer = ({
                 delete={deleteComment}
                 commentKey={Object.keys(book.comments)[index]}
             />
-        )
+        );
     });
 
     return (
