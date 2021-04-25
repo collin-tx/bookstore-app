@@ -5,7 +5,8 @@ import {
   GET_QUERY_LOG,
   FETCH_BOOKS,
   NO_BOOKS,
-  RENDER_ERROR
+  RENDER_ERROR,
+  SYNC_CART
 } from '../../actions/constants';
 
 // get books
@@ -69,4 +70,34 @@ export const logQuery = (query, firebase, queries = []) => dispatch => {
   }).catch(error => dispatch(renderError(error)));
     
   storeQueryLog(firebase)(dispatch);
+}
+
+export const addBookToCart = (firebase, book, user) => dispatch => {
+
+  // add book to users cart in FB here
+  // books organized in cart by book.id
+  const db = firebase.database();
+  const userId = user.uid;
+  const cartRef = db.ref('users/' + userId + '/cart');
+
+
+  db.ref('users/' + userId +'/cart/' + book.id)
+    .set({
+      book
+    });
+
+  cartRef.on('value', async (snapshot) => {
+    const fbCart = await snapshot.val();
+    let fbCartArr = [];
+
+    // eslint-disable-next-line
+    for (let id in fbCart){
+      fbCartArr.push(fbCart[id]);
+    }
+
+    dispatch({
+      type: SYNC_CART, 
+      payload: fbCartArr
+    });
+  });
 }
