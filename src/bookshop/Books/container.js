@@ -1,24 +1,21 @@
 import React from 'react'
-import { connect, useDispatch } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import Book from '../Book';
 import Books from './Books';
 
 import { quote } from '../../utils/helper';
 import { addBookToCart } from '../../actions';
-import {
-    fetchBooks
-} from '../../entities/search'
+import { fetchBooks } from '../../entities/search';
+import { getQueries } from '../../actions/selectors';
 
 const BooksContainer = props => {
 
-    // state
     const [ term, setTerm ] = React.useState('');
-    const [ error, setError ] = React.useState('');
     const [ adding, setAdding ] = React.useState(false);
     const [ loading, setLoading ] = React.useState(false);
     const [ searched, setSearched ] = React.useState(false);
-
+    const queries = useSelector(getQueries) ?? [];
 
     const handleChange = e => setTerm(e.target.value);
 
@@ -38,12 +35,12 @@ const BooksContainer = props => {
     const getBooks = query => {
         setLoading(true);
         setSearched(true);
-        props.fetchBooks(query, props.firebase);
-        setLoading(false);
+        props.fetchBooks(query, props.firebase, queries).then(() => {
+            setLoading(false);
+        });
     }
 
-    let allBooks = props.books && props.books.map((book, index) => {
-
+    let allBooks = props.books?.map((book, index) => {
         return (
             <Book 
                 title={book.volumeInfo.title} book={book}
@@ -88,7 +85,7 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({ 
-    fetchBooks: (query, fb) => dispatch(fetchBooks(query, fb)),
+    fetchBooks: (query, fb, queries) => dispatch(fetchBooks(query, fb, queries)),
     addBookToCart: (fb, book) => dispatch(addBookToCart(fb, book))
 });
 
