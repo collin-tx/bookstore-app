@@ -1,6 +1,3 @@
-import { useSelector, useStore } from 'react-redux';
-
-import { getQueries } from '../../actions/selectors';
 import {
   removeError, renderError
 } from '../../actions';
@@ -15,7 +12,6 @@ import {
 const fetchRequest = query => fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
 
 export const fetchBooks = (query, firebase, queries = []) => async dispatch => {
-  console.log('query count from fetch', queries);
   dispatch(removeError())
   await fetchRequest(query)
     .then(response => {
@@ -52,9 +48,9 @@ export const storeQueryLog = firebase  => dispatch => {
     let logArr = [];
     // eslint-disable-next-line 
     for (let q in log){
-      // logArr.push(log[q]);
       logArr.push(log[q]);
     }
+
     dispatch({
       type: GET_QUERY_LOG,
       payload: logArr
@@ -64,20 +60,13 @@ export const storeQueryLog = firebase  => dispatch => {
 
 export const logQuery = (query, firebase, queries = []) => dispatch => {
   const userId = firebase.auth().currentUser?.uid;
-  console.log(queries);
-  // const queries = useSelector(state => getQueries(state)) ?? [];
   const queryId = 'Q' + String(queries.length + 1);
-    console.log(queryId);
 
-    firebase.database().ref(`users/${userId}/log/${queryId}`)
-      .set({
-        query,
-        date: Date.now()
-    })
-      // .then(() => storeQueryLog(firebase)(dispatch))
-      .catch(error => dispatch(renderError(error)));
+  firebase.database().ref(`users/${userId}/log/${queryId}`)
+    .set({
+      query,
+      date: Date.now()
+  }).catch(error => dispatch(renderError(error)));
     
   storeQueryLog(firebase)(dispatch);
-
-  return false;
 }
