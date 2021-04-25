@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CartBook from './CartBook';
 import Cart from './Cart';
-import { emptyCart, removeBookFromCart } from '../../actions';
+import { emptyCart, removeBookFromCart } from '../../entities/cart';
 import { generateKey } from '../../utils/helper';
 
 export class CartContainer extends Component {  
 
     handleRemove = book => {
-        this.props.removeBookFromCart(this.props.firebase, book);
+        this.props.removeBookFromCart(this.props.firebase, book, this.props.user);
     }
 
     emptyCart = () => {
@@ -88,7 +88,7 @@ const mapState = state => {
 }
 
 const mapDispatch = dispatch => ({ 
-    removeBookFromCart: (fb, book) => dispatch(removeBookFromCart(fb, book)),
+    removeBookFromCart: (fb, book, u) => dispatch(removeBookFromCart(fb, book, u)),
     emptyCart: fb => dispatch(emptyCart(fb))
 });
 
