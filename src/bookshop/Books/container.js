@@ -5,8 +5,10 @@ import Book from '../Book';
 import Books from './Books';
 
 import { quote } from '../../utils/helper';
-import { addBookToCart } from '../../actions';
-import { fetchBooks } from '../../entities/search';
+import { 
+    addBookToCart,
+    fetchBooks 
+} from '../../entities/books';
 import { getQueries } from '../../actions/selectors';
 
 const BooksContainer = props => {
@@ -28,8 +30,9 @@ const BooksContainer = props => {
     const addToCart = (e, index) => {
         setAdding(true);
         const bookToAdd = props.books[index];
-        props.addBookToCart(props.firebase, bookToAdd);
-        setAdding(false);
+        props.addBookToCart(props.firebase, bookToAdd).then(() => {
+            setAdding(false);
+        });
     }
 
     const getBooks = query => {
