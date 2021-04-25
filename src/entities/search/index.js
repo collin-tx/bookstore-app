@@ -2,7 +2,7 @@ import { useSelector, useStore } from 'react-redux';
 
 import { getQueries } from '../../actions/selectors';
 import {
-  removeError
+  removeError, renderError
 } from '../../actions';
 import {
   GET_QUERY_LOG,
@@ -14,7 +14,8 @@ import {
 // get books
 const fetchRequest = query => fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
 
-export const fetchBooks = (query, firebase) => async dispatch => {
+export const fetchBooks = (query, firebase, queries = []) => async dispatch => {
+  console.log('query count from fetch', queries);
   dispatch(removeError())
   await fetchRequest(query)
     .then(response => {
@@ -32,7 +33,7 @@ export const fetchBooks = (query, firebase) => async dispatch => {
         });
       }
     })
-    .then(() => dispatch(logQuery(query, firebase)))
+    .then(() => logQuery(query, firebase, queries)(dispatch))
     .catch(error => {
       dispatch({
         type: RENDER_ERROR,
@@ -42,6 +43,7 @@ export const fetchBooks = (query, firebase) => async dispatch => {
 }
 
 export const storeQueryLog = firebase  => dispatch => {
+  // refresh the store's query logs
   const user = firebase.auth().currentUser;
   const queryLogRef = firebase.database().ref('users/' + (user && user.uid) + '/log');
 
@@ -60,18 +62,22 @@ export const storeQueryLog = firebase  => dispatch => {
   });
 }
 
-export const logQuery = (query, firebase) => dispatch => {
-  const user = firebase.auth().currentUser;
-  if (!!user) {
-    const userId = user && user.uid;
-    const count = 'Q' + String(useSelector(state => getQueries(state)).length + 1);
+export const logQuery = (query, firebase, queries = []) => dispatch => {
+  const userId = firebase.auth().currentUser?.uid;
+  console.log(queries);
+  // const queries = useSelector(state => getQueries(state)) ?? [];
+  const queryId = 'Q' + String(queries.length + 1);
+    console.log(queryId);
 
-    firebase.database().ref(`users/${userId}/log/${count}`)
+    firebase.database().ref(`users/${userId}/log/${queryId}`)
       .set({
         query,
         date: Date.now()
     })
-      .then(() => storeQueryLog(firebase))(dispatch);
-  }
+      // .then(() => storeQueryLog(firebase)(dispatch))
+      .catch(error => dispatch(renderError(error)));
+    
+  storeQueryLog(firebase)(dispatch);
+
   return false;
 }
