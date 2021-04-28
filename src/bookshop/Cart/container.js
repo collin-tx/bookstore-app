@@ -68,13 +68,14 @@ export class CartContainer extends Component {
     
     return (
         <Cart 
-        booksInCart={booksInCart}
-        cart={this.props.cart}
-        checkoutBooks={checkoutBooks}
-        emptyCart={this.emptyCart}
-        firebase={this.props.firebase}
-        subtotal={subtotal}
-        user={(this.props.user && this.props.user.displayName)}
+            booksInCart={booksInCart}
+            cart={this.props.cart}
+            checkoutBooks={checkoutBooks}
+            emptyCart={this.emptyCart}
+            firebase={this.props.firebase}
+            subtotal={subtotal}
+            user={(this.props.user && this.props.user.displayName)}
+            userHistory={this.props.userHistory}
         />
         )
     }
@@ -83,7 +84,8 @@ export class CartContainer extends Component {
 const mapState = state => {
     return {
         user: state.user,
-        cart: state.cart
+        cart: state.cart,
+        userHistory: state.userHistory
     }
 }
 
