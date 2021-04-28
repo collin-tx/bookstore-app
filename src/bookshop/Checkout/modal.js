@@ -5,7 +5,7 @@ import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import CheckedOut from './CheckedOut';
 import Checkout from './index';
 
-import { checkOut } from '../../actions';
+import { checkOut } from '../../entities/cart';
 import { getUser, getCart } from '../../actions/selectors';
 import store from '../../store';
 
