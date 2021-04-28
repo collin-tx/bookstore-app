@@ -3,8 +3,9 @@ import {
   SYNC_CART
 } from '../../actions/constants';
 
-import {getHistory} from '../../actions';
-
+import {
+  getHistory as getHistoryAction
+} from '../../actions';
 
 export const removeBookFromCart = (firebase, book, user) => {
   const userId = user.uid;
@@ -22,7 +23,7 @@ export const removeBookFromCart = (firebase, book, user) => {
       fbCartArr.push(fbCart[id]);
     }
   });
-    
+
   return {
     type: SYNC_CART,
     payload: fbCartArr
@@ -44,7 +45,7 @@ export const checkOut = (firebase, cart, subtotal) => dispatch => {
 
   // empty cart and refresh userhistory
   dispatch(emptyCart(firebase, user));
-  dispatch(getHistory(firebase, userId));
+  dispatch(getHistoryAction(firebase, userId));
 }
 
 export const emptyCart = (firebase, user) => {
@@ -57,46 +58,3 @@ export const emptyCart = (firebase, user) => {
     type: EMPTY_CART
   }
 }
-
-
-
-// from the time I tried to OOP == let this be a warning
-// export const CartManager = (firebase, book = {}, user = {}, cart = [], subtotal = null) => dispatch => ({
-//   getDatabase: () => firebase.database(),
-//   getUserId: () => user?.uid,
-//   removeBookFromCart: () => {
-//     this.getDatabase().ref('users/' + this.getUserId() + '/cart/' + book.id).remove();
-//     this.syncCart();
-//   },
-//   syncCart: () => {
-//     let fbCartArr = [];
-//     this.getDatabase().ref('users/' + this.getUserId() + '/cart')
-//       .on('value', async (snapshot) => {
-//         const fbCart = await snapshot.val();
-//         // eslint-disable-next-line
-//         for (let id in fbCart){
-//           fbCartArr.push(fbCart[id]);
-//         }
-//       });
-//     dispatch({
-//       type: SYNC_CART,
-//       payload: fbCartArr
-//     });
-//   },
-//   checkout: () => {
-//     this.getDatabase().ref(`users/${this.getUserId()}/purchaseHistory`)
-//     .push({
-//       cart,
-//       subtotal,
-//       date: Date()
-//     });
-//     dispatch(this.emptyCart(firebase, user));
-//     dispatch(getHistory(firebase, this.getUserId()));
-//   },
-//   emptyCart: () => {
-//     this.getDatabase().ref('users/' + this.getUserId() + '/cart/').set([]);
-//     dispatch({
-//       type: EMPTY_CART
-//     });
-//   }
-// });
