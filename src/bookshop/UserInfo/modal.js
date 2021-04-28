@@ -1,19 +1,16 @@
 import React from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
-import { signOut } from '../../actions';
 import UserHistory from '../UserHistory/modal';
 import Favorites from '../Favorites/modal';
 import Suggestions from '../Suggestions/modal';
 
-import {
-  getUser,
-  getError
-} from '../../actions/selectors';
-
-const UserModal = props => {
-
-  const { firebase, user, onHide, onSignOut } = props;
+const UserModal = ({
+  firebase,
+  user,
+  onHide,
+  onSignOut,
+  ...props
+}) => {
   // const renderError = () => {
   //   return (props.error && 
   //     <div className="error">
@@ -48,19 +45,14 @@ const UserModal = props => {
 }
   
 export const UserModalContainer = ({
-  firebase
+  firebase,
+  error,
+  onSignOut,
+  renderError,
+  removeError,
+  user
 }) => {
   const [ modalShow, setModalShow ] = React.useState(false);
-  
-  const error = useSelector(getError);
-  const user = useSelector(getUser);
-
-  const dispatch = useDispatch();
-
-  const onSignOut = () => {
-    dispatch(signOut(firebase));
-  }
-
   return (
     <ButtonToolbar>
       <div>
