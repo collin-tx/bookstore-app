@@ -5,6 +5,7 @@ export const getFavorites = (state = []) => state.favorites ? state.favorites : 
 export const getFeatured = (state = []) => state.featured ? state.featured : {};
 export const getFirebase = (state = []) => state.firebase;
 export const getHistory = (state = []) => state.userHistory ? state.userHistory : [];
+export const getIsSignedIn = (state = []) => state.signedIn ? true : false;
 export const getNoBooksFound = (state = []) => state.noBooks ? true : false;
 export const getQueries = (state = []) => state.queries ? state.queries : [];
 export const getSuggestions = (state = []) => state.suggestions ? state.suggestions : [];
