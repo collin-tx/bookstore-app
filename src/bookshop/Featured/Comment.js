@@ -1,83 +1,80 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-export class Comment extends Component {
+const Comment = props => {
     
-    state = { 
-        editing: false,
-        value: ''
+    const [ editing, setEditing ] = useState(false);
+    const [ value, setValue ] = useState('');
+
+    const changeHandler = e => {
+        setValue(e.target.value);
     }
 
-    changeHandler = e => {
-        this.setState({ value: e.target.value });
-    }
-    
-    submitHandler = e => {
+    const submitHandler = e => {
         e.preventDefault();
-        this.props.edit(e, this.props.commentKey, this.state.value);
-        this.setState({ value: '', editing: false });
+        props.edit(e, props.commentKey, value);
+        setValue('');
+        setEditing(false);
     }
 
-    clickEdit = () => {
-        this.setState({ editing: !this.state.editing })
+    const clickEdit = () => {
+        setEditing(!editing);
     }
 
-    clickDelete = e => {
-        this.props.delete(e, this.props.commentKey);
+    const clickDelete = e => {
+        props.delete(e, props.commentKey);
     }
 
-    renderEditActions = () => {
-        return this.state.editing ? (
-            <form onSubmit={this.submitHandler} className="edit-comment-form">
-                <input type="text" value={this.state.value} className="edit-comment-field" 
-                    onChange={this.changeHandler} placeholder="new comment..." />
+    const renderEditActions = () => {
+        return editing ? (
+            <form onSubmit={submitHandler} className="edit-comment-form">
+                <input type="text" value={value} className="edit-comment-field" 
+                    onChange={changeHandler} placeholder="new comment..." />
                 <button type="submit" className="btn btn-sm btn-info">
                     submit
                 </button>
-                <button type="submit" className="btn btn-sm btn-secondary" onClick={this.clickEdit}>
+                <button type="submit" className="btn btn-sm btn-secondary" onClick={clickEdit}>
                     cancel
                 </button>
             </form>
         ) : (
             <div className="featured_comment-actions--buttons">
-                <button className="btn btn-info btn-sm" onClick={this.clickEdit}>
+                <button className="btn btn-info btn-sm" onClick={clickEdit}>
                     edit
                 </button>
 
-                <button className="btn btn-danger btn-sm" onClick={this.clickDelete}>
+                <button className="btn btn-danger btn-sm" onClick={clickDelete}>
                     delete
                 </button>
             </div>
             )
     }
  
-    render() {
-        const { comment, user, username, userId } = this.props;
-        return (
-            <li className="list-group-item comment">
+    const { comment, user, username, userId } = props;
+    return (
+        <li className="list-group-item comment">
 
-                <div className="featured_comment-div">
-                    
-                    <div className="featured_comment-user-div">
-                        <i className="fas fa-user featured_comment-userIcon"></i>
-                        <p className="featured_comment-username">{username}</p>
-                    </div>
-
-                    <div className="featured_comment-text-div">
-                        <span>{comment}</span>
-                    </div>
-
-                    <div className="featured_comment-actions">
-                    {
-                        // checks if the currently signedIn user's ID matches the ID of the user who left the comment
-                        // if it's a match, the user may edit/delete their comment
-                        user && (userId === user.uid) && this.renderEditActions()
-                    }
-                    </div>
+            <div className="featured_comment-div">
+                
+                <div className="featured_comment-user-div">
+                    <i className="fas fa-user featured_comment-userIcon"></i>
+                    <p className="featured_comment-username">{username}</p>
                 </div>
 
-            </li>
-        )
-    }
+                <div className="featured_comment-text-div">
+                    <span>{comment}</span>
+                </div>
+
+                <div className="featured_comment-actions">
+                {
+                    // checks if the currently signedIn user's ID matches the ID of the user who left the comment
+                    // if it's a match, the user may edit/delete their comment
+                    user && (userId === user.uid) && renderEditActions()
+                }
+                </div>
+            </div>
+
+        </li>
+    );
 }
 
 export default Comment;
