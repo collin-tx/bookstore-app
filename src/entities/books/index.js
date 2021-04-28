@@ -72,14 +72,13 @@ export const logQuery = (query, firebase, queries = []) => dispatch => {
   storeQueryLog(firebase)(dispatch);
 }
 
-export const addBookToCart = (firebase, book, user) => dispatch => {
+export const addBookToCart = (firebase, book) => dispatch => {
 
   // add book to users cart in FB here
   // books organized in cart by book.id
   const db = firebase.database();
-  const userId = user.uid;
+  const userId = firebase.auth()?.currentUser?.uid;
   const cartRef = db.ref('users/' + userId + '/cart');
-
 
   db.ref('users/' + userId +'/cart/' + book.id)
     .set({
