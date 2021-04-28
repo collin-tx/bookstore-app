@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
 import CheckedOut from './CheckedOut';
@@ -101,4 +100,4 @@ export const CheckoutModalContainer = props => {
   );
 }
 
-export default connect()(CheckoutModalContainer);
+export default CheckoutModalContainer;
