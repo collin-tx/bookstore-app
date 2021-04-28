@@ -11,7 +11,8 @@ import {
 } from '../../entities/books';
 import { 
     getBooks,
-    getQueries
+    getQueries,
+    getUser
 } from '../../actions/selectors';
 
 const BooksContainer = props => {
@@ -23,6 +24,7 @@ const BooksContainer = props => {
     
     const queries = useSelector(getQueries) ?? [];
     const books = useSelector(getBooks);
+    const user = useSelector(getUser);
 
     const handleChange = e => setTerm(e.target.value);
 
@@ -34,7 +36,7 @@ const BooksContainer = props => {
 
     const addToCart = (e, index) => {
         setAdding(true);
-        props.addBookToCart(props.firebase, books[index]);
+        props.addBookToCart(props.firebase, books[index], user);
         setAdding(false);
     }
 
@@ -86,12 +88,13 @@ const mapState = state => ({
     query: state.term,
     cart: state.cart,
     noBooks: state.noBooks,
-    error: state.error
+    error: state.error,
+    user: state.user
 });
 
 const mapDispatch = dispatch => ({ 
     fetchBooks: (query, fb, queries) => dispatch(fetchBooks(query, fb, queries)),
-    addBookToCart: (fb, book) => addBookToCart(fb, book)(dispatch)
+    addBookToCart: (fb, book, user) => addBookToCart(fb, book, user)(dispatch)
 });
 
 export default connect(mapState, mapDispatch)(BooksContainer);
