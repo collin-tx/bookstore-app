@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser, getError } from '../../actions/selectors';
+import { getUser, getError, getFirebase } from '../../actions/selectors';
 import UserModal from './modal';
 import {
   signOut,
@@ -8,11 +8,11 @@ import {
   renderError as renderErrorAction
 } from '../../actions';
 
-const UserModalContainer = ({
-  firebase
-}) => {
-  const user = useSelector(getUser);
+const UserModalContainer = () => {
+  
   const error = useSelector(getError);
+  const firebase = useSelector(getFirebase);
+  const user = useSelector(getUser);
 
   const dispatch = useDispatch();
 
