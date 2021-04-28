@@ -9,7 +9,10 @@ import {
     addBookToCart,
     fetchBooks 
 } from '../../entities/books';
-import { getQueries } from '../../actions/selectors';
+import { 
+    getBooks,
+    getQueries
+} from '../../actions/selectors';
 
 const BooksContainer = props => {
 
@@ -17,33 +20,32 @@ const BooksContainer = props => {
     const [ adding, setAdding ] = React.useState(false);
     const [ loading, setLoading ] = React.useState(false);
     const [ searched, setSearched ] = React.useState(false);
+    
     const queries = useSelector(getQueries) ?? [];
+    const books = useSelector(getBooks);
 
     const handleChange = e => setTerm(e.target.value);
 
     const handleSubmit = e => {
         e.preventDefault();
-        getBooks(term);
+        searchForBooks(term);
         setTerm('');
     }
 
     const addToCart = (e, index) => {
         setAdding(true);
-        const bookToAdd = props.books[index];
-        props.addBookToCart(props.firebase, bookToAdd).then(() => {
-            setAdding(false);
-        });
+        props.addBookToCart(props.firebase, books[index]);
+        setAdding(false);
     }
 
-    const getBooks = query => {
+    const searchForBooks = query => {
         setLoading(true);
         setSearched(true);
-        props.fetchBooks(query, props.firebase, queries).then(() => {
-            setLoading(false);
-        });
+        props.fetchBooks(query, props.firebase, queries);
+        setLoading(false);
     }
 
-    let allBooks = props.books?.map((book, index) => {
+    let allBooks = books?.map((book, index) => {
         return (
             <Book 
                 title={book.volumeInfo.title} book={book}
@@ -66,7 +68,7 @@ const BooksContainer = props => {
     return (
         <Books
             adding={adding}
-            books={props.books}
+            books={books}
             bookList={allBooks}
             loading={loading}
             noBooks={props.noBooks}
@@ -89,7 +91,7 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({ 
     fetchBooks: (query, fb, queries) => dispatch(fetchBooks(query, fb, queries)),
-    addBookToCart: (fb, book) => dispatch(addBookToCart(fb, book))
+    addBookToCart: (fb, book) => addBookToCart(fb, book)(dispatch)
 });
 
 export default connect(mapState, mapDispatch)(BooksContainer);
