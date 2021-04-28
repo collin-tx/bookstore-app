@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Book from '../Book';
 import Books from './Books';
@@ -11,11 +11,13 @@ import {
 } from '../../entities/books';
 import { 
     getBooks,
+    getFirebase,
     getQueries,
-    getUser
+    getUser,
+    getNoBooksFound
 } from '../../actions/selectors';
 
-const BooksContainer = props => {
+const BooksContainer = () => {
 
     const [ term, setTerm ] = React.useState('');
     const [ adding, setAdding ] = React.useState(false);
@@ -25,6 +27,10 @@ const BooksContainer = props => {
     const queries = useSelector(getQueries) ?? [];
     const books = useSelector(getBooks);
     const user = useSelector(getUser);
+    const noBooks = useSelector(getNoBooksFound);
+    const firebase = useSelector(getFirebase);
+
+    const dispatch = useDispatch();
 
     const handleChange = e => setTerm(e.target.value);
 
@@ -36,18 +42,18 @@ const BooksContainer = props => {
 
     const addToCart = (e, index) => {
         setAdding(true);
-        props.addBookToCart(props.firebase, books[index], user);
+        addBookToCart(firebase, books[index], user)(dispatch);
         setAdding(false);
     }
 
     const searchForBooks = query => {
         setLoading(true);
         setSearched(true);
-        props.fetchBooks(query, props.firebase, queries);
+        fetchBooks(query, firebase, queries)(dispatch);
         setLoading(false);
     }
 
-    let allBooks = books?.map((book, index) => {
+    const allBooks = books?.map((book, index) => {
         return (
             <Book 
                 title={book.volumeInfo.title} book={book}
@@ -73,7 +79,7 @@ const BooksContainer = props => {
             books={books}
             bookList={allBooks}
             loading={loading}
-            noBooks={props.noBooks}
+            noBooks={noBooks}
             onChange={handleChange}
             onSubmit={handleSubmit} 
             quote={quote}
@@ -83,18 +89,4 @@ const BooksContainer = props => {
     );
 }
 
-const mapState = state => ({
-    books: state.books,
-    query: state.term,
-    cart: state.cart,
-    noBooks: state.noBooks,
-    error: state.error,
-    user: state.user
-});
-
-const mapDispatch = dispatch => ({ 
-    fetchBooks: (query, fb, queries) => dispatch(fetchBooks(query, fb, queries)),
-    addBookToCart: (fb, book, user) => addBookToCart(fb, book, user)(dispatch)
-});
-
-export default connect(mapState, mapDispatch)(BooksContainer);
+export default BooksContainer;
