@@ -29,17 +29,15 @@ export const removeBookFromCart = (firebase, book, user) => {
   }
 }
 
-export const checkOut = (firebase, order, subtotal) => dispatch => {
+export const checkOut = (firebase, cart, subtotal) => dispatch => {
   const db = firebase.database();
   const user = firebase.auth().currentUser;
-  const userId = user.uid;
+  const userId = user?.uid;
 
   // push purchase details to purchaseHistory field on User  
-  const path = `users/${userId}/purchaseHistory`;
-
-  db.ref(path)
+  db.ref(`users/${userId}/purchaseHistory`)
     .push({
-      order,
+      order: cart,
       subtotal,
       date: Date()
     });
@@ -59,3 +57,46 @@ export const emptyCart = (firebase, user) => {
     type: EMPTY_CART
   }
 }
+
+
+
+// from the time I tried to OOP == let this be a warning
+// export const CartManager = (firebase, book = {}, user = {}, cart = [], subtotal = null) => dispatch => ({
+//   getDatabase: () => firebase.database(),
+//   getUserId: () => user?.uid,
+//   removeBookFromCart: () => {
+//     this.getDatabase().ref('users/' + this.getUserId() + '/cart/' + book.id).remove();
+//     this.syncCart();
+//   },
+//   syncCart: () => {
+//     let fbCartArr = [];
+//     this.getDatabase().ref('users/' + this.getUserId() + '/cart')
+//       .on('value', async (snapshot) => {
+//         const fbCart = await snapshot.val();
+//         // eslint-disable-next-line
+//         for (let id in fbCart){
+//           fbCartArr.push(fbCart[id]);
+//         }
+//       });
+//     dispatch({
+//       type: SYNC_CART,
+//       payload: fbCartArr
+//     });
+//   },
+//   checkout: () => {
+//     this.getDatabase().ref(`users/${this.getUserId()}/purchaseHistory`)
+//     .push({
+//       cart,
+//       subtotal,
+//       date: Date()
+//     });
+//     dispatch(this.emptyCart(firebase, user));
+//     dispatch(getHistory(firebase, this.getUserId()));
+//   },
+//   emptyCart: () => {
+//     this.getDatabase().ref('users/' + this.getUserId() + '/cart/').set([]);
+//     dispatch({
+//       type: EMPTY_CART
+//     });
+//   }
+// });
