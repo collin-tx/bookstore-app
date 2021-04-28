@@ -7,8 +7,8 @@ import Checkout from '../Checkout/modal';
 import UserHistory from '../UserHistory/modal';
 
 const Cart = ({
-  cart = [],
   booksInCart = [],
+  cart = [],
   checkoutBooks = [],
   emptyCart = () => {},
   firebase = {},
