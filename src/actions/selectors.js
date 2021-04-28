@@ -1,3 +1,4 @@
+export const getBooks = (state = []) => state.books ? state.books : [];
 export const getCart = (state = []) => state.cart ? state.cart : [];
 export const getError = (state = []) => state.error ? state.error : null;
 export const getFavorites = (state = []) => state.favorites ? state.favorites : [];
