@@ -7,7 +7,7 @@ const SignIn = ({
   handleSubmit,
   password
 }) => (
-  <form id="auth-form" className="form-horizontal auth-form" onSubmit={(e) => handleSubmit(e, email, password, password)}>
+  <form id="auth-form" className="form-horizontal auth-form" onSubmit={(e) => handleSubmit(e)}>
     <div className="auth-form--signin">
       <div className="form-group">
         <label htmlFor="email">email:</label>
