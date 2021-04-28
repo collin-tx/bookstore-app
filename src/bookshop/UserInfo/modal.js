@@ -9,7 +9,7 @@ const UserModal = ({
   user,
   onHide,
   onSignOut,
-  ...props
+  show
 }) => {
   // const renderError = () => {
   //   return (props.error && 
@@ -21,7 +21,7 @@ const UserModal = ({
   const username = user && user.displayName;
 
   return (
-    <Modal {...props} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal show={show} onHide={onHide} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           { `${username} || badass bookshop user` }
@@ -48,8 +48,8 @@ export const UserModalContainer = ({
   firebase,
   error,
   onSignOut,
-  renderError,
-  removeError,
+  // renderError,
+  // removeError,
   user
 }) => {
   const [ modalShow, setModalShow ] = React.useState(false);
