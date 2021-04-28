@@ -112,6 +112,7 @@ const rootReducer = (state = [], action) => {
       }
     default:
       return {
+        books: [],
         cart: [],
         error: null,
         favorites: [],
