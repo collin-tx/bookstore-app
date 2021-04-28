@@ -1,8 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import Subtotal from './Subtotal';
-
 import Checkout from '../Checkout/modal';
 import UserHistory from '../UserHistory/modal';
 
@@ -55,9 +53,4 @@ const Cart = ({
   </div>
 );
 
-const mapState = state => ({
-    userHistory: state.userHistory,
-    cart: state.cart
-});
-
-export default connect(mapState)(Cart);
+export default Cart;
