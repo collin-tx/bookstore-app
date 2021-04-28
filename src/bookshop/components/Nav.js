@@ -33,7 +33,7 @@ const Nav = ({ firebase }) => {
                 </NavLink>
                 <div className="float-right">
                     {
-                        firebase.auth().currentUser && <UserModal firebase={firebase} />
+                        firebase.auth().currentUser && <UserModal />
                     }
                 </div>
             </div>
