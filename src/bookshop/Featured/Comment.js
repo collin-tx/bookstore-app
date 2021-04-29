@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 
-const Comment = props => {
+const Comment = ({ 
+    comment,
+    commentKey,
+    onDelete = () => {},
+    onEdit = () => {},
+    user,
+    username,
+    userId
+}) => {
     
     const [ editing, setEditing ] = useState(false);
     const [ value, setValue ] = useState('');
@@ -11,7 +19,7 @@ const Comment = props => {
 
     const submitHandler = e => {
         e.preventDefault();
-        props.edit(e, props.commentKey, value);
+        onEdit(e, commentKey, value);
         setValue('');
         setEditing(false);
     }
@@ -21,7 +29,7 @@ const Comment = props => {
     }
 
     const clickDelete = e => {
-        props.delete(e, props.commentKey);
+        onDelete(e, commentKey);
     }
 
     const renderEditActions = () => {
@@ -49,7 +57,6 @@ const Comment = props => {
             )
     }
  
-    const { comment, user, username, userId } = props;
     return (
         <li className="list-group-item comment">
 

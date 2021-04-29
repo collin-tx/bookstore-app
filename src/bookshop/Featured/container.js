@@ -63,8 +63,8 @@ const FeaturedContainer = ({
                 username={comment.username}
                 user={user}
                 userId={comment.userId}
-                edit={editComment}
-                delete={deleteComment}
+                onEdit={editComment}
+                onDelete={deleteComment}
                 commentKey={Object.keys(book.comments)[index]}
             />
         );
