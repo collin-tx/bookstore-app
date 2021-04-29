@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect, useStore } from 'react-redux';
+import { connect, useDispatch, useStore } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import Header from '../../bookshop/components/Header';
@@ -9,7 +9,7 @@ import Nav from '../../bookshop/components/Nav';
 import AuthWrapper from './AuthWrapper';
 
 import { unwrap } from '../sign-in/actions';
-import { signOut, getHistory } from '../../actions';
+import { signOut, getHistory } from '../../entities/user';
 import { getFeaturedBook } from '../../entities/featured';
 import Bookshop from '../../bookshop';
 
@@ -19,21 +19,16 @@ const mapState = state => ({
   isSignedIn: state.isSignedIn,
 });
 
-const mapDispatch = dispatch => ({
-  unwrap: fb => dispatch(unwrap(fb)),
-  signOut: fb => dispatch(signOut(fb)),
-  getHistory: fb => dispatch(getHistory(fb)),
-  getFeaturedBook: fb => dispatch(getFeaturedBook(fb))
-});
-
-
 const App = props => {
   const store = useStore();
   const { isSignedIn } = props;
   const firebase = initialize()(store.dispatch);
   const user = firebase.auth().currentUser;
 
-  props.getFeaturedBook(firebase);
+  const dispatch = useDispatch();
+
+  dispatch(getFeaturedBook(firebase));
+  dispatch(getHistory(firebase));
 
   const Auth = ({firebase}) => (
     <BrowserRouter>
@@ -60,7 +55,7 @@ const App = props => {
         viewRef = 'bookshop';
       } else {
         if (!firebase.auth().currentUser && viewRef === 'bookshop') {
-          props.signOut(firebase);
+          dispatch(signOut(firebase));
           view = <Auth firebase={firebase} />;
           viewRef = 'auth';
         }
@@ -70,18 +65,18 @@ const App = props => {
 
   useEffect(() => {
     if (firebase.auth().currentUser) {
-            props.unwrap(firebase);
-            props.getHistory(firebase);
-          } else {
-            if (isSignedIn && !firebase.auth().currentUser) {
-              props.signOut(firebase);
-            }
-          }
+      dispatch(unwrap(firebase));
+      dispatch(getHistory(firebase));
+    } else {
+      if (isSignedIn && !firebase.auth().currentUser) {
+        dispatch(signOut(firebase));
+      }
+    }
   });
 
   // TODO:
   if (isSignedIn || !!user) {
-    props.unwrap(firebase);
+    dispatch(unwrap(firebase));
     view = <Bookshop firebase={firebase} />;
     viewRef = 'bookshop';
   } else {
@@ -92,4 +87,4 @@ const App = props => {
   return view;
 }
 
-export default connect(mapState, mapDispatch)(App);
+export default connect(mapState)(App);
