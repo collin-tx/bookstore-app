@@ -5,7 +5,7 @@ import {
 
 import {
   getHistory as getHistoryAction
-} from '../../actions';
+} from '../../entities/user';
 
 export const removeBookFromCart = (firebase, book, user) => {
   const userId = user.uid;
