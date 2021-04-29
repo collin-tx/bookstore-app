@@ -2,17 +2,20 @@ import {
   CREATE_USER,
   RENDER_ERROR,
   SIGN_IN,
+  SYNC_CART,
   UNWRAP,
 } from '../../actions/constants';
 
+import { removeError } from '../../actions';
+
+import { getHistory } from '../../entities/user';
+
 import {
-  removeError,
-  syncCart,
-  getHistory,
   storeQueryLog
-} from '../../actions';
+} from '../../entities/books';
 
 export const signIn = (firebase, email, password) => dispatch => {
+
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
       const user = firebase.auth().currentUser;
@@ -25,7 +28,7 @@ export const signIn = (firebase, email, password) => dispatch => {
         });
       }
 
-      syncCart(firebase)(dispatch);
+      dispatch(syncCart(firebase));
       dispatch(removeError());
       dispatch(getHistory(firebase, userId));
       dispatch(storeQueryLog(firebase));
@@ -93,5 +96,22 @@ export const createUser = (firebase, email, password, username) => async dispatc
         payload: {error}
       })
     });
+}
 
+// sync UI cart with FB cart
+export const syncCart = firebase => dispatch => {
+  const user = firebase.auth().currentUser;
+  const cartRef = firebase.database().ref('users/' + (user?.uid) + '/cart');
+  cartRef.on('value', async (snapshot) => {
+    const fbCart = await snapshot.val();
+    let fbCartArr = [];
+    // eslint-disable-next-line 
+    for (let id in fbCart){
+      fbCartArr.push(fbCart[id]);
+    }
+    dispatch({
+      type: SYNC_CART,
+      payload: fbCartArr
+    });
+  });
 }
