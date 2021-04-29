@@ -12,12 +12,12 @@ import {
   createUser as createUserAction
 } from './actions';
 
-import { renderError } from '../../actions';
+import { renderError } from '../../library';
 import { validateEmail, validatePassword } from '../../utils/helper';
 import {
   getError,
   getUser
-} from '../../actions/selectors';
+} from '../../library/selectors';
 
 const SignInContainer = ({
   firebase,
@@ -26,7 +26,7 @@ const SignInContainer = ({
   const dispatch = useDispatch();
 
   // dev helper-- remove below
-  // dispatch(signIn(firebase, 'a@aa.com', 'aaaaaaa7'));
+  dispatch(signIn(firebase, 'a@aa.com', 'aaaaaaa7'));
   // remove above this
 
   const [ email, setEmail ] = useState('');

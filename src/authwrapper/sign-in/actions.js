@@ -4,9 +4,9 @@ import {
   SIGN_IN,
   SYNC_CART,
   UNWRAP,
-} from '../../actions/constants';
+} from '../../library/constants';
 
-import { removeError } from '../../actions';
+import { removeError } from '../../library';
 
 import { getHistory } from '../../entities/user';
 
