@@ -4,7 +4,7 @@ import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 import { 
   getError,
   getSuggestions
-} from '../../actions/selectors';
+} from '../../library/selectors';
 
 import Suggestions from './index';
 

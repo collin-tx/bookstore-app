@@ -15,7 +15,7 @@ import {
     getQueries,
     getUser,
     getNoBooksFound
-} from '../../actions/selectors';
+} from '../../library/selectors';
 
 const BooksContainer = () => {
 

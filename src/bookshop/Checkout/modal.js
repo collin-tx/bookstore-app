@@ -5,7 +5,7 @@ import CheckedOut from './CheckedOut';
 import Checkout from './index';
 
 import { checkOut } from '../../entities/cart';
-import { getUser, getCart } from '../../actions/selectors';
+import { getUser, getCart } from '../../library/selectors';
 import store from '../../store';
 
 const CheckoutModal = props => {

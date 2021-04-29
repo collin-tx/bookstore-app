@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
-import { getFavorites } from '../../actions/selectors';
+import { getFavorites } from '../../library/selectors';
 import Favorites from './index';
 
 const FavoritesModal = ({

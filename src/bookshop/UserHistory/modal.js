@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
 import UserHistory from './index';
-import { getHistory } from '../../actions/selectors';
+import { getHistory } from '../../library/selectors';
 
 const UserHistoryModal = ({
   onHide,

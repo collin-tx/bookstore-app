@@ -1,13 +1,13 @@
 import {
   removeError, renderError
-} from '../../actions';
+} from '../../library';
 import {
   GET_QUERY_LOG,
   FETCH_BOOKS,
   NO_BOOKS,
   RENDER_ERROR,
   SYNC_CART
-} from '../../actions/constants';
+} from '../../library/constants';
 
 // get books
 const fetchRequest = query => fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);

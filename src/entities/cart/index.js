@@ -1,7 +1,7 @@
 import {
   EMPTY_CART,
   SYNC_CART
-} from '../../actions/constants';
+} from '../../library/constants';
 
 import {
   getHistory as getHistoryAction

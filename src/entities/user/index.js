@@ -1,7 +1,7 @@
 import {
   SIGN_OUT,
   GET_HISTORY
-} from '../../actions/constants';
+} from '../../library/constants';
 
 export const signOut = firebase => {
   firebase.auth().signOut();

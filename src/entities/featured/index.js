@@ -1,4 +1,4 @@
-import { GET_FEATURED } from "../../actions/constants";
+import { GET_FEATURED } from '../../library/constants';
 
 export const getFeaturedBook = firebase => dispatch => {
   firebase.database().ref('featured').on('value', (snapshot) => {

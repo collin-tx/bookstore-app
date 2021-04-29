@@ -14,7 +14,7 @@ import {
     getFirebase,
     getHistory,
     getUser 
-} from '../../actions/selectors';
+} from '../../library/selectors';
 
 const CartContainer = () => {
 

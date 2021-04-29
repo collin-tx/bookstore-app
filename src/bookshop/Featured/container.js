@@ -14,7 +14,7 @@ import {
 
 import {
     getFeatured
-} from '../../actions/selectors';
+} from '../../library/selectors';
 
 const FeaturedContainer = ({
     firebase

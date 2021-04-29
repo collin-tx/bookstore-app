@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser, getError, getFirebase } from '../../actions/selectors';
+import { getUser, getError, getFirebase } from '../../library/selectors';
 import UserModal from './modal';
 import {
   removeError as removeErrorAction,
   renderError as renderErrorAction
-} from '../../actions';
+} from '../../library';
 import { signOut } from '../../entities/user';
 
 const UserModalContainer = () => {

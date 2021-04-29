@@ -15,7 +15,7 @@ import {
   SIGN_OUT,
   SYNC_CART,
   UNWRAP
-} from '../actions/constants';
+} from '../library/constants';
 
 const rootReducer = (state = [], action) => {
   switch(action.type) {
