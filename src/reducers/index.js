@@ -11,6 +11,9 @@ import {
   NO_BOOKS,
   REMOVE_ERROR,
   RENDER_ERROR,
+  SEARCH_FILTER_CAN_BUY,
+  SEARCH_FILTER_GENRE,
+  SEARCH_FILTER_TYPE,
   SIGN_IN,
   SIGN_OUT,
   SYNC_CART,
@@ -110,6 +113,27 @@ const rootReducer = (state = [], action) => {
         ...state,
         cart: action.payload
       }
+    case SEARCH_FILTER_CAN_BUY:
+      return {
+        ...state,
+        searchFilter_canBuy: action.payload
+      }
+    // case SEARCH_FILTER_CAN_VIEW:
+    //   return {
+    //     ...state,
+    //     searchFilter_canView: action.payload
+    //   }
+    case SEARCH_FILTER_GENRE:
+      return {
+        ...state,
+        searchFilter_genre: action.payload
+
+      }
+    case SEARCH_FILTER_TYPE:
+      return {
+        ...state,
+        searchFilter_type: action.payload
+      }
     default:
       return {
         books: [],
@@ -121,6 +145,9 @@ const rootReducer = (state = [], action) => {
         isSignedIn: false,
         loading: false,
         queries: [],
+        searchFilter_canBuy: false,
+        searchFilter_genre: null,
+        searchFilter_type: null,
         suggestions: [],
         user: null
       }
