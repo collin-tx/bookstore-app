@@ -23,7 +23,7 @@ const Home = ({
                 type='text'
                 value={term}
                 onChange={onChange}
-                // placeholder="Search for a book..."
+                placeholder="Search for books, PDFs, magazines, etc..."
                 className="form-control" id="search-input"
             />
             <button
