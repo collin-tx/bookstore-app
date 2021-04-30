@@ -10,3 +10,10 @@ export const getNoBooksFound = (state = []) => state.noBooks ? true : false;
 export const getQueries = (state = []) => state.queries ? state.queries : [];
 export const getSuggestions = (state = []) => state.suggestions ? state.suggestions : [];
 export const getUser = (state = []) => state.user ? state.user : {};
+export const getLoading = (state = []) => state.loading ? true : false;
+
+export const getSearchFilterParams = (state = []) => ({
+  canBuy: state.searchFilter_canBuy,
+  genre: state.searchFilter_genre,
+  type: state.searchFilter_type,
+});
