@@ -1,27 +1,29 @@
 import React from 'react';
 import Books from '../Books';
-import {SearchFilter} from './search';
+import { SearchFilter } from './search';
 
 const Home = ({
     addToCart = () => {},
     books = [],
     error = {},
-    firebase,
-    loading,
+    firebase = {},
+    loading = false,
     noBooks = false,
     onSubmit = () => {},
-    term,
     onChange = () => {},
-    quote,
-    searched
+    quote = '',
+    searched = false,
+    searchParams = {},
+    term = ''
 }) => (
-    <div className="container-fluid" >
+    <div id="home" className="container-fluid">
+      <div id="search-section">
         <form onSubmit={onSubmit} id="search-form">
             <input
                 type='text'
                 value={term}
                 onChange={onChange}
-                placeholder="Search for a book..."
+                // placeholder="Search for a book..."
                 className="form-control" id="search-input"
             />
             <button
@@ -29,11 +31,11 @@ const Home = ({
                 className="btn btn-primary"
                 id="search-submit"
             >
-                <i className="fas fa-search"></i> 
-                Search
+                <i className="fas fa-search"></i>
             </button>
         </form>
         <SearchFilter />
+      </div>
 
     {
       !searched && !books.length &&
@@ -79,10 +81,12 @@ const Home = ({
       firebase={firebase}
       onChange={onChange} 
       onSubmit={onSubmit}
+      searchParams={searchParams}
     />
+
     <p id="quote">{quote}</p>
 
-    {/* {!bookList ? <div id="spacer-div" /> : ''} */}
+    {!books ? <div id="spacer-div" /> : ''}
 
   </div>
 );
