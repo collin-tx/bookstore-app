@@ -1,4 +1,5 @@
 import {
+  CLEAR_SEARCH_FILTER,
   CREATE_USER,
   EMPTY_CART,
   FETCH_BOOKS,
@@ -118,11 +119,6 @@ const rootReducer = (state = [], action) => {
         ...state,
         searchFilter_canBuy: action.payload
       }
-    // case SEARCH_FILTER_CAN_VIEW:
-    //   return {
-    //     ...state,
-    //     searchFilter_canView: action.payload
-    //   }
     case SEARCH_FILTER_GENRE:
       return {
         ...state,
@@ -133,6 +129,13 @@ const rootReducer = (state = [], action) => {
       return {
         ...state,
         searchFilter_type: action.payload
+      }
+    case CLEAR_SEARCH_FILTER:
+      return {
+        ...state,
+        searchFilter_type: null,
+        searchFilter_canBuy: false,
+        searchFilter_genre: null,
       }
     default:
       return {
