@@ -41,11 +41,11 @@ const CartContainer = () => {
             description={record.book.volumeInfo.description && record.book.volumeInfo.description}
             key={record.book.id} id={record.book.etag} remove={handleRemove}
             link={record.book.volumeInfo.infoLink} preview={record.book.volumeInfo.previewLink}
-            price={record.book.saleInfo.listPrice.amount}
+            price={record.book.saleInfo?.listPrice?.amount}
         />
     ));
             
-    const priceArray = cart.length && cart.map(book => book.book.saleInfo.listPrice.amount);
+    const priceArray = cart.length && cart.map(book => book.book.saleInfo?.listPrice?.amount);
     const subtotal = priceArray ? priceArray.reduce((a,b) => a + b) : 0;
 
     const checkoutBooks = (
@@ -65,7 +65,7 @@ const CartContainer = () => {
                                 <tr key={generateKey(book.id)}>
                                     <td>{book.book.volumeInfo.title}</td>
                                     <td>{book.book.volumeInfo.authors && book.book.volumeInfo.authors[0]}</td>
-                                    <td>${book.book.saleInfo.listPrice.amount.toFixed(2)}</td>
+                                    <td>${book.book.saleInfo?.listPrice?.amount.toFixed(2)}</td>
                                 </tr>
                             );
                         })
