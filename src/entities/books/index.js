@@ -10,11 +10,45 @@ import {
 } from '../../library/constants';
 
 // get books
-const fetchRequest = query => fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
+// const fetchRequest = query => fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=18`);
+const getUrl = (query, filter, maxResults = 18) => {
+  let url = `https://www.googleapis.com/books/v1/volumes?q=${query}`;
 
-export const fetchBooks = (query, firebase, queries = []) => async dispatch => {
+
+  if (filter.canBuy) {
+    maxResults = 40;
+
+  }
+
+  if (filter.genre) {
+    maxResults = 40;
+
+  }
+
+  if (filter.type) {
+    maxResults = 40;
+    url += `&filter=${String(filter.type)}`;
+  }
+
+  if (filter.author) {
+    maxResults = 40;
+  }
+
+  url += `&key=${process.env.REACT_APP_GOOGLE_BOOKS_API_KEY}&maxResults=${maxResults}`
+
+  return url;
+}
+
+export const fetchBooks = (query, firebase, loadingSetter, filter, queries = []) => async dispatch => {
+  loadingSetter(true);
+
+  const url = getUrl(query, filter);
+
+
   dispatch(removeError())
-  await fetchRequest(query)
+
+
+  await fetch(url)
     .then(response => {
       return response.json();
     })
@@ -30,7 +64,10 @@ export const fetchBooks = (query, firebase, queries = []) => async dispatch => {
         });
       }
     })
-    .then(() => logQuery(query, firebase, queries)(dispatch))
+    .then(() => {
+      loadingSetter(false);
+      logQuery(query, firebase, queries)(dispatch);
+    })
     .catch(error => {
       dispatch({
         type: RENDER_ERROR,
