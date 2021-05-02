@@ -1,6 +1,6 @@
 import React from 'react';
 import Books from '../Books';
-import { SearchFilter } from './search';
+import { SearchFilter } from './search-filter';
 
 const Home = ({
     addToCart = () => {},
