@@ -22,7 +22,7 @@ const SearchFilterForm = ({
       <div className="search-filter_section">
         <div className="search-filter_section__a">
           <div id="search-filter__canBuy" className="search-filter-form__checkbox">
-            <input id="canBuy" type="checkbox" name="canBuy" checked={canBuy} onChange={handleCanBuy} />
+            <input id="canBuy" type="checkbox" name="canBuy" />{/* checked={canBuy} onChange={handleCanBuy} */}
             <label className="">
               Search in stock
             </label>

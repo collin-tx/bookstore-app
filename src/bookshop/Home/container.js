@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSearchResultsFilter } from '../../entities/books';
 import Home from './Home';
 
 import { quote } from '../../utils/helper';

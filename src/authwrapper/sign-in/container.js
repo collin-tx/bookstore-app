@@ -55,7 +55,6 @@ const SignInContainer = ({
   }
 
   const loginUser = () => {
-    console.log(dispatch);
     isNewUser ? createUserAction(firebase, email, password, username)(dispatch) :
     signIn(firebase, email, password)(dispatch)
   }
