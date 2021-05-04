@@ -33,6 +33,30 @@ const CartContainer = () => {
         dispatch(emptyCartAction(firebase, user));
     }
 
+    // const getBookPrice = b => {
+    //     let price = 0;
+
+    //     if (b.saleInfo && b.salefInfo?.listPrice) {
+    //         price = b.salefInfo.listPrice.amount;
+    //     }
+
+    //     if (b.saleInfo && b.salefInfo?.retailPrice) {
+    //         price = b.salefInfo.retailPrice.amount;
+    //     }
+
+    //     if (price === 0) {
+    //         // priceFinder will be called here
+    //         // until then priceless books will either be 10 or null
+    //         if (b.saleInfo?.saleability === 'NOT_FOR_SALE') {
+    //             return null;
+    //         }
+
+    //         return 10;
+    //     }
+
+    //     return price;
+    // }
+
     const booksInCart = cart.map(record => (
         <CartBook title={record.book.volumeInfo.title} book={record.book}
             author={record.book.volumeInfo.authors && record.book.volumeInfo.authors[0]}
@@ -41,7 +65,7 @@ const CartContainer = () => {
             description={record.book.volumeInfo.description && record.book.volumeInfo.description}
             key={record.book.id} id={record.book.etag} remove={handleRemove}
             link={record.book.volumeInfo.infoLink} preview={record.book.volumeInfo.previewLink}
-            price={record.book.saleInfo?.listPrice?.amount}
+            price={(record.book.saleInfo && record.book.saleInfo.listPrice && record.book.saleInfo.listPrice.amount) || (record.book.saleInfo && record.book.saleInfo.retailPrice && record.book.saleInfo.retailPrice.amount)}
         />
     ));
             
