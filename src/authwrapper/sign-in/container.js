@@ -25,10 +25,6 @@ const SignInContainer = ({
 }) => {
   const dispatch = useDispatch();
 
-  // dev helper-- remove below
-  dispatch(signIn(firebase, 'a@aa.com', 'aaaaaaa7'));
-  // remove above this
-
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ passwordVerify, setPasswordVerify ] = useState('');
