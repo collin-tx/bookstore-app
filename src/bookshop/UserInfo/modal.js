@@ -58,7 +58,7 @@ export const UserModalContainer = ({
       <div>
         <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => setModalShow(true)}>
           <i className="fa fa-user"></i>
-            <small> {user.displayName || ['user']}</small>
+            <small> {user.displayName || ['click here!']}</small>
         </Button>
       </div>
       <UserModal 
