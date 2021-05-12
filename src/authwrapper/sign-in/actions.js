@@ -21,17 +21,17 @@ export const signIn = (firebase, email, password) => dispatch => {
       const user = firebase.auth().currentUser;
       const userId = user && user.uid;
 
-      if (!!user){
+      if (!!user) {
         dispatch({
           type: SIGN_IN,
           payload: user
         });
-      }
 
-      dispatch(syncCart(firebase));
-      dispatch(removeError());
-      dispatch(getHistory(firebase, userId));
-      dispatch(storeQueryLog(firebase));
+        dispatch(syncCart(firebase));
+        dispatch(removeError());
+        dispatch(getHistory(firebase, userId));
+        dispatch(storeQueryLog(firebase));
+      }
     })
     .catch(error => {
         dispatch({
@@ -59,9 +59,23 @@ export const signIn = (firebase, email, password) => dispatch => {
   // }, 800);
 }
 
-export const createUser = (firebase, email, password, username) => async dispatch => {
+export const createUser = (firebase, email, password, passwordVerify, username) => dispatch => {
   // create a new fb user auth credentials - clear any errors - create bookshop user in redux state - create User instance in db - render any errors
-  await firebase.auth().createUserWithEmailAndPassword(email, password)
+
+  if (password !== passwordVerify) {
+    dispatch({
+      type: RENDER_ERROR,
+      payload: {
+        error: {
+          code: 'password not verified',
+          message: 'Passwords do not match'
+        }
+      }
+    });
+    return 'false;'
+  }
+
+  firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       const user = firebase.auth().currentUser;
       // set display name
