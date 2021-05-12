@@ -1,6 +1,6 @@
 import React from 'react';
 import Books from '../Books';
-import { SearchFilter } from './search-filter';
+// import { SearchFilter } from './search-filter';
 
 const Home = ({
     addToCart = () => {},
@@ -34,7 +34,7 @@ const Home = ({
                 <i className="fas fa-search"></i>
             </button>
         </form>
-        <SearchFilter />
+        {/* <SearchFilter /> */}
       </div>
 
     {
