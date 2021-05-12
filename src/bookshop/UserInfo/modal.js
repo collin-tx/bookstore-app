@@ -1,14 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
-import { signOut } from '../../actions';
 import UserHistory from '../UserHistory/modal';
 import Favorites from '../Favorites/modal';
 import Suggestions from '../Suggestions/modal';
 
-const UserModal = props => {
-  
-  const { firebase, user, onHide } = props;  
+const UserModal = ({
+  firebase,
+  user,
+  onHide,
+  onSignOut,
+  show
+}) => {
   // const renderError = () => {
   //   return (props.error && 
   //     <div className="error">
@@ -16,17 +18,10 @@ const UserModal = props => {
   //     </div>
   // )};
 
-  const onSignOut = () => {
-    firebase.auth().signOut()
-    .then(() => {
-      signOut(firebase);
-    });
-  }
-
   const username = user && user.displayName;
 
   return (
-    <Modal {...props} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal show={show} onHide={onHide} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           { `${username} || badass bookshop user` }
@@ -49,43 +44,33 @@ const UserModal = props => {
   );
 }
   
-export const UserModalContainer = props => {
-  
+export const UserModalContainer = ({
+  firebase,
+  error,
+  onSignOut,
+  // renderError,
+  // removeError,
+  user
+}) => {
   const [ modalShow, setModalShow ] = React.useState(false);
-
   return (
     <ButtonToolbar>
-    
       <div>
         <Button variant="primary" id="sign-out-button" className="mr-2" onClick={() => setModalShow(true)}>
           <i className="fa fa-user"></i>
-            <small> {props.user.displayName || ['user']}</small>
+            <small> {user.displayName || ['click here!']}</small>
         </Button>
       </div>
-    
-    <UserModal 
-      onHide={() => setModalShow(false)}
-      show={modalShow}
-      firebase={props.firebase}
-      error={props.error}
-      user={props.user}
-    />
-
+      <UserModal 
+        onHide={() => setModalShow(false)}
+        onSignOut={onSignOut}
+        show={modalShow}
+        firebase={firebase}
+        error={error}
+        user={user}
+      />
     </ButtonToolbar>
   );
 }
 
-const mapState = state => {
-  return {
-    user: state.user,
-    error: state.error
-  }
-}
-
-const mapDispatch = dispatch => {
-  return {
-    signOut: firebase => dispatch(signOut(firebase))
-  }
-}
-
-export default connect(mapState, mapDispatch)(UserModalContainer);
+export default UserModalContainer;

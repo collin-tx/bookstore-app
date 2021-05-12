@@ -21,7 +21,7 @@ const CartBook = ({
           <p>{subtitle}</p>
           <img src={img} className="cart-book-img" alt="book cover" />
           <p>{author}</p>
-          <p>${price.toFixed(2)}</p>
+          <p>${price ? price.toFixed(2) : ''}</p>
         </div>
         <div className="col">
           <p>

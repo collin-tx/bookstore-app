@@ -1,12 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
 
 import CheckedOut from './CheckedOut';
 import Checkout from './index';
 
-import { checkOut } from '../../actions';
-import { getUser, getCart } from '../../actions/selectors';
+import { checkOut } from '../../entities/cart';
+import { getUser, getCart } from '../../library/selectors';
 import store from '../../store';
 
 const CheckoutModal = props => {
@@ -101,4 +100,4 @@ export const CheckoutModalContainer = props => {
   );
 }
 
-export default connect()(CheckoutModalContainer);
+export default CheckoutModalContainer;

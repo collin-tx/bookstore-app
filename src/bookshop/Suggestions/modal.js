@@ -1,15 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Modal, Button, ButtonToolbar } from 'react-bootstrap';
-
-import { getSuggestions } from '../../actions/selectors';
+import { 
+  getError,
+  getSuggestions
+} from '../../library/selectors';
 
 import Suggestions from './index';
 
-const SuggestionsModal = props => {
+const SuggestionsModal = ({
+  onHide,
+  show,
+  suggestions
+}) => {
     // render error fx goes here
   return (
-    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal show={show} onHide={onHide} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           Suggestions
@@ -17,40 +23,35 @@ const SuggestionsModal = props => {
         {/* renderErrors() */}
       </Modal.Header>
       <Modal.Body>
-          <Suggestions suggestions={props.suggestions} />
+          <Suggestions suggestions={suggestions} />
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-between">
-        <Button onClick={props.onHide}>Close</Button>
+        <Button onClick={onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
   );
 }
   
-export const SuggestionsModalContainer = props => {
+export const SuggestionsModalContainer = () => {
   
   const [ modalShow, setModalShow ] = React.useState(false);
+  
+  const suggestions = useSelector(getSuggestions);
+  const error = useSelector(getError);
+
   return (
-      <ButtonToolbar>
-            <Button variant="primary" onClick={() => setModalShow(true)} id="show-purchase-history" className="navLink mr-1">
-                suggestions
-            </Button> 
-        <SuggestionsModal 
-            onHide={() => setModalShow(false)}
-            show={modalShow}
-            firebase={props.firebase}
-            error={props.error}
-            suggestions={props.suggestions}
-        />
-      </ButtonToolbar>
+    <ButtonToolbar>
+      <Button variant="primary" onClick={() => setModalShow(true)} id="show-purchase-history" className="navLink mr-1">
+        suggestions
+      </Button>
+      <SuggestionsModal 
+        onHide={() => setModalShow(false)}
+        show={modalShow}
+        error={error}
+        suggestions={suggestions}
+      />
+    </ButtonToolbar>
   );
 }
 
-const mapState = state => {
-    return {
-        user: state.user,
-        suggestions: getSuggestions(state),
-        error: state.error
-    }
-}
-
-export default connect(mapState)(SuggestionsModalContainer);
+export default SuggestionsModalContainer;

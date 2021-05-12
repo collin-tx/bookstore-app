@@ -70,6 +70,10 @@ html {
 
 /* Home */
 
+#search-section {
+  display: flex;
+}
+
 #quote {
   text-align: center;
   margin: 5% 20% 0 20%;
@@ -78,18 +82,76 @@ html {
 #search-form {
   text-align: center;
   margin: 30px auto;
-  position: relative;
+  flex-basis: 200%;
 }
+
 #search-input {
   display: inline;
-  width: 300px;
+  width: 40%;
 }
 
 #search-submit {
   margin-bottom: 4px;
 }
 
-#bookList{
+#search-filter__button {
+  /* border: 1px red solid; */
+  margin: 30px auto;
+  height: 38px;
+  flex-basis: 0;
+}
+
+#search-filter__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-filter-form__checkbox {
+
+  /* border: red 2px solid; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: grid;
+  grid-template-columns: 2fr 15fr;
+  justify-content: center;
+  align-items: baseline;
+  align-content: center;
+}
+
+.search-filter-form__dropdown {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-filter_section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-bottom: 20px;
+  /* align-items: center; */
+}
+
+.search-filter_section__a {
+  /* border: 1px blue solid; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.search-filter_section__b {
+  /* border: 1px red solid; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#search-filter_form__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#bookList {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
@@ -119,7 +181,7 @@ html {
   flex-direction: column;
 }
 
-@media(max-width: 780px){
+@media(max-width: 780px) {
   #bookList{
     grid-template-columns: 1fr 1fr !important;
   }

@@ -1,42 +1,34 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser, getError, getFirebase } from '../../library/selectors';
 import UserModal from './modal';
-import { signOut, removeError, renderError } from '../../actions';
+import {
+  removeError as removeErrorAction,
+  renderError as renderErrorAction
+} from '../../library';
+import { signOut } from '../../entities/user';
 
-class UserModalContainer extends Component {
+const UserModalContainer = () => {
+  
+  const error = useSelector(getError);
+  const firebase = useSelector(getFirebase);
+  const user = useSelector(getUser);
 
-  // this needs work obvs
-  render() {
+  const dispatch = useDispatch();
 
-    const {
-      firebase,
-      error,
-      signOut,
-      removeError,
-      renderError
-    } = this.props;
+  const onSignOut = () => dispatch(signOut(firebase));
+  const removeError = () => dispatch(removeErrorAction());
+  const renderError = error => dispatch(renderErrorAction(error));
 
-    return (
-      <UserModal 
-        firebase={firebase} 
-        error={error} 
-        signOut={signOut}
-        removeError={removeError}
-        renderError={renderError}
-      />);
-  }
+  return (
+    <UserModal 
+      firebase={firebase} 
+      error={error} 
+      onSignOut={onSignOut}
+      removeError={removeError}
+      renderError={renderError}
+      user={user}
+    />);
 }
 
-const mapState = state => ({
-    user: state.user,
-    error: state.error
-});
-
-const mapDispatch = dispatch => ({
-    signOut: firebase => dispatch(signOut(firebase)),
-    removeError: () => dispatch(removeError()),
-    renderError: error => dispatch(renderError(error))
-});
-
-export default connect(mapState, mapDispatch)(UserModalContainer);
+export default UserModalContainer;

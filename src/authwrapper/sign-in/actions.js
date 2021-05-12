@@ -2,33 +2,36 @@ import {
   CREATE_USER,
   RENDER_ERROR,
   SIGN_IN,
+  SYNC_CART,
   UNWRAP,
-} from '../../actions/constants';
+} from '../../library/constants';
+
+import { removeError } from '../../library';
+
+import { getHistory } from '../../entities/user';
 
 import {
-  removeError,
-  syncCart,
-  getHistory,
   storeQueryLog
-} from '../../actions';
+} from '../../entities/books';
 
 export const signIn = (firebase, email, password) => dispatch => {
+
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
       const user = firebase.auth().currentUser;
       const userId = user && user.uid;
 
-      if (!!user){
+      if (!!user) {
         dispatch({
           type: SIGN_IN,
           payload: user
         });
-      }
 
-      syncCart(firebase)(dispatch);
-      dispatch(removeError());
-      dispatch(getHistory(firebase, userId));
-      dispatch(storeQueryLog(firebase));
+        dispatch(syncCart(firebase));
+        dispatch(removeError());
+        dispatch(getHistory(firebase, userId));
+        dispatch(storeQueryLog(firebase));
+      }
     })
     .catch(error => {
         dispatch({
@@ -56,9 +59,23 @@ export const signIn = (firebase, email, password) => dispatch => {
   // }, 800);
 }
 
-export const createUser = (firebase, email, password, username) => async dispatch => {
+export const createUser = (firebase, email, password, passwordVerify, username) => dispatch => {
   // create a new fb user auth credentials - clear any errors - create bookshop user in redux state - create User instance in db - render any errors
-  await firebase.auth().createUserWithEmailAndPassword(email, password)
+
+  if (password !== passwordVerify) {
+    dispatch({
+      type: RENDER_ERROR,
+      payload: {
+        error: {
+          code: 'password not verified',
+          message: 'Passwords do not match'
+        }
+      }
+    });
+    return 'false;'
+  }
+
+  firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       const user = firebase.auth().currentUser;
       // set display name
@@ -93,5 +110,22 @@ export const createUser = (firebase, email, password, username) => async dispatc
         payload: {error}
       })
     });
+}
 
+// sync UI cart with FB cart
+export const syncCart = firebase => dispatch => {
+  const user = firebase.auth().currentUser;
+  const cartRef = firebase.database().ref('users/' + (user?.uid) + '/cart');
+  cartRef.on('value', async (snapshot) => {
+    const fbCart = await snapshot.val();
+    let fbCartArr = [];
+    // eslint-disable-next-line 
+    for (let id in fbCart){
+      fbCartArr.push(fbCart[id]);
+    }
+    dispatch({
+      type: SYNC_CART,
+      payload: fbCartArr
+    });
+  });
 }

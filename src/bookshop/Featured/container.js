@@ -1,110 +1,86 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useSelector, useStore } from 'react-redux';
 
 import Featured from './Featured';
 import Comment from './Comment';
 
 import { generateKey } from '../../utils/helper';
 
-export class FeaturedContainer extends Component {
-    
-    state = {
-        featuredBook: {},
-        value: ''
-    }
-    
-    componentDidMount(){
-        // connect to db and read from featured table
-        let { firebase } = this.props;
-        let database = firebase.database();
-        let featured = database.ref('featured');
-        this.setState({ featured, database });
+import {
+    addComment as addCommentAction,
+    deleteComment as deleteCommentAction,
+    updateComment as updateCommentAction
+} from '../../entities/featured';
 
-        featured.on('value', response => {
-            const featuredData = response.val();
-            this.setState({ featuredBook: featuredData });
-        });
-    }
+import {
+    getFeatured
+} from '../../library/selectors';
 
-    addComment = () => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex +'/book/comments')
-            .push({
-                username: (this.props.user ? this.props.user.displayName : 'Anonymous') ,
-                key: this.state.value,
-                userId: this.props.user?.uid || '999&guest=user&666'
-            });
-        this.setState({ value: '' })
+const FeaturedContainer = ({
+    firebase
+}) => {
+    // set up state
+    const [ commentValue, setCommentValue ] = React.useState('');
+    const {
+        isSignedIn,
+        user
+    } = useStore().getState();
+
+    const featured = useSelector(state => getFeatured(state));
+    const book = featured[Object.keys(featured)].book;
+
+    const addComment = () => {
+        addCommentAction(firebase, featured, commentValue);
+        setCommentValue('');
     }
 
-    handleChange = e => {
-        this.setState({ value: e.target.value});
-    }
+    const handleChange = e => setCommentValue(e.target.value);
 
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
-        this.addComment();
+        addComment();
     }
 
-    editComment = (e, key, newComment) => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
-            .update({key:newComment});
-        this.setState({ value: '', editing: false });
+    const editComment = (e, key, newComment) => {
+        updateCommentAction(firebase, featured, key, newComment);
+        setCommentValue('');
     }
 
-    deleteComment = (e, key) => {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        this.state.database.ref('featured/' + featuredIndex + '/book/comments/' + key)
-            .remove();
+    const deleteComment = (e, key) => deleteCommentAction(firebase, featured, key);
+
+    // grabs comments from db.featured
+    let allComments = [];
+        // eslint-disable-next-line
+    for (let keyOfComment in book?.comments){
+        allComments.push(book.comments[keyOfComment]);
     }
 
-    render() {
-        let featuredIndex = Object.keys(this.state.featuredBook);
-        let book = this.state.featuredBook[featuredIndex] && this.state.featuredBook[featuredIndex].book;
-        
-        let allComments = [];
-            // eslint-disable-next-line
-        for(let keyOfComment in book && book.comments){
-            allComments.push(book.comments[keyOfComment]);
-        }
-
-        allComments = allComments.map( (comment, index) => {
-            return (
-                <Comment 
-                    key={generateKey(index)}
-                    comment={comment.key}
-                    username={comment.username}
-                    user={this.props.user}
-                    userId={comment.userId}
-                    edit={this.editComment}
-                    delete={this.deleteComment}
-                    commentKey={Object.keys(this.state.featuredBook[featuredIndex].book.comments)[index]}
-                />
-            )
-        });
+    allComments = allComments.map((comment, index) => {
         return (
-            <Featured 
-                allComments={allComments}
-                book={book}
-                featuredBook={this.state.featuredBook}
-                featuredIndex={featuredIndex}
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
-                isSignedIn={this.props.isSignedIn}
-                user={(this.props.user && this.props.user.displayName) || 'guest'}
-                value={this.state.value}
+            <Comment 
+                key={generateKey(index)}
+                comment={comment.key}
+                username={comment.username}
+                user={user}
+                userId={comment.userId}
+                onEdit={editComment}
+                onDelete={deleteComment}
+                commentKey={Object.keys(book.comments)[index]}
             />
         );
-    }
+    });
+
+    return (
+        <Featured 
+            allComments={allComments}
+            book={book}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            isSignedIn={isSignedIn}
+            user={(user && user.displayName) || 'guest'}
+            value={commentValue}
+        />
+    );
 }
 
-const mapState = state => {
-    return {
-        user: state.user,
-        isSignedIn: state.isSignedIn,
-        state
-    }
-}
-
-export default connect(mapState)(FeaturedContainer);
+export default FeaturedContainer;
