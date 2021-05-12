@@ -4,8 +4,8 @@ import { formatDate, generateKey } from '../../utils/helper';
 
 const UserHistoryContainer = ({ userHistory = {} }) => {
 // TODO: massive styling/flow changes
-  const purchaseListArr = Array.isArray(userHistory) ? userHistory : Object.keys(userHistory).map((p, i) => userHistory[p]);
-  
+  const purchaseListArr = (Array.isArray(userHistory) ? userHistory : Object.keys(userHistory).map((p, i) => userHistory[p])).reverse();
+
   const purchaseList = purchaseListArr.map((purchase, index) => {
     
     const orderItemsArr = Array.isArray(purchase.order) ? purchase.order : Object.keys(purchase.order).map(o => purchase.order[o]);
