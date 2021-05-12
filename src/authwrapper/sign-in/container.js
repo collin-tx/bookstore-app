@@ -12,8 +12,6 @@ import {
   createUser as createUserAction
 } from './actions';
 
-import { renderError } from '../../library';
-import { validateEmail, validatePassword } from '../../utils/helper';
 import {
   getError,
   getUser
@@ -51,30 +49,14 @@ const SignInContainer = ({
   }
 
   const loginUser = () => {
-    isNewUser ? createUserAction(firebase, email, password, username)(dispatch) :
+    isNewUser ? createUserAction(firebase, email, password, passwordVerify, username)(dispatch) :
     signIn(firebase, email, password)(dispatch)
   }
 
   const handleSubmit = e => {
 
     e.preventDefault();
-
-    // if (validateEmail(email) && validatePassword(password, passwordVerify)) {
-      // if (!!username.length){
-        loginUser();
-      // }
-    // }
-
-    // errors
-    // todo: clean THIS UP oof
-    if (!validateEmail(email)) {
-      renderError({ error: { message: 'Please use a proper email address' } });
-    } else if (!validatePassword(password, passwordVerify)) {
-      renderError({ error: { message: isNewUser ? 'Passwords must match and be at least 6 characters' : 'Incorrect Password' } });
-    } else if (!username.length && isNewUser){
-      renderError({ error: { message: 'Please enter a username' } });
-    }
-
+    loginUser();
   }
 
   const renderSignUp = () => (
@@ -105,8 +87,17 @@ const SignInContainer = ({
     />
   );
 
+  const renderError = () => {
+    return error && (
+      <div className="bg-danger text-white p-1">
+        {error?.message}
+      </div>
+    );
+  }
+
   return (
     <div className="authwrapper">
+      {renderError()}
       {isNewUser ? renderSignUp() : renderSignIn()}
     </div>
   );
