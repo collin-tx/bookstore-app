@@ -43,10 +43,6 @@ export const signIn = (firebase, email, password) => dispatch => {
 
 
   export const unwrap = firebase => dispatch => {
-  // relying on ST for now -- TODO: better solution for async options here
-  //  solution: split it up - break down with new approach to sign in authrwarop whatejfijsdf
-
-  // setTimeout(() => {
     const user = firebase.auth().currentUser;
     if (!!user) {
       dispatch(syncCart(firebase));
@@ -56,7 +52,6 @@ export const signIn = (firebase, email, password) => dispatch => {
         payload: user
       });
     }
-  // }, 800);
 }
 
 export const createUser = (firebase, email, password, passwordVerify, username) => dispatch => {
